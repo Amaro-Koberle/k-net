@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import "./App.css";
-import {
-  ForceGraph2D,
-  ForceGraph3D,
-  ForceGraphVR,
-  ForceGraphAR,
-} from "react-force-graph";
+import { ForceGraph3D } from "react-force-graph";
 import data from "./graphData.json";
 
 function App() {
+  // I want the content of a node to be be displayed in the
+  //left panel whenever it is clicked. No idea how...
+  const handleNodeClick = (e) => {
+    console.log("click");
+  };
+
   return (
     <>
       <div className="button-container">
@@ -16,7 +17,11 @@ function App() {
       </div>
 
       <div className="left-panel">
-        {/* <div className="menu-header">
+        {/* I want the following form to replace whatever
+        is displayed in the left panel when the Edit button
+        is clicked, but I've got no clue on how to do that.
+        
+        <div className="menu-header">
           <h3>Edit Node</h3>
           <button className="exit-button">X</button>
         </div>
@@ -27,16 +32,14 @@ function App() {
           <input type="text" id="out"></input>
           <label for="title">Title</label>
           <input type="text" id="title"></input>
-          <label for="content">Content</label>
+          <label for="description">Description</label>
           <input type="text" id="content"></input>
-        </form>*/}
+        </form> */}
         <div className="menu-header">
           <h3>Node Title</h3>
           <button className="edit-button">Edit</button>
         </div>
         <form className="node-display">
-          <h5>Node Title</h5>
-
           <p>
             Node Description... Lorem ipsum dolor sit amet, consectetur
             adipiscing elit, sed do eiusmod tempor incididunt ut labore et
@@ -49,20 +52,21 @@ function App() {
           </p>
           <h5>In</h5>
           <ul>
-            <li>Origin Node 1</li>
-            <li>Origin Node 2</li>
-            <li>Origin Node 3</li>
+            <li>Source Node 1</li>
+            <li>Source Node 2</li>
+            <li>Source Node 3</li>
           </ul>
           <h5>Out</h5>
           <ul>
-            <li>Destination Node 1</li>
-            <li>Destination Node 2</li>
-            <li>Destination Node 3</li>
+            <li>Target Node 1</li>
+            <li>Target Node 2</li>
+            <li>Target Node 3</li>
           </ul>
         </form>
       </div>
+
       <div>
-        <ForceGraph3D graphData={data} />
+        <ForceGraph3D graphData={data} onNodeClick={handleNodeClick} />
       </div>
     </>
   );
