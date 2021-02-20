@@ -1,19 +1,72 @@
 {
   "nodes": [
-    { "id": "000", "title": "Whatever", "description": "bla bla bla" },
-    { "id": "001", "title": "Placeholder", "description": "bar bar bar" },
-    { "id": "002", "title": "Tits", "description": "yada yada" },
+    {
+      "id": "000",
+      "title": "Whatever",
+      "description": "bla bla bla",
+      "inEdges": [
+        "002"
+      ],
+      "outEdges": [
+        "001"
+      ]
+    },
+    {
+      "id": "001",
+      "title": "Placeholder",
+      "description": "bar bar bar",
+      "inEdges": [
+        "000"
+      ],
+      "outEdges": [
+        "002"
+      ]
+    },
+    {
+      "id": "002",
+      "title": "Tits",
+      "description": "yada yada",
+      "inEdges": [
+        "001"
+      ],
+      "outEdges": [
+        "000",
+        "002"
+      ]
+    },
     {
       "id": "003",
       "title": "Epistemology",
-      "description": "Epistemology is the theory of knowledge, what it is and how it is created."
+      "description": "Epistemology is the theory of knowledge, what it is and how it is created.",
+      "inEdges": [
+        "002"
+      ],
+      "outEdges": []
     },
-    { "id": "004", "title": "Loner", "description": "This node is lonely" }
+    {
+      "id": "004",
+      "title": "Loner",
+      "description": "This node is lonely",
+      "inEdges": [],
+      "outEdges": []
+    }
   ],
   "links": [
-    { "source": "000", "target": "001" },
-    { "source": "001", "target": "002" },
-    { "source": "002", "target": "000" },
-    { "source": "002", "target": "003" }
+    {
+      "source": "000",
+      "target": "001"
+    },
+    {
+      "source": "001",
+      "target": "002"
+    },
+    {
+      "source": "002",
+      "target": "000"
+    },
+    {
+      "source": "002",
+      "target": "003"
+    }
   ]
 }
