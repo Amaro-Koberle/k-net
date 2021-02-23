@@ -1,10 +1,23 @@
-.button-container {
+.new-node-container {
   position: absolute;
   bottom: 0;
   right: 0;
   z-index: 2;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  height: 100px;
+}
+
+.start-session {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   width: 200px;
@@ -30,7 +43,7 @@
   flex-direction: row;
 }
 
-.add-node {
+.new-node {
   padding: 10px 20px;
 }
 
