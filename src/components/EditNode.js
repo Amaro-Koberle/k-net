@@ -6,6 +6,7 @@ export default function EditNode({
   editing,
   setEditing,
   updateGraph,
+  removeEdge,
 }) {
   if (editing === false) return null;
 
@@ -13,7 +14,7 @@ export default function EditNode({
     <div>
       <div className="menu-header">
         <h3>Edit Node</h3>
-        <button className="exit-button" onClick={setEditing(false)}>
+        <button className="exit-button" onClick={() => setEditing(false)}>
           X
         </button>
       </div>
@@ -35,21 +36,27 @@ export default function EditNode({
           }
         ></input>
         <label for="in">In</label>
-        <input
-          type="text"
-          id="in"
-          value={currNode.inEdges}
-          onInput={(e) => setCurrNode({ ...currNode, inEdges: e.target.value })}
-        ></input>
+        <ul>
+          {currNode.inEdges.map((edge) => {
+            return (
+              <li>
+                <span>{edge}</span>
+                <button onClick={removeEdge}>Remove</button>
+              </li>
+            );
+          })}
+        </ul>
         <label for="out">Out</label>
-        <input
-          type="text"
-          id="out"
-          value={currNode.outEdges}
-          onInput={(e) =>
-            setCurrNode({ ...currNode, outEdges: e.target.value })
-          }
-        ></input>
+        <ul>
+          {currNode.outEdges.map((edge) => {
+            return (
+              <li>
+                <span>{edge}</span>
+                <button onClick={removeEdge}>Remove</button>
+              </li>
+            );
+          })}
+        </ul>
         <button type="submit" onClick={updateGraph}>
           Save
         </button>
