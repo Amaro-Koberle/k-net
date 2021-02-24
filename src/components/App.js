@@ -15,6 +15,8 @@ function App() {
     outEdges: [],
   });
 
+  const [editing, setEditing] = useState(false);
+
   function handleNodeClick(node, e) {
     setCurrNode({
       id: node.id,
@@ -44,9 +46,12 @@ function App() {
     setGraph(graph.nodes.push(emptyNode));
   };
 
-  const logIn = () => {};
+  const startSession = () => {};
 
-  const signUp = () => {};
+  const editNode = () => {
+    editing = true;
+    console.log(editing);
+  };
 
   const updateGraph = (e) => {
     // let newGraph = { ...graph };
@@ -84,17 +89,16 @@ function App() {
 
   return (
     <>
-      <div className="start-session">
-        <button className="log-in" onClick={logIn}>
-          Log In
-        </button>
-        <button className="sign-up" onClick={signUp}>
-          Sign Up
+      <div className="start-session-container">
+        <button className="log-in" onClick={startSession}>
+          Start Session
         </button>
       </div>
       <LeftPanel
         currNode={currNode}
         setCurrNode={setCurrNode}
+        setEditing={setEditing}
+        editing={editing}
         updateGraph={updateGraph}
       />
       <div className="new-node-container">

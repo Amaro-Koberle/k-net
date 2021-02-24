@@ -4,43 +4,28 @@
       "id": "000",
       "title": "Whatever",
       "description": "bla bla bla",
-      "inEdges": [
-        "002"
-      ],
-      "outEdges": [
-        "001"
-      ]
+      "inEdges": ["002"],
+      "outEdges": ["001"]
     },
     {
       "id": "001",
       "title": "Placeholder",
       "description": "bar bar bar",
-      "inEdges": [
-        "000"
-      ],
-      "outEdges": [
-        "002"
-      ]
+      "inEdges": ["000"],
+      "outEdges": ["002"]
     },
     {
       "id": "002",
       "title": "Tits",
       "description": "yada yada",
-      "inEdges": [
-        "001"
-      ],
-      "outEdges": [
-        "000",
-        "002"
-      ]
+      "inEdges": ["001"],
+      "outEdges": ["000", "002"]
     },
     {
       "id": "003",
       "title": "Epistemology",
       "description": "Epistemology is the theory of knowledge, what it is and how it is created.",
-      "inEdges": [
-        "002"
-      ],
+      "inEdges": ["002"],
       "outEdges": []
     },
     {
