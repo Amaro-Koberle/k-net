@@ -7,7 +7,7 @@ export default function NodeDisplay({ currNode, editing, setEditing }) {
     <div>
       <div className="menu-header">
         <h3>{currNode.title}</h3>
-        <button className="edit-button" onClick={etEditing(true)}>
+        <button className="edit-button" onClick={() => setEditing(true)}>
           Edit
         </button>
       </div>

@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import "../App.css";
-import LeftPanel from "./LeftPanel";
+import React, { useState, useEffect } from "react";
+import "./App.css";
+import LeftPanel from "./components/LeftPanel";
 import { ForceGraph3D } from "react-force-graph";
-import data from "../graphData.json";
+import data from "./graphData.json";
 
 function App() {
   const [graph, setGraph] = useState(data);
@@ -43,37 +43,57 @@ function App() {
       inEdges: [],
       outEdges: [],
     };
-    setGraph(graph.nodes.push(emptyNode));
+    // This will try and set graph to what is returned by graph.nodes.push(emptyNode)
+    // Make sure to copy graph and add node
+    const newGraph = { ...graph }
+    newGraph.nodes.push(emptyNode)
+    setGraph(newGraph);
   };
 
-  const startSession = () => {};
+  const startSession = () => { };
 
   const editNode = () => {
-    editing = true;
-    console.log(editing);
+    editing = setEditing(true);
   };
 
   const updateGraph = (e) => {
-    // let newGraph = { ...graph };
-    // (add id field to currNode)
-    // update node in graph (find node and set it to be a copy of currNode)
     // also need to make sure to update the edges
     //(maybe harder, possible easiest to remove all old edges and the insert the new ones)
     // setGraph()
     e.preventDefault();
+    // currNode inEdges/outEdges may have changed, need to update links accordingly, the inEdges/outEdges will change for multiple nodes but only links including the changed edge.
     let newGraph = { ...graph };
-    const newGraphEntries = Object.entries(newGraph.nodes);
-    const currNodeEntries = Object.entries(currNode);
-    console.log(currNodeEntries, newGraphEntries);
-    //newGraphEntries and currNodeEntries are currently not structured the same way.
-    //
-    const newGraphEntriesLength = newGraphEntries.length;
-    for (i = 0; i < newGraphEntriesLength; i++) {
-      if (newGraphEntries[i] === currNodeEntries) {
-        newGraphEntries[i] = currNodeEntries;
+    for (let i = 0; i < graph["nodes"].length; i++) {
+      const node = graph["nodes"][i]
+      if (node.id === currNode.id) {
+        newGraph["nodes"][i] = currNode
       }
     }
+
+    for (let i = 0; i < graph["links"].length; i++) {
+      const link = graph["links"][i]
+      if (link["source"].id === currNode.id) {
+        newGraph["links"][i]["source"] = currNode
+      }
+      if (link["target"].id === currNode.id) {
+        newGraph["links"][i]["target"] = currNode
+      }
+    }
+    setGraph(newGraph)
+    setEditing(false)
   };
+
+  const removeEdge = () => {
+    console.log("trying to remove an edge")
+  }
+
+  // every time graph changes save the updated graph to file
+  // BE CAREFUL if very big and changes often writing to file may cause your app to run slowly?? Something to watch out for may not be a problem
+  // This useEffect block is only called when graph changes
+  // useEffect(() => {
+  // save new graph to file
+  // jsonGraph = JSON.stringify(graph)
+  //}, [graph])
 
   //GRAPH STYLING
   //nodes
@@ -100,6 +120,7 @@ function App() {
         setEditing={setEditing}
         editing={editing}
         updateGraph={updateGraph}
+        removeEdge={removeEdge}
       />
       <div className="new-node-container">
         <button className="new-node" onClick={newNode}>
