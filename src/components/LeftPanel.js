@@ -8,7 +8,7 @@ export default function LeftPanel({
   setEditing,
   editing,
   updateGraph,
-  removeEdge,
+  removeLink,
 }) {
   return (
     <div className="left-panel">
@@ -18,7 +18,7 @@ export default function LeftPanel({
         editing={editing}
         setEditing={setEditing}
         updateGraph={updateGraph}
-        removeEdge={removeEdge}
+        removeLink={removeLink}
       />
       <NodeDisplay
         currNode={currNode}
