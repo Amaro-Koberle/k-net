@@ -15,14 +15,14 @@ export default function NodeDisplay({ currNode, editing, setEditing }) {
         <p>{currNode.description}</p>
         <h5>In</h5>
         <ul>
-          {currNode.inEdges.map((edge) => (
-            <li>{edge}</li>
+          {currNode.inLinks.map((link) => (
+            <li>{link}</li>
           ))}
         </ul>
         <h5>Out</h5>
         <ul>
-          {currNode.outEdges.map((edge) => (
-            <li>{edge}</li>
+          {currNode.outLinks.map((link) => (
+            <li>{link}</li>
           ))}
         </ul>
       </form>

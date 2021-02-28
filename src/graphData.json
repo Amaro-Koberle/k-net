@@ -4,51 +4,36 @@
       "id": "000",
       "title": "Whatever",
       "description": "bla bla bla",
-      "inEdges": [
-        "002"
-      ],
-      "outEdges": [
-        "001"
-      ]
+      "inLinks": ["002"],
+      "outLinks": ["001"]
     },
     {
       "id": "001",
       "title": "Placeholder",
       "description": "bar bar bar",
-      "inEdges": [
-        "000"
-      ],
-      "outEdges": [
-        "002"
-      ]
+      "inLinks": ["000"],
+      "outLinks": ["002"]
     },
     {
       "id": "002",
       "title": "Tits",
       "description": "yada yada",
-      "inEdges": [
-        "001"
-      ],
-      "outEdges": [
-        "000",
-        "002"
-      ]
+      "inLinks": ["001"],
+      "outLinks": ["000", "002"]
     },
     {
       "id": "003",
       "title": "Epistemology",
       "description": "Epistemology is the theory of knowledge, what it is and how it is created.",
-      "inEdges": [
-        "002"
-      ],
-      "outEdges": []
+      "inLinks": ["002"],
+      "outLinks": []
     },
     {
       "id": "004",
       "title": "Loner",
       "description": "This node is lonely",
-      "inEdges": [],
-      "outEdges": []
+      "inLinks": [],
+      "outLinks": []
     }
   ],
   "links": [

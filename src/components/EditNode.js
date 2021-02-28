@@ -6,7 +6,7 @@ export default function EditNode({
   editing,
   setEditing,
   updateGraph,
-  removeEdge,
+  removeLink,
 }) {
   if (editing === false) return null;
 
@@ -37,27 +37,31 @@ export default function EditNode({
         ></input>
         <label for="in">In</label>
         <ul>
-          {currNode.inEdges.map((edge) => {
+          {currNode.inLinks.map((link) => {
             return (
               <li>
-                <span>{edge}</span>
-                <button onClick={removeEdge}>Remove</button>
+                <span>{link}</span>
+                <button type="button" onClick={(link) => removeLink(link)}>
+                  Remove
+                </button>
               </li>
             );
           })}
         </ul>
         <label for="out">Out</label>
         <ul>
-          {currNode.outEdges.map((edge) => {
+          {currNode.outLinks.map((link) => {
             return (
               <li>
-                <span>{edge}</span>
-                <button onClick={removeEdge}>Remove</button>
+                <span>{link}</span>
+                <button type="button" onClick={(link) => removeLink(link)}>
+                  Remove
+                </button>
               </li>
             );
           })}
         </ul>
-        <button type="submit" onClick={updateGraph}>
+        <button type="button" onClick={updateGraph}>
           Save
         </button>
       </form>

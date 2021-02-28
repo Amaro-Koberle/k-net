@@ -11,8 +11,8 @@ function App() {
     id: "",
     title: "",
     description: "",
-    inEdges: [],
-    outEdges: [],
+    inLinks: [],
+    outLinks: [],
   });
 
   const [editing, setEditing] = useState(false);
@@ -22,71 +22,61 @@ function App() {
       id: node.id,
       title: node.title,
       description: node.description,
-      inEdges: node.inEdges,
-      outEdges: node.outEdges,
+      inLinks: node.inLinks,
+      outLinks: node.outLinks,
     });
   }
 
   const newNode = () => {
-    //Question: What is the difference between declaring the function
-    //the way I did it in the line above, and doing it as follows:
-    //function newNode() {};
-    //or like this:
-    //const newNode = function() {};
-    //? When should I use which way of doing it? Does it even matter?
-    //
-    //This code is useless right now, it just wipes the page clean.
     const emptyNode = {
       id: 999, //I have to figure out a function that appends a unique ID here
       title: "",
       description: "",
-      inEdges: [],
-      outEdges: [],
+      inLinks: [],
+      outLinks: [],
     };
     // This will try and set graph to what is returned by graph.nodes.push(emptyNode)
     // Make sure to copy graph and add node
-    const newGraph = { ...graph }
-    newGraph.nodes.push(emptyNode)
+    const newGraph = { ...graph };
+    newGraph.nodes.push(emptyNode);
     setGraph(newGraph);
   };
 
-  const startSession = () => { };
+  const startSession = () => {};
 
-  const editNode = () => {
-    editing = setEditing(true);
-  };
-
-  const updateGraph = (e) => {
-    // also need to make sure to update the edges
-    //(maybe harder, possible easiest to remove all old edges and the insert the new ones)
+  const updateGraph = () => {
+    // also need to make sure to update the links
+    //(maybe harder, possible easiest to remove all old links and the insert the new ones)
     // setGraph()
-    e.preventDefault();
-    // currNode inEdges/outEdges may have changed, need to update links accordingly, the inEdges/outEdges will change for multiple nodes but only links including the changed edge.
+    // currNode inLinks/outLinks may have changed, need to update links accordingly, the inLinks/outLinks will change for multiple nodes but only links including the changed link.
     let newGraph = { ...graph };
     for (let i = 0; i < graph["nodes"].length; i++) {
-      const node = graph["nodes"][i]
+      const node = graph["nodes"][i];
       if (node.id === currNode.id) {
-        newGraph["nodes"][i] = currNode
+        newGraph["nodes"][i] = currNode;
       }
     }
 
     for (let i = 0; i < graph["links"].length; i++) {
-      const link = graph["links"][i]
+      const link = graph["links"][i];
       if (link["source"].id === currNode.id) {
-        newGraph["links"][i]["source"] = currNode
+        newGraph["links"][i]["source"] = currNode;
       }
       if (link["target"].id === currNode.id) {
-        newGraph["links"][i]["target"] = currNode
+        newGraph["links"][i]["target"] = currNode;
       }
     }
-    setGraph(newGraph)
-    setEditing(false)
+    setGraph(newGraph);
+    setEditing(false);
   };
 
-  const removeEdge = () => {
-    console.log("trying to remove an edge")
-  }
+  const removeLink = (link) => {
+    console.log(link);
+  };
 
+  // useEffect(() => {
+  //   let graphData = { ...graph };
+  // }, [graph]);
   // every time graph changes save the updated graph to file
   // BE CAREFUL if very big and changes often writing to file may cause your app to run slowly?? Something to watch out for may not be a problem
   // This useEffect block is only called when graph changes
@@ -120,7 +110,7 @@ function App() {
         setEditing={setEditing}
         editing={editing}
         updateGraph={updateGraph}
-        removeEdge={removeEdge}
+        removeLink={removeLink}
       />
       <div className="new-node-container">
         <button className="new-node" onClick={newNode}>
