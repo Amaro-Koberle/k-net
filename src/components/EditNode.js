@@ -41,7 +41,7 @@ export default function EditNode({
             return (
               <li>
                 <span>{link}</span>
-                <button type="button" onClick={(link) => removeLink(link)}>
+                <button type="button" onClick={() => removeLink(link, currNode.id)}>
                   Remove
                 </button>
               </li>
@@ -54,7 +54,7 @@ export default function EditNode({
             return (
               <li>
                 <span>{link}</span>
-                <button type="button" onClick={(link) => removeLink(link)}>
+                <button type="button" onClick={() => removeLink(currNode.id, link)}>
                   Remove
                 </button>
               </li>

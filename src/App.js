@@ -3,7 +3,9 @@ import "./App.css";
 import LeftPanel from "./components/LeftPanel";
 import { ForceGraph3D } from "react-force-graph";
 import data from "./graphData.json";
+import { uuid } from "uuidv4";
 
+//remove button
 function App() {
   const [graph, setGraph] = useState(data);
 
@@ -29,7 +31,7 @@ function App() {
 
   const newNode = () => {
     const emptyNode = {
-      id: 999, //I have to figure out a function that appends a unique ID here
+      id: uuid(), //I have to figure out a function that appends a unique ID here
       title: "",
       description: "",
       inLinks: [],
@@ -42,7 +44,7 @@ function App() {
     setGraph(newGraph);
   };
 
-  const startSession = () => {};
+  const startSession = () => { };
 
   const updateGraph = () => {
     // also need to make sure to update the links
@@ -70,13 +72,25 @@ function App() {
     setEditing(false);
   };
 
-  const removeLink = (link) => {
-    console.log(link);
+  const removeLink = (startLink, endLink) => {
+    console.log(startLink, "->", endLink)
+    const newGraph = { ...graph }
+    // remove the outLink from the startLink
+    for (let i = 0; i < graph["nodes"].length; i++) {
+      const node = graph["nodes"][i];
+      if (node.id === startLink) {
+        const outLinkIdx = node.outLinks.indexOf(endLink)
+        node.outLinks.splice(outLinkIdx, 1)
+      }
+    }
+    // remove the inLink from the endLink
+    // remove the edge where inLink and outLink match
+    setGraph(newGraph)
   };
 
-  // useEffect(() => {
-  //   let graphData = { ...graph };
-  // }, [graph]);
+  useEffect(() => {
+    console.log(graph)
+  }, [graph]);
   // every time graph changes save the updated graph to file
   // BE CAREFUL if very big and changes often writing to file may cause your app to run slowly?? Something to watch out for may not be a problem
   // This useEffect block is only called when graph changes
