@@ -44,11 +44,11 @@ function App() {
     setGraph(newGraph);
   };
 
-  const startSession = () => { };
+  const startSession = () => {};
 
   const updateGraph = () => {
     // also need to make sure to update the links
-    //(maybe harder, possible easiest to remove all old links and the insert the new ones)
+    //(maybe harder, possible easiest to remove all old links and then insert the new ones)
     // setGraph()
     // currNode inLinks/outLinks may have changed, need to update links accordingly, the inLinks/outLinks will change for multiple nodes but only links including the changed link.
     let newGraph = { ...graph };
@@ -72,24 +72,41 @@ function App() {
     setEditing(false);
   };
 
-  const removeLink = (startLink, endLink) => {
-    console.log(startLink, "->", endLink)
-    const newGraph = { ...graph }
-    // remove the outLink from the startLink
+  const removeLink = (source, target) => {
+    const newGraph = { ...graph };
+    // remove the outLink from the source
     for (let i = 0; i < graph["nodes"].length; i++) {
       const node = graph["nodes"][i];
-      if (node.id === startLink) {
-        const outLinkIdx = node.outLinks.indexOf(endLink)
-        node.outLinks.splice(outLinkIdx, 1)
+      if (node.id === source) {
+        const outLinkIdx = node.outLinks.indexOf(target);
+        node.outLinks.splice(outLinkIdx, 1);
       }
     }
-    // remove the inLink from the endLink
+    // remove the inLink from the target
+    for (let i = 0; i < graph["nodes"].length; i++) {
+      const node = graph["nodes"][i];
+      if (node.id === target) {
+        const inLinkIdx = node.inLinks.indexOf(source);
+        node.inLinks.splice(inLinkIdx, 1);
+      }
+    }
     // remove the edge where inLink and outLink match
-    setGraph(newGraph)
+    // note by Amaro:
+    // I assume you mean where source and target match,
+    // because the link objects don't have any inLink or outLink keys.
+    // Also, eventually I'll want it to be possible for links to loop
+    // from a node back into the same node, so this is a temporary solution
+    for (let i = 0; i < newGraph["links"].length; i++) {
+      const link = newGraph["links"][i];
+      if (link.source === link.target) {
+        newGraph.links.splice(i, 1);
+      }
+    }
+    setGraph(newGraph);
   };
 
   useEffect(() => {
-    console.log(graph)
+    //console.log(graph);
   }, [graph]);
   // every time graph changes save the updated graph to file
   // BE CAREFUL if very big and changes often writing to file may cause your app to run slowly?? Something to watch out for may not be a problem
@@ -103,6 +120,7 @@ function App() {
   //nodes
   const nodeColor = "blue";
   const nodeOpacity = 1;
+  const nodeLabel = "id";
   //links
   const linkColor = "green";
   const linkWidth = 1;
@@ -110,6 +128,7 @@ function App() {
   const inkDirectionalArrowLength = 7;
   const linkDirectionalParticles = 2;
   const linkDirectionalParticleWidth = 2;
+  const linkCurvature = 0;
 
   return (
     <>
@@ -136,12 +155,14 @@ function App() {
         onNodeClick={handleNodeClick}
         nodeColor={nodeColor}
         nodeOpacity={nodeOpacity}
+        nodeLabel={nodeLabel}
         linkColor={linkColor}
         linkWidth={linkWidth}
         linkOpacity={linkOpacity}
         linkDirectionalArrowLength={inkDirectionalArrowLength}
         linkDirectionalParticles={linkDirectionalParticles}
         linkDirectionalParticleWidth={linkDirectionalParticleWidth}
+        linkCurvature={linkCurvature}
       />
     </>
   );
