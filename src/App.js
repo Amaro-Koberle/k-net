@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import UserAction from "./graph";
 import "./App.css";
 import LeftPanel from "./components/LeftPanel";
 import { ForceGraph3D } from "react-force-graph";
@@ -7,8 +6,6 @@ import data from "./graphData.json";
 import { uuid } from "uuidv4";
 
 function App() {
-  UserAction;
-
   const [graph, setGraph] = useState(data);
 
   const [currNode, setCurrNode] = useState({

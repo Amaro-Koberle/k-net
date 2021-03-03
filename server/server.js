@@ -42,7 +42,7 @@ app.get("/listUsers", async function (req, res) {
   await session.close();
 });
 
-var server = app.listen(3000, function () {
+var server = app.listen(8000, function () {
   var host = "localhost";
   var port = server.address().port;
   console.log("Example app listening at http://%s:%s", host, port);
