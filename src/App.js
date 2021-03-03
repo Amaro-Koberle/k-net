@@ -4,6 +4,7 @@ import LeftPanel from "./components/LeftPanel";
 import { ForceGraph3D } from "react-force-graph";
 import data from "./graphData.json";
 import { uuid } from "uuidv4";
+import axios from "axios";
 
 function App() {
   const [graph, setGraph] = useState(data);
@@ -20,6 +21,16 @@ function App() {
   // This state handles the content of the Left Panel.
   // If the user is editing a node, the Left Panel displays a form.
   const [editing, setEditing] = useState(false);
+
+  useEffect(() => {
+    const fetchGraph = async () => {
+      const result = await axios("http://localhost:8000/example");
+      console.log(result.data)
+      // setGraph(result.data)
+    }
+
+    fetchGraph()
+  }, [])
 
   function handleNodeClick(node, e) {
     setCurrNode({
@@ -48,7 +59,7 @@ function App() {
     setGraph(newGraph);
   };
 
-  const startSession = () => {};
+  const startSession = () => { };
 
   const updateGraph = () => {
     // also need to make sure to update the links
