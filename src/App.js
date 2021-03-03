@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
+import UserAction from "./graph";
 import "./App.css";
 import LeftPanel from "./components/LeftPanel";
 import { ForceGraph3D } from "react-force-graph";
 import data from "./graphData.json";
 import { uuid } from "uuidv4";
 
-//remove button
 function App() {
+  UserAction;
+
   const [graph, setGraph] = useState(data);
 
   const [currNode, setCurrNode] = useState({
@@ -17,6 +19,9 @@ function App() {
     outLinks: [],
   });
 
+  // Is the user editing a node?
+  // This state handles the content of the Left Panel.
+  // If the user is editing a node, the Left Panel displays a form.
   const [editing, setEditing] = useState(false);
 
   function handleNodeClick(node, e) {
@@ -29,9 +34,11 @@ function App() {
     });
   }
 
+  // Creating a new node.
+  // This function is called upon clicking the "New Node" button.
   const newNode = () => {
     const emptyNode = {
-      id: uuid(), //I have to figure out a function that appends a unique ID here
+      id: uuid(),
       title: "",
       description: "",
       inLinks: [],
@@ -96,9 +103,11 @@ function App() {
     // because the link objects don't have any inLink or outLink keys.
     // Also, eventually I'll want it to be possible for links to loop
     // from a node back into the same node, so this is a temporary solution
+    //... also, this shit don't work... no clue why.
     for (let i = 0; i < newGraph["links"].length; i++) {
       const link = newGraph["links"][i];
       if (link.source === link.target) {
+        console.log("trying to remove link");
         newGraph.links.splice(i, 1);
       }
     }
