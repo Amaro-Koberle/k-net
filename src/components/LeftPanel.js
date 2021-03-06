@@ -8,6 +8,7 @@ export default function LeftPanel({
   setEditing,
   editing,
   updateGraph,
+  createLink,
   removeLink,
 }) {
   return (
@@ -18,6 +19,7 @@ export default function LeftPanel({
         editing={editing}
         setEditing={setEditing}
         updateGraph={updateGraph}
+        createLink={createLink}
         removeLink={removeLink}
       />
       <NodeDisplay

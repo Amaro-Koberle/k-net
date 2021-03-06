@@ -1,71 +1,31 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import LeftPanel from "./components/LeftPanel";
 import { ForceGraph3D } from "react-force-graph";
 import data from "./graphData.json";
 import { uuid } from "uuidv4";
 import axios from "axios";
 
+// importing components
+import LeftPanel from "./components/LeftPanel";
+import Create from "./components/Create";
+import StartSession from "./components/StartSession";
+
 function App() {
   const [graph, setGraph] = useState(data);
 
-  const [currNode, setCurrNode] = useState({
-    id: "",
-    title: "",
-    description: "",
-    inLinks: [],
-    outLinks: [],
-  });
-
-  // Is the user editing a node?
-  // This state handles the content of the Left Panel.
-  // If the user is editing a node, the Left Panel displays a form.
-  const [editing, setEditing] = useState(false);
-
+  // fetching the graph from the database
   useEffect(() => {
     const fetchGraph = async () => {
       const result = await axios("http://localhost:8000/example");
-      console.log(result.data)
-      // setGraph(result.data)
-    }
-
-    fetchGraph()
-  }, [])
-
-  function handleNodeClick(node, e) {
-    setCurrNode({
-      id: node.id,
-      title: node.title,
-      description: node.description,
-      inLinks: node.inLinks,
-      outLinks: node.outLinks,
-    });
-  }
-
-  // Creating a new node.
-  // This function is called upon clicking the "New Node" button.
-  const newNode = () => {
-    const emptyNode = {
-      id: uuid(),
-      title: "",
-      description: "",
-      inLinks: [],
-      outLinks: [],
+      console.log(result.data);
+      //setGraph(result.data);
     };
-    // This will try and set graph to what is returned by graph.nodes.push(emptyNode)
-    // Make sure to copy graph and add node
-    const newGraph = { ...graph };
-    newGraph.nodes.push(emptyNode);
-    setGraph(newGraph);
-  };
 
-  const startSession = () => { };
+    fetchGraph();
+  }, []);
 
+  // updating the graph
   const updateGraph = () => {
-    // also need to make sure to update the links
-    //(maybe harder, possible easiest to remove all old links and then insert the new ones)
-    // setGraph()
-    // currNode inLinks/outLinks may have changed, need to update links accordingly, the inLinks/outLinks will change for multiple nodes but only links including the changed link.
     let newGraph = { ...graph };
     for (let i = 0; i < graph["nodes"].length; i++) {
       const node = graph["nodes"][i];
@@ -87,6 +47,85 @@ function App() {
     setEditing(false);
   };
 
+  // selecting a node
+  function handleNodeClick(node) {
+    setCurrNode({
+      id: node.id,
+      title: node.title,
+      description: node.description,
+      inLinks: node.inLinks,
+      outLinks: node.outLinks,
+    });
+  }
+
+  // which node is currently selected?
+  const [currNode, setCurrNode] = useState({
+    id: "",
+    title: "",
+    description: "",
+    inLinks: [],
+    outLinks: [],
+  });
+
+  // is the user editing a node?
+  const [editing, setEditing] = useState(false);
+
+  // creating a new node
+  const newNode = () => {
+    const emptyNode = {
+      id: uuid(),
+      title: "",
+      description: "",
+      inLinks: [],
+      outLinks: [],
+    };
+    const newGraph = { ...graph };
+    newGraph.nodes.push(emptyNode);
+    setGraph(newGraph);
+  };
+
+  // creating a link
+  const createLink = (source, target) => {
+    // check if input is valid
+    // compare input to the node ids in currNode.inLinks and currnode.outLinks to see if the link is already present
+    for (let i = 0; i < currNode.inLinks.length; i++) {
+      if (source === currNode.inLinks[i]) {
+        console.log(source, " is already a linked source node");
+        return;
+      }
+    }
+    for (let i = 0; i < currNode.outLinks.length; i++) {
+      if (target === currNode.outLinks[i]) {
+        console.log(target, " is already a linked target node");
+        return;
+      }
+    }
+    // compare input to all node ids and see if there is a match
+    // for (let i = 0; i < graph["nodes"].length; i++) {
+    //   if (source !== graph["nodes"][i].id) {
+    //     console.log("input value is not an existing node");
+    //     return;
+    //   }
+    // }
+
+    // update currNode
+    const newNode = { ...currNode };
+    newNode.inLinks.push(source);
+    newNode.outLinks.push(target);
+    setCurrNode(newNode);
+    // create newLink object
+    const newLink = {
+      source: source,
+      target: target,
+    };
+    // add an entry to the links array
+    const newGraph = { ...graph };
+    newGraph.links.push(newLink);
+    //update the graph
+    setGraph(newGraph);
+  };
+
+  // removing a link
   const removeLink = (source, target) => {
     const newGraph = { ...graph };
     // remove the outLink from the source
@@ -106,67 +145,45 @@ function App() {
       }
     }
     // remove the edge where inLink and outLink match
-    // note by Amaro:
-    // I assume you mean where source and target match,
-    // because the link objects don't have any inLink or outLink keys.
-    // Also, eventually I'll want it to be possible for links to loop
-    // from a node back into the same node, so this is a temporary solution
-    //... also, this shit don't work... no clue why.
     for (let i = 0; i < newGraph["links"].length; i++) {
       const link = newGraph["links"][i];
-      if (link.source === link.target) {
-        console.log("trying to remove link");
+      if (link.source.id === source && link.target.id === target) {
         newGraph.links.splice(i, 1);
       }
     }
     setGraph(newGraph);
   };
 
-  useEffect(() => {
-    //console.log(graph);
-  }, [graph]);
-  // every time graph changes save the updated graph to file
-  // BE CAREFUL if very big and changes often writing to file may cause your app to run slowly?? Something to watch out for may not be a problem
-  // This useEffect block is only called when graph changes
-  // useEffect(() => {
-  // save new graph to file
-  // jsonGraph = JSON.stringify(graph)
-  //}, [graph])
-
-  //GRAPH STYLING
+  //===GRAPH STYLING===//
   //nodes
   const nodeColor = "blue";
   const nodeOpacity = 1;
   const nodeLabel = "id";
   //links
-  const linkColor = "green";
+  const linkColor = "red";
   const linkWidth = 1;
   const linkOpacity = 1;
   const inkDirectionalArrowLength = 7;
   const linkDirectionalParticles = 2;
   const linkDirectionalParticleWidth = 2;
-  const linkCurvature = 0;
+  const linkCurvature = 1;
+  //canvas
+  const backgroundColor = "#171717";
 
   return (
     <>
-      <div className="start-session-container">
-        <button className="log-in" onClick={startSession}>
-          Start Session
-        </button>
-      </div>
+      <StartSession />
+      <Create newNode={newNode} />
       <LeftPanel
         currNode={currNode}
         setCurrNode={setCurrNode}
         setEditing={setEditing}
         editing={editing}
         updateGraph={updateGraph}
+        createLink={createLink}
         removeLink={removeLink}
       />
-      <div className="new-node-container">
-        <button className="new-node" onClick={newNode}>
-          New Node
-        </button>
-      </div>
+
       <ForceGraph3D
         graphData={graph}
         onNodeClick={handleNodeClick}
@@ -180,6 +197,7 @@ function App() {
         linkDirectionalParticles={linkDirectionalParticles}
         linkDirectionalParticleWidth={linkDirectionalParticleWidth}
         linkCurvature={linkCurvature}
+        backgroundColor={backgroundColor}
       />
     </>
   );

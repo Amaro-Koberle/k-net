@@ -25,8 +25,8 @@
       "id": "003",
       "title": "Epistemology",
       "description": "Epistemology is the theory of knowledge, what it is and how it is created.",
-      "inLinks": ["002"],
-      "outLinks": []
+      "inLinks": ["002", "003"],
+      "outLinks": ["003"]
     },
     {
       "id": "004",
@@ -52,6 +52,10 @@
     {
       "source": "002",
       "target": "003"
+    },
+    {
+      "source": "004",
+      "target": "004"
     }
   ]
 }
