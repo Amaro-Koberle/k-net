@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import { ForceGraph3D } from "react-force-graph";
-import data from "./graphData.json";
 import { uuid } from "uuidv4";
 import axios from "axios";
 
@@ -11,18 +10,23 @@ import Create from "./components/Create";
 import StartSession from "./components/StartSession";
 
 function App() {
-  const [graph, setGraph] = useState(data);
+  const [graph, setGraph] = useState({
+    nodes: [],
+    links: [],
+  });
 
   // fetching the graph from the database
   useEffect(() => {
     const fetchGraph = async () => {
       const result = await axios("http://localhost:8000/example");
-      console.log(result.data);
-      //setGraph(result.data);
+      console.log(result);
+      setGraph(result.data);
     };
 
     fetchGraph();
   }, []);
+
+  console.log(graph);
 
   // updating the graph
   const updateGraph = () => {
@@ -166,7 +170,7 @@ function App() {
   const inkDirectionalArrowLength = 7;
   const linkDirectionalParticles = 2;
   const linkDirectionalParticleWidth = 2;
-  const linkCurvature = 1;
+  const linkCurvature = 0.5;
   //canvas
   const backgroundColor = "#171717";
 
