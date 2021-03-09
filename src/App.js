@@ -19,7 +19,6 @@ function App() {
   useEffect(() => {
     const fetchGraph = async () => {
       const result = await axios("http://localhost:8000/example");
-      console.log(result);
       setGraph(result.data);
     };
 
