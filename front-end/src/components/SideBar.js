@@ -23,20 +23,18 @@ export default function SideBar({
     <div className="h-screen p-3 bg-gray-800 z-90 w-80">
       <div className="p-2">
         <Search></Search>
-        <EditNode
-          currNode={currNode}
-          setCurrNode={setCurrNode}
-          editing={editing}
-          setEditing={setEditing}
-          updateGraph={updateGraph}
-          createLink={createLink}
-          removeLink={removeLink}
-        />
-        <NodeDisplay
-          currNode={currNode}
-          editing={editing}
-          setEditing={setEditing}
-        />
+        {editing ? (
+          <EditNode
+            currNode={currNode}
+            setCurrNode={setCurrNode}
+            setEditing={setEditing}
+            updateGraph={updateGraph}
+            createLink={createLink}
+            removeLink={removeLink}
+          />
+        ) : (
+          <NodeDisplay currNode={currNode} setEditing={setEditing} />
+        )}
       </div>
     </div>
   );

@@ -5,13 +5,11 @@ import { MdClose } from "react-icons/md";
 export default function EditNode({
   currNode,
   setCurrNode,
-  editing,
   setEditing,
   updateGraph,
   createLink,
   removeLink,
 }) {
-  if (editing === false) return null;
   const [sourceInput, setSourceInput] = useState("");
   const [targetInput, setTargetInput] = useState("");
 
