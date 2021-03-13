@@ -6,7 +6,7 @@ export default function Search() {
     <div>
       <div className="inline-flex items-center w-full p-2 space-x-2 bg-gray-700 rounded">
         <input
-          className="input"
+          className="w-full input"
           type="text"
           id="Search"
           placeholder="Search"

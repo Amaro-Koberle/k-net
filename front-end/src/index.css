@@ -15,13 +15,16 @@
 }
 
 .blur-0 {
+  background: inherit;
   filter: blur(0px);
 }
 
 .blur-10 {
+  background: inherit;
   filter: blur(10px);
 }
 
 .blur-20 {
+  background: inherit;
   filter: blur(20px);
 }
