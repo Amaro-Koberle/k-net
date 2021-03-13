@@ -14,17 +14,18 @@
   }
 }
 
-.blur-0 {
+.frost-0 {
   background: inherit;
-  filter: blur(0px);
+  backdrop-filter: blur(0px);
 }
 
-.blur-10 {
+.frost-10 {
   background: inherit;
-  filter: blur(10px);
+  backdrop-filter: blur(10px);
+  filter: brightness(20%);
 }
 
-.blur-20 {
+.frost-20 {
   background: inherit;
-  filter: blur(20px);
+  backdrop-filter: blur(20px);
 }
