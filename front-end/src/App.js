@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import "./App.css";
 import { ForceGraph3D } from "react-force-graph";
 import { uuid } from "uuidv4";
 import axios from "axios";
 
 // importing components
-import LeftPanel from "./components/LeftPanel";
+import SideBar from "./components/SideBar";
 import Create from "./components/Create";
 import StartSession from "./components/StartSession";
 
@@ -77,7 +76,7 @@ function App() {
   const newNode = () => {
     const emptyNode = {
       id: uuid(),
-      title: "",
+      title: "Untitled",
       description: "",
       inLinks: [],
       outLinks: [],
@@ -171,38 +170,41 @@ function App() {
   const linkDirectionalParticleWidth = 2;
   const linkCurvature = 0.5;
   //canvas
-  const backgroundColor = "#171717";
+  const backgroundColor = "#374151";
 
   return (
-    <>
-      <StartSession />
-      <Create newNode={newNode} />
-      <LeftPanel
-        currNode={currNode}
-        setCurrNode={setCurrNode}
-        setEditing={setEditing}
-        editing={editing}
-        updateGraph={updateGraph}
-        createLink={createLink}
-        removeLink={removeLink}
-      />
-
-      <ForceGraph3D
-        graphData={graph}
-        onNodeClick={handleNodeClick}
-        nodeColor={nodeColor}
-        nodeOpacity={nodeOpacity}
-        nodeLabel={nodeLabel}
-        linkColor={linkColor}
-        linkWidth={linkWidth}
-        linkOpacity={linkOpacity}
-        linkDirectionalArrowLength={inkDirectionalArrowLength}
-        linkDirectionalParticles={linkDirectionalParticles}
-        linkDirectionalParticleWidth={linkDirectionalParticleWidth}
-        linkCurvature={linkCurvature}
-        backgroundColor={backgroundColor}
-      />
-    </>
+    <div>
+      <div className="text-gray-50">
+        <StartSession />
+        <Create newNode={newNode} />
+        <SideBar
+          currNode={currNode}
+          setCurrNode={setCurrNode}
+          setEditing={setEditing}
+          editing={editing}
+          updateGraph={updateGraph}
+          createLink={createLink}
+          removeLink={removeLink}
+        />
+      </div>
+      <div className="z-0">
+        <ForceGraph3D
+          graphData={graph}
+          onNodeClick={handleNodeClick}
+          nodeColor={nodeColor}
+          nodeOpacity={nodeOpacity}
+          nodeLabel={nodeLabel}
+          linkColor={linkColor}
+          linkWidth={linkWidth}
+          linkOpacity={linkOpacity}
+          linkDirectionalArrowLength={inkDirectionalArrowLength}
+          linkDirectionalParticles={linkDirectionalParticles}
+          linkDirectionalParticleWidth={linkDirectionalParticleWidth}
+          linkCurvature={linkCurvature}
+          backgroundColor={backgroundColor}
+        />
+      </div>
+    </div>
   );
 }
 

@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import { MdClose } from "react-icons/md";
 
 export default function EditNode({
   currNode,
@@ -15,98 +16,147 @@ export default function EditNode({
   const [targetInput, setTargetInput] = useState("");
 
   return (
-    <div>
-      <div className="menu-header">
-        <h3>Edit Node</h3>
-        <button className="exit-button" onClick={() => setEditing(false)}>
-          X
-        </button>
+    <div className="mt-4">
+      <div className="flex items-center space-x-2 text-lg">
+        <div>
+          <h3>Edit Node</h3>
+        </div>
+        <div className="">
+          <button className="" onClick={() => setEditing(false)}>
+            <MdClose></MdClose>
+          </button>
+        </div>
       </div>
-      <form className="edit-node">
-        <h4>In</h4>
+      <div className="mt-4">
         <div>
-          <label for="createInLink">Source</label>
-          <input
-            type="text"
-            id="createInLink"
-            placeholder="Source node ID"
-            value={sourceInput}
-            onInput={(e) => setSourceInput(e.target.value)}
-          ></input>
-          <button
-            type="button"
-            onClick={() => createLink(sourceInput, currNode.id)}
-          >
-            Connect
-          </button>
+          <label className="label" for="title">
+            Title
+          </label>
+          <div>
+            <input
+              className="w-full input"
+              type="text"
+              id="title"
+              placeholder="Title"
+              value={currNode.title}
+              onInput={(e) =>
+                setCurrNode({ ...currNode, title: e.target.value })
+              }
+            ></input>
+          </div>
+          <div>
+            <label className="label" for="description">
+              Description
+            </label>
+            <div className="">
+              <textarea
+                className="w-full input"
+                rows="5"
+                id="description"
+                placeholder="Description"
+                value={currNode.description}
+                onInput={(e) =>
+                  setCurrNode({ ...currNode, description: e.target.value })
+                }
+              ></textarea>
+            </div>
+          </div>
         </div>
-        <ul>
-          {currNode.inLinks.map((link) => {
-            return (
-              <li>
-                <span>{link}</span>
-                <button
-                  type="button"
-                  onClick={() => removeLink(link, currNode.id)}
-                >
-                  Remove
-                </button>
-              </li>
-            );
-          })}
-        </ul>
-        <h4>Out</h4>
-        <div>
-          <label for="createOutLink">Target</label>
-          <input
-            type="text"
-            id="createOutLink"
-            placeholder="Target node ID"
-            value={targetInput}
-            onInput={(e) => setTargetInput(e.target.value)}
-          ></input>
-          <button
-            type="button"
-            onClick={() => createLink(currNode.id, targetInput)}
-          >
-            Connect
-          </button>
-        </div>
-        <ul>
-          {currNode.outLinks.map((link) => {
-            return (
-              <li>
-                <span>{link}</span>
-                <button
-                  type="button"
-                  onClick={() => removeLink(currNode.id, link)}
-                >
-                  Remove
-                </button>
-              </li>
-            );
-          })}
-        </ul>
-        <label for="title">Title</label>
-        <input
-          type="text"
-          id="title"
-          value={currNode.title}
-          onInput={(e) => setCurrNode({ ...currNode, title: e.target.value })}
-        ></input>
-        <label for="description">Description</label>
-        <input
-          type="text"
-          id="description"
-          value={currNode.description}
-          onInput={(e) =>
-            setCurrNode({ ...currNode, description: e.target.value })
-          }
-        ></input>
-        <button type="button" onClick={updateGraph}>
-          Save
-        </button>
-      </form>
+        <form>
+          <div className="mt-4">
+            <h4>Incoming Links</h4>
+            <div className="">
+              <label className="label" for="createInLink">
+                Source
+              </label>
+              <div className="inline-flex space-x-1">
+                <input
+                  className="input"
+                  type="text"
+                  id="createInLink"
+                  placeholder="Source node ID"
+                  value={sourceInput}
+                  onInput={(e) => setSourceInput(e.target.value)}
+                ></input>
+                <div className="">
+                  <button
+                    className="btn"
+                    type="button"
+                    onClick={() => createLink(sourceInput, currNode.id)}
+                  >
+                    Connect
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <ul>
+              {currNode.inLinks.map((link) => {
+                return (
+                  <li>
+                    <span>{link}</span>
+                    <button
+                      className="btn"
+                      type="button"
+                      onClick={() => removeLink(link, currNode.id)}
+                    >
+                      Remove
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+          <div className="mt-4">
+            <h4>Outgoing Links</h4>
+            <div className="">
+              <label className="label" for="createOutLink">
+                Target
+              </label>
+              <div className="inline-flex space-x-1">
+                <div>
+                  <input
+                    className="input"
+                    type="text"
+                    id="createOutLink"
+                    placeholder="Target node ID"
+                    value={targetInput}
+                    onInput={(e) => setTargetInput(e.target.value)}
+                  ></input>
+                </div>
+                <div>
+                  <button
+                    className="btn"
+                    type="button"
+                    onClick={() => createLink(currNode.id, targetInput)}
+                  >
+                    Connect
+                  </button>
+                </div>
+              </div>
+            </div>
+            <ul>
+              {currNode.outLinks.map((link) => {
+                return (
+                  <li>
+                    <span>{link}</span>
+                    <button
+                      className="btn"
+                      type="button"
+                      onClick={() => removeLink(currNode.id, link)}
+                    >
+                      Remove
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+          {/* <button className="btn" type="button" onClick={updateGraph}>
+            Save
+          </button> */}
+        </form>
+      </div>
     </div>
   );
 }
