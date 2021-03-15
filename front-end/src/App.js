@@ -161,6 +161,7 @@ function App() {
   const nodeColor = "blue";
   const nodeOpacity = 1;
   const nodeLabel = "id";
+  const enableNodeDrag = false;
   //links
   const linkColor = "red";
   const linkWidth = 1;
@@ -187,23 +188,24 @@ function App() {
           createLink={createLink}
           removeLink={removeLink}
         />
-        <div className="absolute top-0 left-0 -z-1 ">
-          <ForceGraph3D
-            graphData={graph}
-            onNodeClick={handleNodeClick}
-            nodeColor={nodeColor}
-            nodeOpacity={nodeOpacity}
-            nodeLabel={nodeLabel}
-            linkColor={linkColor}
-            linkWidth={linkWidth}
-            linkOpacity={linkOpacity}
-            linkDirectionalArrowLength={inkDirectionalArrowLength}
-            linkDirectionalParticles={linkDirectionalParticles}
-            linkDirectionalParticleWidth={linkDirectionalParticleWidth}
-            linkCurvature={linkCurvature}
-            backgroundColor={backgroundColor}
-          />
-        </div>
+      </div>
+      <div className="absolute top-0 left-0 -z-1 ">
+        <ForceGraph3D
+          graphData={graph}
+          onNodeClick={handleNodeClick}
+          enableNodeDrag={enableNodeDrag}
+          nodeColor={nodeColor}
+          nodeOpacity={nodeOpacity}
+          nodeLabel={nodeLabel}
+          linkColor={linkColor}
+          linkWidth={linkWidth}
+          linkOpacity={linkOpacity}
+          linkDirectionalArrowLength={inkDirectionalArrowLength}
+          linkDirectionalParticles={linkDirectionalParticles}
+          linkDirectionalParticleWidth={linkDirectionalParticleWidth}
+          linkCurvature={linkCurvature}
+          backgroundColor={backgroundColor}
+        />
       </div>
     </>
   );
