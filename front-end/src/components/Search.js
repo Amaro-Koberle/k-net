@@ -4,7 +4,7 @@ import { MdSearch } from "react-icons/md";
 export default function Search() {
   return (
     <div>
-      <div className="inline-flex items-center w-full p-2 space-x-2 bg-gray-700 rounded">
+      <div className="inline-flex items-center w-full p-2 space-x-2 bg-gray-700 border border-gray-600 rounded shadow-lg">
         <input
           className="w-full input"
           type="text"

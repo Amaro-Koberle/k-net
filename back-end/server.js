@@ -2,10 +2,11 @@ var express = require("express");
 var fs = require("fs");
 const neo4j = require("neo4j-driver");
 const cors = require("cors");
+require("dotenv").config();
 
 const driver = neo4j.driver(
-  "bolt://localhost:7687",
-  neo4j.auth.basic("neo4j", "12345")
+  process.env.URL,
+  neo4j.auth.basic(process.env.USERNAME, process.env.PASSWORD)
 );
 var app = express();
 

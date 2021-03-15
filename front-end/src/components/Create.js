@@ -5,7 +5,7 @@ export default function Create({ newNode }) {
   return (
     <div className="absolute bottom-0 right-0 z-40 m-3">
       <button
-        className="p-3 text-3xl bg-gray-800 rounded-full btn"
+        className="p-3 text-3xl border border-gray-600 rounded-full shadow-lg btn"
         onClick={newNode}
       >
         <MdAdd></MdAdd>

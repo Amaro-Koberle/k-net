@@ -14,18 +14,16 @@
   }
 }
 
-.frost-0 {
+.frost {
+  z-index: 1;
   background: inherit;
-  backdrop-filter: blur(0px);
+  overflow: hidden;
 }
 
-.frost-10 {
+.frost:before {
   background: inherit;
-  backdrop-filter: blur(10px);
-  filter: brightness(20%);
-}
-
-.frost-20 {
-  background: inherit;
-  backdrop-filter: blur(20px);
+  z-index: -1;
+  box-shadow: inset 0 0 2000px rgba(255, 255, 255, 0.5);
+  filter: blur(20px);
+  margin: -20px;
 }

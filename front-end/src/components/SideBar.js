@@ -14,13 +14,13 @@ export default function SideBar({
 }) {
   if (currNode.id === "") {
     return (
-      <div className="h-screen p-3 z-90 w-80">
+      <div className="h-screen p-3 w-80">
         <Search></Search>
       </div>
     );
   }
   return (
-    <div className="h-screen p-3 bg-gray-800 z-90 w-80">
+    <div className="h-screen p-3 bg-gray-800 w-80">
       <div className="p-2">
         <Search></Search>
         {editing ? (

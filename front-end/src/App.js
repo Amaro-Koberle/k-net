@@ -17,7 +17,7 @@ function App() {
   // fetching the graph from the database
   useEffect(() => {
     const fetchGraph = async () => {
-      const result = await axios("http://localhost:8000/example");
+      const result = await axios("http://3.15.189.88/api/example");
       setGraph(result.data);
     };
 
@@ -173,11 +173,12 @@ function App() {
   const backgroundColor = "#374151";
 
   return (
-    <div>
+    <>
       <div className="text-gray-50">
         <StartSession />
         <Create newNode={newNode} />
         <SideBar
+          className="z-10"
           currNode={currNode}
           setCurrNode={setCurrNode}
           setEditing={setEditing}
@@ -186,25 +187,25 @@ function App() {
           createLink={createLink}
           removeLink={removeLink}
         />
+        <div className="absolute top-0 left-0 -z-1 ">
+          <ForceGraph3D
+            graphData={graph}
+            onNodeClick={handleNodeClick}
+            nodeColor={nodeColor}
+            nodeOpacity={nodeOpacity}
+            nodeLabel={nodeLabel}
+            linkColor={linkColor}
+            linkWidth={linkWidth}
+            linkOpacity={linkOpacity}
+            linkDirectionalArrowLength={inkDirectionalArrowLength}
+            linkDirectionalParticles={linkDirectionalParticles}
+            linkDirectionalParticleWidth={linkDirectionalParticleWidth}
+            linkCurvature={linkCurvature}
+            backgroundColor={backgroundColor}
+          />
+        </div>
       </div>
-      <div className="z-0">
-        <ForceGraph3D
-          graphData={graph}
-          onNodeClick={handleNodeClick}
-          nodeColor={nodeColor}
-          nodeOpacity={nodeOpacity}
-          nodeLabel={nodeLabel}
-          linkColor={linkColor}
-          linkWidth={linkWidth}
-          linkOpacity={linkOpacity}
-          linkDirectionalArrowLength={inkDirectionalArrowLength}
-          linkDirectionalParticles={linkDirectionalParticles}
-          linkDirectionalParticleWidth={linkDirectionalParticleWidth}
-          linkCurvature={linkCurvature}
-          backgroundColor={backgroundColor}
-        />
-      </div>
-    </div>
+    </>
   );
 }
 
