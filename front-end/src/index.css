@@ -4,26 +4,12 @@
 
 @layer components {
   .input {
-    @apply text-sm bg-gray-700 border-0 rounded;
+    @apply text-sm border-0 rounded bg-gray placeholder-gray-light;
   }
   .label {
-    @apply text-xs text-gray-400;
+    @apply text-xs text-gray-light;
   }
   .btn {
-    @apply px-4 py-2 text-sm bg-gray-700 rounded hover:bg-gray-600;
+    @apply px-4 py-2 text-sm border rounded border-gray bg-gray-dark hover:bg-gray;
   }
-}
-
-.frost {
-  z-index: 1;
-  background: inherit;
-  overflow: hidden;
-}
-
-.frost:before {
-  background: inherit;
-  z-index: -1;
-  box-shadow: inset 0 0 2000px rgba(255, 255, 255, 0.5);
-  filter: blur(20px);
-  margin: -20px;
 }

@@ -3,9 +3,9 @@ import { MdAdd } from "react-icons/md";
 
 export default function Create({ newNode }) {
   return (
-    <div className="absolute bottom-0 right-0 z-40 m-3">
+    <div className="absolute bottom-0 right-0 z-40 m-3 text-gray-lightest">
       <button
-        className="p-3 text-3xl border border-gray-600 rounded-full shadow-lg btn"
+        className="p-3 text-3xl border rounded-full shadow-lg border-gray btn"
         onClick={newNode}
       >
         <MdAdd></MdAdd>

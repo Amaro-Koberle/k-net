@@ -9,7 +9,7 @@ export default function StartSession() {
   };
   if (authenticating === true)
     return (
-      <div className="fixed top-0 right-0 z-50 p-3 m-3 bg-gray-700 border border-gray-600 shadow-lg rounded-xl">
+      <div className="fixed top-0 right-0 z-50 p-3 m-3 bg-opacity-75 border shadow-lg bg-gray-dark text-gray-lightest border-gray rounded-xl">
         <div className="flex items-center w-full space-x-1 text-lg">
           <>
             <h3>Start Session</h3>
@@ -60,9 +60,9 @@ export default function StartSession() {
     );
   else {
     return (
-      <div className="absolute top-0 right-0 m-3">
+      <div className="absolute top-0 right-0 m-3 text-gray-lightest">
         <button
-          className="p-4 border border-gray-600 shadow-lg btn"
+          className="p-4 border shadow-lg border-gray btn"
           onClick={startSession}
         >
           Start Session

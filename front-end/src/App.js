@@ -163,7 +163,7 @@ function App() {
   const nodeLabel = "id";
   const enableNodeDrag = false;
   //links
-  const linkColor = "red";
+  const linkColor = "#f4f4f4";
   const linkWidth = 1;
   const linkOpacity = 1;
   const inkDirectionalArrowLength = 7;
@@ -171,42 +171,37 @@ function App() {
   const linkDirectionalParticleWidth = 2;
   const linkCurvature = 0.5;
   //canvas
-  const backgroundColor = "#374151";
+  const backgroundColor = "#383838";
 
   return (
     <>
-      <div className="text-gray-50">
-        <StartSession />
-        <Create newNode={newNode} />
-        <SideBar
-          className="z-10"
-          currNode={currNode}
-          setCurrNode={setCurrNode}
-          setEditing={setEditing}
-          editing={editing}
-          updateGraph={updateGraph}
-          createLink={createLink}
-          removeLink={removeLink}
-        />
-      </div>
-      <div className="absolute top-0 left-0 -z-1 ">
-        <ForceGraph3D
-          graphData={graph}
-          onNodeClick={handleNodeClick}
-          enableNodeDrag={enableNodeDrag}
-          nodeColor={nodeColor}
-          nodeOpacity={nodeOpacity}
-          nodeLabel={nodeLabel}
-          linkColor={linkColor}
-          linkWidth={linkWidth}
-          linkOpacity={linkOpacity}
-          linkDirectionalArrowLength={inkDirectionalArrowLength}
-          linkDirectionalParticles={linkDirectionalParticles}
-          linkDirectionalParticleWidth={linkDirectionalParticleWidth}
-          linkCurvature={linkCurvature}
-          backgroundColor={backgroundColor}
-        />
-      </div>
+      <ForceGraph3D
+        graphData={graph}
+        onNodeClick={handleNodeClick}
+        enableNodeDrag={enableNodeDrag}
+        nodeColor={nodeColor}
+        nodeOpacity={nodeOpacity}
+        nodeLabel={nodeLabel}
+        linkColor={linkColor}
+        linkWidth={linkWidth}
+        linkOpacity={linkOpacity}
+        linkDirectionalArrowLength={inkDirectionalArrowLength}
+        linkDirectionalParticles={linkDirectionalParticles}
+        linkDirectionalParticleWidth={linkDirectionalParticleWidth}
+        linkCurvature={linkCurvature}
+        backgroundColor={backgroundColor}
+      />
+      <StartSession />
+      <Create newNode={newNode} />
+      <SideBar
+        currNode={currNode}
+        setCurrNode={setCurrNode}
+        setEditing={setEditing}
+        editing={editing}
+        updateGraph={updateGraph}
+        createLink={createLink}
+        removeLink={removeLink}
+      />
     </>
   );
 }
