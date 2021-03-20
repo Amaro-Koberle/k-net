@@ -17,7 +17,7 @@ function App() {
   // fetching the graph from the database
   useEffect(() => {
     const fetchGraph = async () => {
-      const result = await axios("http://3.15.189.88/api/example");
+      const result = await axios("https://api.amarovega.net/example");
       setGraph(result.data);
     };
 
