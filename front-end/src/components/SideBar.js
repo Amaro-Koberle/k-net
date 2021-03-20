@@ -2,6 +2,7 @@ import React from "react";
 import EditNode from "./EditNode";
 import NodeDisplay from "./NodeDisplay";
 import Search from "./Search";
+import { MdChevronLeft } from "react-icons/md";
 
 export default function SideBar({
   currNode,
@@ -20,8 +21,8 @@ export default function SideBar({
     );
   }
   return (
-    <div className="fixed top-0 left-0 h-screen p-3 bg-opacity-75 shadow-lg ring-1 bg-gray-dark text-gray-lightest w-80 ring-gray">
-      <div className="p-2">
+    <>
+      <div className="fixed top-0 left-0 z-10 h-screen p-3 bg-opacity-75 shadow-lg ring-1 bg-gray-dark text-gray-lightest w-80 ring-gray">
         <Search></Search>
         {editing ? (
           <EditNode
@@ -36,6 +37,9 @@ export default function SideBar({
           <NodeDisplay currNode={currNode} setEditing={setEditing} />
         )}
       </div>
-    </div>
+      <button>
+        <MdChevronLeft className="absolute top-0 z-0 mt-2 rounded-lg p-7 left-72 btn"></MdChevronLeft>
+      </button>
+    </>
   );
 }

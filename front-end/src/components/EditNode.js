@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { MdClose } from "react-icons/md";
+import { uuid } from "uuidv4";
 
 export default function EditNode({
   currNode,
@@ -91,7 +92,7 @@ export default function EditNode({
             <ul>
               {currNode.inLinks.map((link) => {
                 return (
-                  <li>
+                  <li key={uuid}>
                     <span>{link}</span>
                     <button
                       className="btn"
