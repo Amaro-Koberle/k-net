@@ -2,7 +2,7 @@
 
 ![Prototype Screenshot](/readme-images/screenshot.png)
 
-K-net (working title) is a social media web app that puts the relationship between different pieces of content front and center. All posts are rendered in a 3D graph-visualization, each node and link in the graph represents a post.
+K-net (working title) is a social media web app that puts the relationship between different pieces of content front and center. All posts are rendered in a 3D graph-visualisation, each node and link in the graph represents a post.
 
 ## Prototype in Progress
 
@@ -20,8 +20,8 @@ This repo is split up into a front-end and a back-end, each is its own npm packa
 
 - ### React Force Graph
 
-  An amazing open source project for visualizing 3D graphs
-  Youc an find the react component version of the project [here](https://github.com/vasturiano/react-force-graph).
+  An amazing open source project for visualising 3D graphs
+  You can find the react component version of the project [here](https://github.com/vasturiano/react-force-graph).
 
 - ### React JS
 
