@@ -17,21 +17,22 @@ export default function EditNode({
   return (
     <div className="mt-4">
       <div className="flex items-center space-x-2 text-lg">
-        <div>
+        <>
           <h3>Edit Node</h3>
-        </div>
-        <div className="">
-          <button className="" onClick={() => setEditing(false)}>
+        </>
+        <>
+          <button onClick={() => setEditing(false)}>
             <MdClose></MdClose>
           </button>
-        </div>
+        </>
       </div>
-      <div className="mt-4">
-        <div>
-          <label className="label" for="title">
+      <form className="mt-4">
+        {/* title and description */}
+        <>
+          <label className="label" htmlFor="title">
             Title
           </label>
-          <div>
+          <>
             <input
               className="w-full input"
               type="text"
@@ -42,12 +43,12 @@ export default function EditNode({
                 setCurrNode({ ...currNode, title: e.target.value })
               }
             ></input>
-          </div>
-          <div>
-            <label className="label" for="description">
+          </>
+          <>
+            <label className="label" htmlFor="description">
               Description
             </label>
-            <div className="">
+            <>
               <textarea
                 className="w-full input"
                 rows="5"
@@ -58,14 +59,16 @@ export default function EditNode({
                   setCurrNode({ ...currNode, description: e.target.value })
                 }
               ></textarea>
-            </div>
-          </div>
-        </div>
-        <form>
+            </>
+          </>
+        </>
+        {/* links */}
+        <>
+          {/* incoming links */}
           <div className="mt-4">
             <h4>Incoming Links</h4>
-            <div className="">
-              <label className="label" for="createInLink">
+            <>
+              <label className="label" htmlFor="createInLink">
                 Source
               </label>
               <div className="inline-flex space-x-1">
@@ -77,7 +80,7 @@ export default function EditNode({
                   value={sourceInput}
                   onInput={(e) => setSourceInput(e.target.value)}
                 ></input>
-                <div className="">
+                <>
                   <button
                     className="btn"
                     type="button"
@@ -85,14 +88,13 @@ export default function EditNode({
                   >
                     Connect
                   </button>
-                </div>
+                </>
               </div>
-            </div>
-
+            </>
             <ul>
               {currNode.inLinks.map((link) => {
                 return (
-                  <li key={uuid}>
+                  <li key={uuid()}>
                     <span>{link}</span>
                     <button
                       className="btn"
@@ -106,14 +108,15 @@ export default function EditNode({
               })}
             </ul>
           </div>
+          {/* outgoing links */}
           <div className="mt-4">
             <h4>Outgoing Links</h4>
-            <div className="">
-              <label className="label" for="createOutLink">
+            <>
+              <label className="label" htmlFor="createOutLink">
                 Target
               </label>
               <div className="inline-flex space-x-1">
-                <div>
+                <>
                   <input
                     className="input"
                     type="text"
@@ -122,8 +125,8 @@ export default function EditNode({
                     value={targetInput}
                     onInput={(e) => setTargetInput(e.target.value)}
                   ></input>
-                </div>
-                <div>
+                </>
+                <>
                   <button
                     className="btn"
                     type="button"
@@ -131,13 +134,13 @@ export default function EditNode({
                   >
                     Connect
                   </button>
-                </div>
+                </>
               </div>
-            </div>
+            </>
             <ul>
               {currNode.outLinks.map((link) => {
                 return (
-                  <li>
+                  <li key={uuid()}>
                     <span>{link}</span>
                     <button
                       className="btn"
@@ -154,8 +157,8 @@ export default function EditNode({
           {/* <button className="btn" type="button" onClick={updateGraph}>
             Save
           </button> */}
-        </form>
-      </div>
+        </>
+      </form>
     </div>
   );
 }

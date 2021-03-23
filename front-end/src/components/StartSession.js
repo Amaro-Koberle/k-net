@@ -23,9 +23,13 @@ export default function StartSession() {
             </button>
           </>
         </div>
+        <div className="mt-4 text-sm">
+          <p>Already have an account?</p>
+          <p>Log in here.</p>
+        </div>
         <form>
-          <div className="m-1">
-            <label className="label" for="email">
+          <>
+            <label className="label" htmlFor="email">
               email
             </label>
             <div>
@@ -36,9 +40,9 @@ export default function StartSession() {
                 placeholder="name.example@emailprovider.com"
               ></input>
             </div>
-          </div>
-          <div className="m-1">
-            <label className="label" for="password">
+          </>
+          <>
+            <label className="label" htmlFor="password">
               Password
             </label>
             <div>
@@ -49,12 +53,12 @@ export default function StartSession() {
                 placeholder="12345"
               ></input>
             </div>
-          </div>
-          <div className="m-1">
-            <button className="w-full btn" type="button">
+          </>
+          <>
+            <button className="w-full mt-2 btn" type="button">
               Sign Up
             </button>
-          </div>
+          </>
         </form>
       </div>
     );
