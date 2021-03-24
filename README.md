@@ -20,7 +20,7 @@ This repo is split up into a front-end and a back-end, each is its own npm packa
 
 - ### React Force Graph
 
-  An amazing open source project for visualising 3D graphs
+  An amazing open source project for visualising 3D graphs.
   You can find the react component version of the project [here](https://github.com/vasturiano/react-force-graph).
 
 - ### React JS

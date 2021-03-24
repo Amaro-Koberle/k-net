@@ -49,6 +49,15 @@ function App() {
     setEditing(false);
   };
 
+  // which node is currently selected?
+  const [currNode, setCurrNode] = useState({
+    id: "",
+    title: "",
+    description: "",
+    inLinks: [],
+    outLinks: [],
+  });
+
   // selecting a node
   function handleNodeClick(node) {
     setCurrNode({
@@ -59,15 +68,6 @@ function App() {
       outLinks: node.outLinks,
     });
   }
-
-  // which node is currently selected?
-  const [currNode, setCurrNode] = useState({
-    id: "",
-    title: "",
-    description: "",
-    inLinks: [],
-    outLinks: [],
-  });
 
   // is the user editing a node?
   const [editing, setEditing] = useState(false);

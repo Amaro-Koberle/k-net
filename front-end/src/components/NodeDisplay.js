@@ -18,23 +18,21 @@ export default function NodeDisplay({ currNode, setEditing }) {
       </div>
       <div className="mt-4">
         <p className="text-sm">{currNode.description}</p>
-        <div>
-          <div className="mt-4">
-            <h5>Incoming Links</h5>
-            {/* <ul>
-              {currNode.inLinks.map((link) => (
-                <li key={uuid}>{link}</li>
-              ))}
-            </ul>
-          </div>
-          <div className="mt-4">
-            <h5>Outgoing Links</h5>
-            <ul>
-              {currNode.outLinks.map((link) => (
-                <li key={uuid}>{link}</li>
-              ))}
-            </ul> */}
-          </div>
+        <div className="mt-4">
+          <h5>Incoming Links</h5>
+          <ul>
+            {currNode.inLinks.map((link) => (
+              <li key={uuid}>{link}</li>
+            ))}
+          </ul>
+        </div>
+        <div className="mt-4">
+          <h5>Outgoing Links</h5>
+          <ul>
+            {currNode.outLinks.map((link) => (
+              <li key={uuid}>{link}</li>
+            ))}
+          </ul>
         </div>
       </div>
     </div>
