@@ -91,11 +91,11 @@ export default function EditNode({
                 </>
               </div>
             </>
-            {/* <ul>
+            <ul>
               {currNode.inLinks.map((link) => {
                 return (
                   <li key={uuid()}>
-                    <span>{link}</span>
+                    <span>{link.low}</span>
                     <button
                       className="btn"
                       type="button"
@@ -106,7 +106,7 @@ export default function EditNode({
                   </li>
                 );
               })}
-            </ul> */}
+            </ul>
           </div>
           {/* outgoing links */}
           <div className="mt-4">
@@ -137,11 +137,11 @@ export default function EditNode({
                 </>
               </div>
             </>
-            {/* <ul>
+            <ul>
               {currNode.outLinks.map((link) => {
                 return (
                   <li key={uuid()}>
-                    <span>{link}</span>
+                    <span>{link.low}</span>
                     <button
                       className="btn"
                       type="button"
@@ -152,7 +152,7 @@ export default function EditNode({
                   </li>
                 );
               })}
-            </ul> */}
+            </ul>
           </div>
           {/* <button className="btn" type="button" onClick={updateGraph}>
             Save
