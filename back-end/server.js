@@ -12,6 +12,11 @@ var app = express();
 
 app.use(cors());
 
+//app.post("/add-node", async function (req, res) {
+//	req.body
+//	const session = driver.session();
+//	const result = ...
+
 app.get("/example", async function (req, res) {
   const session = driver.session();
   const nodesResult = await session.run(

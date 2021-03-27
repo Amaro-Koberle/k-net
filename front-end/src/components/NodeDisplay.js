@@ -21,8 +21,8 @@ export default function NodeDisplay({ currNode, setEditing }) {
         <div className="mt-4">
           <h5>Incoming Links</h5>
           <ul>
-            {currNode.inLinks.map((link) => (
-              <li key={uuid}>{link.low}</li>
+            {currNode.inLinks.map((link, idx) => (
+              <li key={idx}>{link}</li>
             ))}
           </ul>
         </div>
@@ -30,8 +30,8 @@ export default function NodeDisplay({ currNode, setEditing }) {
           <h5>Outgoing Links</h5>
           <ul>
             {currNode.outLinks.map(
-              (link) => (
-                console.log("link = ", link), (<li key={uuid}>{link.low}</li>)
+              (link, idx) => (
+                <li key={idx}>{link}</li>
               )
             )}
           </ul>
