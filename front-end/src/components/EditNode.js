@@ -84,7 +84,7 @@ export default function EditNode({
                   <button
                     className="btn"
                     type="button"
-                    onClick={() => createLink(sourceInput, currNode.id)}
+                    onClick={() => createLink(parseInt(sourceInput), currNode)}
                   >
                     Connect
                   </button>
@@ -92,10 +92,11 @@ export default function EditNode({
               </div>
             </>
             <ul>
-              {currNode.inLinks.map((link) => {
+              {/* give each link an id?? Does neo4j do this for you? */}
+              {currNode.inLinks.map((link, idx) => {
                 return (
-                  <li key={uuid()}>
-                    <span>{link.low}</span>
+                  <li key={idx}>
+                    <span>{link}</span>
                     <button
                       className="btn"
                       type="button"
@@ -138,10 +139,10 @@ export default function EditNode({
               </div>
             </>
             <ul>
-              {currNode.outLinks.map((link) => {
+              {currNode.outLinks.map((link, idx) => {
                 return (
-                  <li key={uuid()}>
-                    <span>{link.low}</span>
+                  <li key={idx}>
+                    <span>{link}</span>
                     <button
                       className="btn"
                       type="button"

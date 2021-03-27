@@ -86,6 +86,20 @@ function App() {
     setGraph(newGraph);
   };
 
+  const createInLink = (sourceId, currNode) => {
+    // graph.nodes[sourceId] O(1)
+    // graph.nodes.find => search whole array O(n)
+    // constant O(1), logarithmic O(log(n)), linear O(n), O(nlog(n)) best sorting algorithms, O(n^2) (polynomial), O(2^n) exponential, O(n!) factorial
+    const sourceNode = graph.nodes.find((node) => node.id === sourceId)
+    currNode.inLinks.push(sourceId)
+    const newLink = { source: sourceNode, target: currNode }
+    const currNodeIdx = graph.nodes.findIndex((node) => node.id === currNode.id)
+    const newGraph = { ...graph }
+    newGraph.nodes[currNodeIdx] = currNode
+    newGraph.links.push(newLink)
+    setGraph(newGraph)
+  }
+
   // creating a link
   const createLink = (source, target) => {
     // check if input is valid
