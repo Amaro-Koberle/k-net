@@ -13,6 +13,7 @@ var app = express();
 app.use(cors());
 
 app.get("/example", async function (req, res) {
+  console.log(req.headers)
   const session = driver.session();
   const nodesResult = await session.run(
     `
@@ -37,20 +38,15 @@ app.get("/example", async function (req, res) {
   );
   await session.close();
 
-  console.log(nodesResult);
-  console.log(linksResult);
-
   const nodes = nodesResult.records.map((r) => {
     return {
       id: r.get("id").toNumber(),
-      inLinks: r.get("inLinks"),
-      outLinks: r.get("outLinks"),
+      inLinks: r.get("inLinks").map(inLink => inLink.toNumber()),
+      outLinks: r.get("outLinks").map(outLink => outLink.toNumber()),
       title: r.get("title"),
       description: r.get("description"),
     };
   });
-
-  console.log(nodes);
 
   const links = linksResult.records.map((r) => {
     return {
@@ -59,7 +55,6 @@ app.get("/example", async function (req, res) {
     };
   });
 
-  console.log(links);
 
   const graphData = {
     nodes: nodes,
@@ -67,7 +62,6 @@ app.get("/example", async function (req, res) {
   };
 
   res.json(graphData);
-  console.log(graphData);
 });
 
 var server = app.listen(8000, function () {
