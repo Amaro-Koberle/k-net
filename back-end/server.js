@@ -15,9 +15,21 @@ app.use(cors());
 //app.post("/add-node", async function (req, res) {
 //	req.body
 //	const session = driver.session();
+//	const result = await session.run(
+//    `
+//    MATCH
+//    RETURN
+//    `
+//);
+//await session.close();
+//console.log(result);
+
+//app.delete("/remove-node", async function (req, res) {
+//	req.body
+//	const session = driver.session();
 //	const result = ...
 
-app.get("/example", async function (req, res) {
+app.get("/graph", async function (req, res) {
   const session = driver.session();
   const nodesResult = await session.run(
     `
@@ -48,8 +60,8 @@ app.get("/example", async function (req, res) {
   const nodes = nodesResult.records.map((r) => {
     return {
       id: r.get("id").toNumber(),
-      inLinks: r.get("inLinks"),
-      outLinks: r.get("outLinks"),
+      inLinks: r.get("inLinks").map((inLink) => inLink.toNumber()),
+      outLinks: r.get("outLinks").map((outLink) => outLink.toNumber()),
       title: r.get("title"),
       description: r.get("description"),
     };

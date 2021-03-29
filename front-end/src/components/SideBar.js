@@ -36,7 +36,8 @@ export default function SideBar({
         ) : (
           <NodeDisplay currNode={currNode} setEditing={setEditing} />
         )}
-      </div>
+      </div>{" "}
+      ? :
       <button>
         <MdChevronLeft className="absolute top-0 z-0 mt-2 rounded-lg p-7 left-72 btn"></MdChevronLeft>
       </button>
