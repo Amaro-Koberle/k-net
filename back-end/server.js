@@ -12,19 +12,22 @@ var app = express();
 
 app.use(cors());
 
-//app.post("/add-node", async function (req, res) {
-//	req.body
-//	const session = driver.session();
-//	const result = await session.run(
-//    `
-//    MATCH
-//    RETURN
-//    `
-//);
-//await session.close();
-//console.log(result);
+app.post("/add-node", async function (req, res) {
+  req.body;
+  console.log(body);
+  const session = driver.session();
+  const result = await session.run(
+    `
+    CREATE (a:Post {inLinks: [], 
+      outLinks: [], title: 'Untitled',
+      description: ''})
+   `
+  );
+  await session.close();
+  console.log(result);
+});
 
-//app.delete("/remove-node", async function (req, res) {
+//app.delete("/delete-node", async function (req, res) {
 //	req.body
 //	const session = driver.session();
 //	const result = ...
@@ -54,9 +57,6 @@ app.get("/graph", async function (req, res) {
   );
   await session.close();
 
-  console.log(nodesResult);
-  console.log(linksResult);
-
   const nodes = nodesResult.records.map((r) => {
     return {
       id: r.get("id").toNumber(),
@@ -67,8 +67,6 @@ app.get("/graph", async function (req, res) {
     };
   });
 
-  console.log(nodes);
-
   const links = linksResult.records.map((r) => {
     return {
       source: r.get("source").toNumber(),
@@ -76,19 +74,16 @@ app.get("/graph", async function (req, res) {
     };
   });
 
-  console.log(links);
-
   const graphData = {
     nodes: nodes,
     links: links,
   };
 
   res.json(graphData);
-  console.log(graphData);
 });
 
 var server = app.listen(8000, function () {
   var host = "localhost";
   var port = server.address().port;
-  console.log("Example app listening at http://%s:%s", host, port);
+  console.log("App listening at http://%s:%s", host, port);
 });

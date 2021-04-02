@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { MdClose } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 import { uuid } from "uuidv4";
 
 export default function EditNode({
@@ -18,12 +19,12 @@ export default function EditNode({
     <div className="mt-4">
       <div className="flex items-center space-x-2 text-lg">
         <>
-          <h3>Edit Node</h3>
-        </>
-        <>
           <button onClick={() => setEditing(false)}>
             <MdClose></MdClose>
           </button>
+        </>
+        <>
+          <h3>Edit Node</h3>
         </>
       </div>
       <form className="mt-4">
@@ -155,9 +156,12 @@ export default function EditNode({
               })}
             </ul>
           </div>
-          {/* <button className="btn" type="button" onClick={updateGraph}>
+          <button className="btn" type="button" onClick={updateGraph}>
             Save
-          </button> */}
+          </button>
+          <button className="btn" type="button" onClick={updateGraph}>
+            <MdDelete></MdDelete>
+          </button>
         </>
       </form>
     </div>

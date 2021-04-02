@@ -24,7 +24,37 @@ function App() {
     fetchGraph();
   }, []);
 
-  console.log(graph);
+  //posting a new node to the database
+  useEffect(() => {
+    const postNode = async () =>
+      axios({
+        url: "/add-node",
+        method: "post",
+        baseURL: "http://localhost:8000/",
+        data: {
+          testProperty: "",
+        },
+      });
+
+    axios
+      .post("/add-node", {
+        testProperty: "test test",
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    console.log("Hello?");
+
+    // const postNode = async () => {
+    //   const request = await axios("http://localhost:8000/add-node");
+    //   console.log(request);
+    // };
+
+    postNode();
+  }, []);
 
   // updating the graph
   const updateGraph = () => {
