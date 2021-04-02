@@ -49,6 +49,8 @@ Contributions are very welcome! Sorry, things are quite messy at this point.
 If you would like to help me improve stuff, I'd be very glad to hear any suggestions, whether they come in the form of simple feedback or actual code implementations.
 If you like, hit me up via email at amaro@amarokoberle.com or on Discord at Amaro#3864, I'll be very happy to chat about the project.
 
+If you would like to help me solve some of [the issues that I put here on GitHub](https://github.com/Amaro-Koberle/k-net/issues), check out a new branch from "develop" to address the issue, and once you solve it, create a pull request mentioning the issue number in the commit message (eg. "#12").
+
 ### Setting Up
 
 Clone the "develop" branch of this repository.
