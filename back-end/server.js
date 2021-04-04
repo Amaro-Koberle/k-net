@@ -12,6 +12,7 @@ var app = express();
 
 app.use(cors());
 
+<<<<<<< HEAD
 app.post("/add-node", async function (req, res) {
   req.body;
   console.log(body);
@@ -33,6 +34,10 @@ app.post("/add-node", async function (req, res) {
 //	const result = ...
 
 app.get("/graph", async function (req, res) {
+=======
+app.get("/example", async function (req, res) {
+  console.log(req.headers)
+>>>>>>> efca45dc13676027e951250400f9c9f4e0581e69
   const session = driver.session();
   const nodesResult = await session.run(
     `
@@ -60,8 +65,13 @@ app.get("/graph", async function (req, res) {
   const nodes = nodesResult.records.map((r) => {
     return {
       id: r.get("id").toNumber(),
+<<<<<<< HEAD
       inLinks: r.get("inLinks").map((inLink) => inLink.toNumber()),
       outLinks: r.get("outLinks").map((outLink) => outLink.toNumber()),
+=======
+      inLinks: r.get("inLinks").map(inLink => inLink.toNumber()),
+      outLinks: r.get("outLinks").map(outLink => outLink.toNumber()),
+>>>>>>> efca45dc13676027e951250400f9c9f4e0581e69
       title: r.get("title"),
       description: r.get("description"),
     };
@@ -74,6 +84,10 @@ app.get("/graph", async function (req, res) {
     };
   });
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> efca45dc13676027e951250400f9c9f4e0581e69
   const graphData = {
     nodes: nodes,
     links: links,
