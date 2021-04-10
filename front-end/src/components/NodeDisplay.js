@@ -1,6 +1,5 @@
 import React from "react";
 import { MdEdit } from "react-icons/md";
-import { uuid } from "uuidv4";
 
 export default function NodeDisplay({ currNode, setEditing }) {
   if (currNode.id === "") {
@@ -29,11 +28,9 @@ export default function NodeDisplay({ currNode, setEditing }) {
         <div className="mt-4">
           <h5>Outgoing Links</h5>
           <ul>
-            {currNode.outLinks.map(
-              (link, idx) => (
-                <li key={idx}>{link}</li>
-              )
-            )}
+            {currNode.outLinks.map((link, idx) => (
+              <li key={idx}>{link}</li>
+            ))}
           </ul>
         </div>
       </div>

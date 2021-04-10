@@ -2,13 +2,14 @@ import React from "react";
 import { useState } from "react";
 import { MdClose } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
-import { uuid } from "uuidv4";
+import { MdLocationSearching } from "react-icons/md";
 
 export default function EditNode({
   currNode,
   setCurrNode,
   setEditing,
   updateGraph,
+  deleteNode,
   createLink,
   removeLink,
 }) {
@@ -101,7 +102,7 @@ export default function EditNode({
                     <button
                       className="btn"
                       type="button"
-                      onClick={() => removeLink(link, currNode.id)}
+                      onClick={() => removeLink(link, currNode.identity)}
                     >
                       Remove
                     </button>
@@ -132,9 +133,19 @@ export default function EditNode({
                   <button
                     className="btn"
                     type="button"
-                    onClick={() => createLink(currNode.id, targetInput)}
+                    onClick={() => createLink(currNode.identity, targetInput)}
                   >
                     Connect
+                  </button>
+                  <button
+                    className="btn"
+                    type="button"
+                    onClick={
+                      (() => createLink(currNode.identity, targetInput),
+                      createLink(currNode.identity, targetInput))
+                    }
+                  >
+                    <MdLocationSearching></MdLocationSearching>
                   </button>
                 </>
               </div>
@@ -147,7 +158,7 @@ export default function EditNode({
                     <button
                       className="btn"
                       type="button"
-                      onClick={() => removeLink(currNode.id, link)}
+                      onClick={() => removeLink(currNode.identity, link)}
                     >
                       Remove
                     </button>
@@ -159,7 +170,11 @@ export default function EditNode({
           <button className="btn" type="button" onClick={updateGraph}>
             Save
           </button>
-          <button className="btn" type="button" onClick={updateGraph}>
+          <button
+            className="btn"
+            type="button"
+            onClick={() => deleteNode(currNode.identity)}
+          >
             <MdDelete></MdDelete>
           </button>
         </>

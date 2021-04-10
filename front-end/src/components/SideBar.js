@@ -10,10 +10,11 @@ export default function SideBar({
   setEditing,
   editing,
   updateGraph,
+  deleteNode,
   createLink,
   removeLink,
 }) {
-  if (currNode.id === "") {
+  if (currNode.identity === "") {
     return (
       <div className="fixed top-0 left-0 h-screen p-3 w-80 text-gray-lightest">
         <Search></Search>
@@ -30,6 +31,7 @@ export default function SideBar({
             setCurrNode={setCurrNode}
             setEditing={setEditing}
             updateGraph={updateGraph}
+            deleteNode={deleteNode}
             createLink={createLink}
             removeLink={removeLink}
           />

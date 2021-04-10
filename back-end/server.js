@@ -2,6 +2,7 @@ var express = require("express");
 var fs = require("fs");
 const neo4j = require("neo4j-driver");
 const cors = require("cors");
+const { json } = require("body-parser");
 require("dotenv").config();
 
 const driver = neo4j.driver(
@@ -11,40 +12,62 @@ const driver = neo4j.driver(
 var app = express();
 
 app.use(cors());
+app.use(json());
 
-<<<<<<< HEAD
+// ===ENDPOINTS===
+
+// add node
 app.post("/add-node", async function (req, res) {
-  req.body;
-  console.log(body);
   const session = driver.session();
   const result = await session.run(
     `
-    CREATE (a:Post {inLinks: [], 
-      outLinks: [], title: 'Untitled',
-      description: ''})
+    CREATE (n:Post {identity: "${req.body.identity}", inLinks: [${req.body.inLinks}],
+      outLinks: [${req.body.outLinks}], title: "${req.body.title}",
+      description: "${req.body.description}"})
    `
   );
   await session.close();
-  console.log(result);
+  res.end(JSON.stringify(result));
 });
 
-//app.delete("/delete-node", async function (req, res) {
-//	req.body
-//	const session = driver.session();
-//	const result = ...
+// update node
+app.put("/update-node", async function (req, res) {
+  const session = driver.session();
+  console.log(req.body);
+  const result = await session.run(
+    `
+    MATCH (n {identity: "${req.body.identity}"})
+    SET n.inLinks = [${req.body.inLinks}], n.outLinks = [${req.body.outLinks}], n.title = "${req.body.title}",
+    n.description = "${req.body.description}"
+   `
+  );
 
+  await session.close();
+  res.end(JSON.stringify(result));
+});
+
+// delete node
+app.delete("/delete-node", async function (req, res) {
+  const session = driver.session();
+  const result = await session.run(
+    `
+    MATCH (n {identity: "${req.body.identity}"})
+    DETACH DELETE n
+   `
+  );
+  await session.close();
+  res.end(JSON.stringify(result));
+});
+
+// get entire graph
 app.get("/graph", async function (req, res) {
-=======
-app.get("/example", async function (req, res) {
-  console.log(req.headers)
->>>>>>> efca45dc13676027e951250400f9c9f4e0581e69
   const session = driver.session();
   const nodesResult = await session.run(
     `
     MATCH
     (o)
     RETURN
-    id(o) AS id,
+    o.identity AS identity,
     o.inLinks AS inLinks,
     o.outLinks AS outLinks,
     o.title AS title,
@@ -56,22 +79,17 @@ app.get("/example", async function (req, res) {
     MATCH
     (m)-->(n)
     RETURN
-    id(m) AS source,
-    id(n) AS target
+    m.identity AS source,
+    n.identity AS target
     `
   );
   await session.close();
 
   const nodes = nodesResult.records.map((r) => {
     return {
-      id: r.get("id").toNumber(),
-<<<<<<< HEAD
+      identity: r.get("identity"),
       inLinks: r.get("inLinks").map((inLink) => inLink.toNumber()),
       outLinks: r.get("outLinks").map((outLink) => outLink.toNumber()),
-=======
-      inLinks: r.get("inLinks").map(inLink => inLink.toNumber()),
-      outLinks: r.get("outLinks").map(outLink => outLink.toNumber()),
->>>>>>> efca45dc13676027e951250400f9c9f4e0581e69
       title: r.get("title"),
       description: r.get("description"),
     };
@@ -84,10 +102,6 @@ app.get("/example", async function (req, res) {
     };
   });
 
-<<<<<<< HEAD
-=======
-
->>>>>>> efca45dc13676027e951250400f9c9f4e0581e69
   const graphData = {
     nodes: nodes,
     links: links,
@@ -96,6 +110,7 @@ app.get("/example", async function (req, res) {
   res.json(graphData);
 });
 
+// connection
 var server = app.listen(8000, function () {
   var host = "localhost";
   var port = server.address().port;
