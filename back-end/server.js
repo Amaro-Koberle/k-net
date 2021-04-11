@@ -37,7 +37,7 @@ app.put("/update-node", async function (req, res) {
   const result = await session.run(
     `
     MATCH (n {identity: "${req.body.identity}"})
-    SET n.inLinks = [${req.body.inLinks}], n.outLinks = [${req.body.outLinks}], n.title = "${req.body.title}",
+    SET n.inLinks = ["${req.body.inLinks}"], n.outLinks = ["${req.body.outLinks}"], n.title = "${req.body.title}",
     n.description = "${req.body.description}"
    `
   );

@@ -94,7 +94,6 @@ export default function EditNode({
               </div>
             </>
             <ul>
-              {/* give each link an id?? Does neo4j do this for you? */}
               {currNode.inLinks.map((link, idx) => {
                 return (
                   <li key={idx}>
@@ -140,10 +139,7 @@ export default function EditNode({
                   <button
                     className="btn"
                     type="button"
-                    onClick={
-                      (() => createLink(currNode.identity, targetInput),
-                      createLink(currNode.identity, targetInput))
-                    }
+                    onClick={() => createLink(currNode.identity, targetInput)}
                   >
                     <MdLocationSearching></MdLocationSearching>
                   </button>
