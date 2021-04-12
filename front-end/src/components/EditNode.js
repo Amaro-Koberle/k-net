@@ -11,6 +11,7 @@ export default function EditNode({
   updateGraph,
   deleteNode,
   createLink,
+  graph,
   removeLink,
 }) {
   const [sourceInput, setSourceInput] = useState("");
@@ -86,7 +87,9 @@ export default function EditNode({
                   <button
                     className="btn"
                     type="button"
-                    onClick={() => createLink(parseInt(sourceInput), currNode)}
+                    onClick={() =>
+                      createInLink(parseInt(sourceInput), currNode)
+                    }
                   >
                     Connect
                   </button>
@@ -132,14 +135,21 @@ export default function EditNode({
                   <button
                     className="btn"
                     type="button"
-                    onClick={() => createLink(currNode.identity, targetInput)}
+                    onClick={() =>
+                      createLink(
+                        currNode,
+                        graph.nodes.find(
+                          (node) => targetInput === node.identity
+                        )
+                      )
+                    }
                   >
                     Connect
                   </button>
                   <button
                     className="btn"
                     type="button"
-                    onClick={() => createLink(currNode.identity, targetInput)}
+                    onClick={() => createLink(currNode, targetInput)}
                   >
                     <MdLocationSearching></MdLocationSearching>
                   </button>

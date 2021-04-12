@@ -128,62 +128,19 @@ function App() {
     }
   };
 
-  const createInLink = (sourceIdentity, currNode) => {
-    // graph.nodes[sourceIdentity] O(1)
-    // graph.nodes.find => search whole array O(n)
-    // constant O(1), logarithmic O(log(n)), linear O(n), O(nlog(n)) best sorting algorithms, O(n^2) (polynomial), O(2^n) exponential, O(n!) factorial
-    const sourceNode = graph.nodes.find(
-      (node) => node.identity === sourceIdentity
-    );
-    currNode.inLinks.push(sourceIdentity);
-    const newLink = { source: sourceNode, target: currNode };
-    const currNodeIdentityX = graph.nodes.findIndex(
-      (node) => node.identity === currNode.identity
-    );
-    const newGraph = { ...graph };
-    newGraph.nodes[currNodeidentityx] = currNode;
-    newGraph.links.push(newLink);
-    setGraph(newGraph);
-  };
-
-  // creating a link
-  const createLink = (source, target) => {
-    // check if input is valid
-    // compare input to the node identities in currNode.inLinks and currnode.outLinks to see if the link is already present
-    for (let i = 0; i < currNode.inLinks.length; i++) {
-      if (source === currNode.inLinks[i]) {
-        console.log(source, " is already a linked source node");
-        return;
-      }
+  // creating a Link
+  const createLink = (sourceNode, targetNode) => {
+    if (targetNode === undefined) {
+      console.log("target node is not valid");
+      return;
     }
-    for (let i = 0; i < currNode.outLinks.length; i++) {
-      if (target === currNode.outLinks[i]) {
-        console.log(target, " is already a linked target node");
-        return;
-      }
-    }
-    // compare input to all node identities and see if there is a match
-    // for (let i = 0; i < graph["nodes"].length; i++) {
-    //   if (source !== graph["nodes"][i].identity) {
-    //     console.log("input value is not an existing node");
-    //     return;
-    //   }
-    // }
 
-    // update currNode
-    const newNode = { ...currNode };
-    newNode.inLinks.push(source);
-    newNode.outLinks.push(target);
-    setCurrNode(newNode);
-    // create newLink object
-    const newLink = {
-      source: source,
-      target: target,
-    };
-    // add an entry to the links array
+    targetNode.inLinks.push(sourceNode.identity);
+    sourceNode.outLinks.push(targetNode.identity);
+    const newLink = { source: sourceNode, target: targetNode };
+
     const newGraph = { ...graph };
     newGraph.links.push(newLink);
-    //update the graph
     setGraph(newGraph);
   };
 
@@ -254,6 +211,7 @@ function App() {
       <StartSession />
       <Create newNode={newNode} />
       <SideBar
+        graph={graph}
         currNode={currNode}
         setCurrNode={setCurrNode}
         setEditing={setEditing}

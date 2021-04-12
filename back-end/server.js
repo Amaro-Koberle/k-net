@@ -33,11 +33,15 @@ app.post("/add-node", async function (req, res) {
 // update node
 app.put("/update-node", async function (req, res) {
   const session = driver.session();
-  console.log(req.body);
+
   const result = await session.run(
     `
     MATCH (n {identity: "${req.body.identity}"})
-    SET n.inLinks = ["${req.body.inLinks}"], n.outLinks = ["${req.body.outLinks}"], n.title = "${req.body.title}",
+    SET n.inLinks = [${req.body.inLinks.map(
+      (nodeIdentity) => `'${nodeIdentity}'`
+    )}], n.outLinks = [${req.body.outLinks.map(
+      (nodeIdentity) => `'${nodeIdentity}'`
+    )}], n.title = "${req.body.title}",
     n.description = "${req.body.description}"
    `
   );
@@ -88,8 +92,8 @@ app.get("/graph", async function (req, res) {
   const nodes = nodesResult.records.map((r) => {
     return {
       identity: r.get("identity"),
-      inLinks: r.get("inLinks").map((inLink) => inLink.toNumber()),
-      outLinks: r.get("outLinks").map((outLink) => outLink.toNumber()),
+      inLinks: r.get("inLinks"),
+      outLinks: r.get("outLinks"),
       title: r.get("title"),
       description: r.get("description"),
     };

@@ -11,6 +11,7 @@ export default function SideBar({
   editing,
   updateGraph,
   deleteNode,
+  graph,
   createLink,
   removeLink,
 }) {
@@ -34,6 +35,7 @@ export default function SideBar({
             deleteNode={deleteNode}
             createLink={createLink}
             removeLink={removeLink}
+            graph={graph}
           />
         ) : (
           <NodeDisplay currNode={currNode} setEditing={setEditing} />
