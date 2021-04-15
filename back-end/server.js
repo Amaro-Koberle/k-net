@@ -30,10 +30,11 @@ app.post("/add-node", async function (req, res) {
   res.end(JSON.stringify(result));
 });
 
-// update node
-app.put("/update-node", async function (req, res) {
+// update graph
+app.put("/update-graph", async function (req, res) {
   const session = driver.session();
 
+  // update node
   const result = await session.run(
     `
     MATCH (n {identity: "${req.body.identity}"})

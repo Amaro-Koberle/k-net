@@ -9,10 +9,23 @@ import Create from "./components/Create";
 import StartSession from "./components/StartSession";
 
 function App() {
+  // initialising the graph
   const [graph, setGraph] = useState({
     nodes: [],
     links: [],
   });
+
+  // initialising the currently selected node
+  const [currNode, setCurrNode] = useState({
+    identity: "",
+    title: "",
+    description: "",
+    inLinks: [],
+    outLinks: [],
+  });
+
+  // initialising selection
+  const [selection, setSelection] = useState([]);
 
   // fetching the graph from the database
   useEffect(() => {
@@ -25,15 +38,16 @@ function App() {
   }, []);
 
   // updating the graph
-  const updateGraph = async () => {
+  const updateGraph = () => {
     let newGraph = { ...graph };
+    // updating the nodes
     for (let i = 0; i < graph["nodes"].length; i++) {
       const node = graph["nodes"][i];
       if (node.identity === currNode.identity) {
         newGraph["nodes"][i] = currNode;
       }
     }
-
+    // updating the links
     for (let i = 0; i < graph["links"].length; i++) {
       const link = graph["links"][i];
       if (link["source"].identity === currNode.identity) {
@@ -44,30 +58,33 @@ function App() {
       }
     }
 
-    // sending the post request to the back-end
+    setGraph(newGraph);
+  };
+
+  // update the graph with every change of currNode
+  useEffect(() => {
+    updateGraph();
+  }, [currNode]);
+
+  // upload graph to the database
+  const postGraph = async () => {
     try {
       const result = await axios.put(
-        "http://localhost:8000/update-node",
+        "http://localhost:8000/update-graph",
         currNode
       );
-      setGraph(newGraph);
-      setEditing(false);
     } catch (error) {
       console.error(error);
     }
   };
 
-  // which node is currently selected?
-  const [currNode, setCurrNode] = useState({
-    identity: "",
-    title: "",
-    description: "",
-    inLinks: [],
-    outLinks: [],
-  });
+  // update the database with every change of the graph
+  useEffect(() => {
+    postGraph();
+  }, [graph]);
 
-  // selecting a node
-  function handleNodeClick(node) {
+  // handling node clicks
+  const handleNodeClick = (node) => {
     setCurrNode({
       identity: node.identity,
       title: node.title,
@@ -75,7 +92,10 @@ function App() {
       inLinks: node.inLinks,
       outLinks: node.outLinks,
     });
-  }
+    const newSelection = [...selection];
+    newSelection.unshift(node);
+    setSelection(newSelection);
+  };
 
   // is the user editing a node?
   const [editing, setEditing] = useState(false);
@@ -118,9 +138,7 @@ function App() {
               data: { identity: currNode.identity },
             }
           );
-          console.log(currNode);
           setGraph(newGraph);
-          setEditing(false);
         } catch (error) {
           console.error(error);
         }
@@ -134,6 +152,8 @@ function App() {
       console.log("target node is not valid");
       return;
     }
+    console.log(sourceNode);
+    console.log(targetNode);
 
     targetNode.inLinks.push(sourceNode.identity);
     sourceNode.outLinks.push(targetNode.identity);
@@ -174,12 +194,12 @@ function App() {
   };
 
   //===GRAPH STYLING===//
-  //nodes
+  // nodes
   const nodeColor = "blue";
   const nodeOpacity = 1;
   const nodeLabel = "title";
   const enableNodeDrag = false;
-  //links
+  // links
   const linkColor = "#f4f4f4";
   const linkWidth = 1;
   const linkOpacity = 1;
@@ -187,7 +207,7 @@ function App() {
   const linkDirectionalParticles = 2;
   const linkDirectionalParticleWidth = 2;
   const linkCurvature = 0.5;
-  //canvas
+  // canvas
   const backgroundColor = "#383838";
 
   return (
@@ -211,6 +231,7 @@ function App() {
       <StartSession />
       <Create newNode={newNode} />
       <SideBar
+        handleNodeClick={handleNodeClick}
         graph={graph}
         currNode={currNode}
         setCurrNode={setCurrNode}
@@ -220,6 +241,7 @@ function App() {
         createLink={createLink}
         removeLink={removeLink}
         deleteNode={deleteNode}
+        selection={selection}
       />
     </>
   );

@@ -1,5 +1,10 @@
 import React from "react";
 import { useState } from "react";
+
+//importing components
+import EditLinks from "./EditLinks";
+
+//importing icons
 import { MdClose } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { MdLocationSearching } from "react-icons/md";
@@ -11,11 +16,12 @@ export default function EditNode({
   updateGraph,
   deleteNode,
   createLink,
+  handleNodeClick,
+  selection,
   graph,
   removeLink,
 }) {
-  const [sourceInput, setSourceInput] = useState("");
-  const [targetInput, setTargetInput] = useState("");
+  const [nodeSelectionMode, setNodeSelectionMode] = useState(false);
 
   return (
     <div className="mt-4">
@@ -28,9 +34,14 @@ export default function EditNode({
         <>
           <h3>Edit Node</h3>
         </>
+        <>
+          <button type="button" onClick={() => deleteNode(currNode.identity)}>
+            <MdDelete></MdDelete>
+          </button>
+        </>
       </div>
       <form className="mt-4">
-        {/* title and description */}
+        {/* edit title and description */}
         <>
           <label className="label" htmlFor="title">
             Title
@@ -65,125 +76,29 @@ export default function EditNode({
             </>
           </>
         </>
-        {/* links */}
-        <>
-          {/* incoming links */}
-          <div className="mt-4">
-            <h4>Incoming Links</h4>
-            <>
-              <label className="label" htmlFor="createInLink">
-                Source
-              </label>
-              <div className="inline-flex space-x-1">
-                <input
-                  className="input"
-                  type="text"
-                  id="createInLink"
-                  placeholder="Source node ID"
-                  value={sourceInput}
-                  onInput={(e) => setSourceInput(e.target.value)}
-                ></input>
-                <>
-                  <button
-                    className="btn"
-                    type="button"
-                    onClick={() =>
-                      createInLink(parseInt(sourceInput), currNode)
-                    }
-                  >
-                    Connect
-                  </button>
-                </>
-              </div>
-            </>
-            <ul>
-              {currNode.inLinks.map((link, idx) => {
-                return (
-                  <li key={idx}>
-                    <span>{link}</span>
-                    <button
-                      className="btn"
-                      type="button"
-                      onClick={() => removeLink(link, currNode.identity)}
-                    >
-                      Remove
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-          {/* outgoing links */}
-          <div className="mt-4">
-            <h4>Outgoing Links</h4>
-            <>
-              <label className="label" htmlFor="createOutLink">
-                Target
-              </label>
-              <div className="inline-flex space-x-1">
-                <>
-                  <input
-                    className="input"
-                    type="text"
-                    id="createOutLink"
-                    placeholder="Target node ID"
-                    value={targetInput}
-                    onInput={(e) => setTargetInput(e.target.value)}
-                  ></input>
-                </>
-                <>
-                  <button
-                    className="btn"
-                    type="button"
-                    onClick={() =>
-                      createLink(
-                        currNode,
-                        graph.nodes.find(
-                          (node) => targetInput === node.identity
-                        )
-                      )
-                    }
-                  >
-                    Connect
-                  </button>
-                  <button
-                    className="btn"
-                    type="button"
-                    onClick={() => createLink(currNode, targetInput)}
-                  >
-                    <MdLocationSearching></MdLocationSearching>
-                  </button>
-                </>
-              </div>
-            </>
-            <ul>
-              {currNode.outLinks.map((link, idx) => {
-                return (
-                  <li key={idx}>
-                    <span>{link}</span>
-                    <button
-                      className="btn"
-                      type="button"
-                      onClick={() => removeLink(currNode.identity, link)}
-                    >
-                      Remove
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-          <button className="btn" type="button" onClick={updateGraph}>
-            Save
-          </button>
-          <button
-            className="btn"
-            type="button"
-            onClick={() => deleteNode(currNode.identity)}
-          >
-            <MdDelete></MdDelete>
-          </button>
-        </>
+        {/* edit links */}
+        <EditLinks
+          isIncoming={true}
+          selection={selection}
+          handleNodeClick={handleNodeClick}
+          currNode={currNode}
+          setCurrNode={setCurrNode}
+          removeLink={removeLink}
+          createLink={createLink}
+          graph={graph}
+        />
+        <EditLinks
+          isIncoming={false}
+          selection={selection}
+          handleNodeClick={handleNodeClick}
+          currNode={currNode}
+          setCurrNode={setCurrNode}
+          removeLink={removeLink}
+          createLink={createLink}
+          graph={graph}
+        />
+        {/* save and delete */}
+        <div className="mt-4"></div>
       </form>
     </div>
   );

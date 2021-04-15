@@ -14,6 +14,7 @@ export default function SideBar({
   graph,
   createLink,
   removeLink,
+  selection,
 }) {
   if (currNode.identity === "") {
     return (
@@ -36,12 +37,13 @@ export default function SideBar({
             createLink={createLink}
             removeLink={removeLink}
             graph={graph}
+            selection={selection}
           />
         ) : (
           <NodeDisplay currNode={currNode} setEditing={setEditing} />
         )}
-      </div>{" "}
-      ? :
+      </div>
+
       <button>
         <MdChevronLeft className="absolute top-0 z-0 mt-2 rounded-lg p-7 left-72 btn"></MdChevronLeft>
       </button>
