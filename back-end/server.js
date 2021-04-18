@@ -107,7 +107,7 @@ app.get("/graph", async function (req, res) {
 
   const nodes = nodesResult.records.map((r) => {
     return {
-      identity: r.get("identity"),
+      id: r.get("identity"),
       inLinks: r.get("inLinks"),
       outLinks: r.get("outLinks"),
       title: r.get("title"),

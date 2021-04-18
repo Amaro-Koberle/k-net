@@ -17,7 +17,7 @@ function App() {
 
   // initialising the currently selected node
   const [currNode, setCurrNode] = useState({
-    identity: "",
+    id: "",
     title: "",
     description: "",
     inLinks: [],
@@ -27,24 +27,21 @@ function App() {
   // initialising selection
   const [selection, setSelection] = useState([]);
 
-  // fetching the graph from the database
-  const fetchGraph = async () => {
-    try {
-      const result = await axios("http://localhost:8000/graph");
-      const newGraph = result.data;
-      setGraph(newGraph);
-      console.log(result.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   // fetching the graph everytime the app reloads
   useEffect(() => {
+    // fetching the graph from the database
+    const fetchGraph = async () => {
+      try {
+        const result = await axios("http://localhost:8000/graph");
+        const newGraph = result.data;
+        setGraph(newGraph);
+        console.log(newGraph);
+      } catch (error) {
+        console.error(error);
+      }
+    };
     fetchGraph();
   }, []);
-
-  console.log(graph);
 
   // updating the graph
   const updateGraph = () => {
@@ -52,17 +49,17 @@ function App() {
     // updating the nodes
     for (let i = 0; i < graph["nodes"].length; i++) {
       const node = graph["nodes"][i];
-      if (node.identity === currNode.identity) {
+      if (node.id === currNode.id) {
         newGraph["nodes"][i] = currNode;
       }
     }
     // updating the links
     for (let i = 0; i < graph["links"].length; i++) {
       const link = graph["links"][i];
-      if (link["source"].identity === currNode.identity) {
+      if (link["source"].id === currNode.id) {
         newGraph["links"][i]["source"] = currNode;
       }
-      if (link["target"].identity === currNode.identity) {
+      if (link["target"].id === currNode.id) {
         newGraph["links"][i]["target"] = currNode;
       }
     }
@@ -100,7 +97,7 @@ function App() {
   // handling node clicks
   const handleNodeClick = (node) => {
     setCurrNode({
-      identity: node.identity,
+      id: node.id,
       title: node.title,
       description: node.description,
       inLinks: node.inLinks,
@@ -117,7 +114,7 @@ function App() {
   // creating a node
   const newNode = async () => {
     const emptyNode = {
-      identity: v4(),
+      id: v4(),
       title: "Untitled",
       description: "",
       inLinks: [],
@@ -139,18 +136,18 @@ function App() {
   };
 
   // deleting a node
-  const deleteNode = async (nodeidentity) => {
+  const deleteNode = async (nodeid) => {
     let newGraph = { ...graph };
     for (let i = 0; i < graph["nodes"].length; i++) {
       const node = graph["nodes"][i];
-      if (node.identity === nodeidentity) {
+      if (node.id === nodeid) {
         newGraph["nodes"].splice(i, 1);
         // sending the delete request to the back-end
         try {
           const result = await axios.delete(
             "http://localhost:8000/delete-node",
             {
-              data: { identity: currNode.identity },
+              data: { id: currNode.id },
             }
           );
           setGraph(newGraph);
@@ -168,8 +165,8 @@ function App() {
       return;
     }
 
-    targetNode.inLinks.push(sourceNode.identity);
-    sourceNode.outLinks.push(targetNode.identity);
+    targetNode.inLinks.push(sourceNode.id);
+    sourceNode.outLinks.push(targetNode.id);
     const newLink = { source: sourceNode, target: targetNode };
 
     // sending the post request to the back-end
@@ -193,7 +190,7 @@ function App() {
     // remove the outLink from the source
     for (let i = 0; i < graph["nodes"].length; i++) {
       const node = graph["nodes"][i];
-      if (node.identity === source) {
+      if (node.id === source) {
         const outLinkIdx = node.outLinks.indexOf(target);
         node.outLinks.splice(outLinkIdx, 1);
       }
@@ -201,7 +198,7 @@ function App() {
     // remove the inLink from the target
     for (let i = 0; i < graph["nodes"].length; i++) {
       const node = graph["nodes"][i];
-      if (node.identity === target) {
+      if (node.id === target) {
         const inLinkIdx = node.inLinks.indexOf(source);
         node.inLinks.splice(inLinkIdx, 1);
       }
@@ -209,7 +206,7 @@ function App() {
     // remove the edge where inLink and outLink match
     for (let i = 0; i < newGraph["links"].length; i++) {
       const link = newGraph["links"][i];
-      if (link.source.identity === source && link.target.identity === target) {
+      if (link.source.id === source && link.target.id === target) {
         newGraph.links.splice(i, 1);
       }
     }
