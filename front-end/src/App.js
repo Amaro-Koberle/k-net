@@ -28,14 +28,23 @@ function App() {
   const [selection, setSelection] = useState([]);
 
   // fetching the graph from the database
-  useEffect(() => {
-    const fetchGraph = async () => {
+  const fetchGraph = async () => {
+    try {
       const result = await axios("http://localhost:8000/graph");
-      setGraph(result.data);
-    };
+      const newGraph = result.data;
+      setGraph(newGraph);
+      console.log(result.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
+  // fetching the graph everytime the app reloads
+  useEffect(() => {
     fetchGraph();
   }, []);
+
+  console.log(graph);
 
   // updating the graph
   const updateGraph = () => {
@@ -67,10 +76,15 @@ function App() {
   }, [currNode]);
 
   // upload graph to the database
-  const postGraph = async () => {
+  const putGraph = () => {
+    updateNode();
+  };
+
+  // update node
+  const updateNode = async () => {
     try {
       const result = await axios.put(
-        "http://localhost:8000/update-graph",
+        "http://localhost:8000/update-node",
         currNode
       );
     } catch (error) {
@@ -80,7 +94,7 @@ function App() {
 
   // update the database with every change of the graph
   useEffect(() => {
-    postGraph();
+    putGraph();
   }, [graph]);
 
   // handling node clicks
@@ -100,7 +114,7 @@ function App() {
   // is the user editing a node?
   const [editing, setEditing] = useState(false);
 
-  // creating a new node
+  // creating a node
   const newNode = async () => {
     const emptyNode = {
       identity: v4(),
@@ -109,14 +123,15 @@ function App() {
       inLinks: [],
       outLinks: [],
     };
-    const newGraph = { ...graph };
-    newGraph.nodes.push(emptyNode);
+
     // sending the post request to the back-end
     try {
       const result = await axios.post(
         "http://localhost:8000/add-node",
         emptyNode
       );
+      const newGraph = { ...graph };
+      newGraph.nodes.push(emptyNode);
       setGraph(newGraph);
     } catch (error) {
       console.error(error);
@@ -146,22 +161,30 @@ function App() {
     }
   };
 
-  // creating a Link
-  const createLink = (sourceNode, targetNode) => {
+  // creating a link
+  const createLink = async (sourceNode, targetNode) => {
     if (targetNode === undefined) {
       console.log("target node is not valid");
       return;
     }
-    console.log(sourceNode);
-    console.log(targetNode);
 
     targetNode.inLinks.push(sourceNode.identity);
     sourceNode.outLinks.push(targetNode.identity);
     const newLink = { source: sourceNode, target: targetNode };
 
-    const newGraph = { ...graph };
-    newGraph.links.push(newLink);
-    setGraph(newGraph);
+    // sending the post request to the back-end
+    try {
+      const result = await axios.post(
+        "http://localhost:8000/add-link",
+        newLink
+      );
+      console.log(newLink);
+      const newGraph = { ...graph };
+      newGraph.links.push(newLink);
+      setGraph(newGraph);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   // removing a link

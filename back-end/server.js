@@ -30,18 +30,33 @@ app.post("/add-node", async function (req, res) {
   res.end(JSON.stringify(result));
 });
 
-// update graph
-app.put("/update-graph", async function (req, res) {
+// add link
+app.post("/add-link", async function (req, res) {
   const session = driver.session();
+  console.log(req.body);
+  const result = await session.run(
+    `
+    MATCH
+    (a:Post),
+    (b:Post)
+    WHERE a.identity = "${req.body.source.identity}" AND b.identity = "${req.body.target.identity}"
+    CREATE (a)-[r:POST_LINK]->(b)
+   `
+  );
+  await session.close();
+  res.end(JSON.stringify(result));
+});
 
-  // update node
+// update node
+app.put("/update-node", async function (req, res) {
+  const session = driver.session();
   const result = await session.run(
     `
     MATCH (n {identity: "${req.body.identity}"})
     SET n.inLinks = [${req.body.inLinks.map(
-      (nodeIdentity) => `'${nodeIdentity}'`
+      (nodeIdentity) => `"${nodeIdentity}"`
     )}], n.outLinks = [${req.body.outLinks.map(
-      (nodeIdentity) => `'${nodeIdentity}'`
+      (nodeIdentity) => `"${nodeIdentity}"`
     )}], n.title = "${req.body.title}",
     n.description = "${req.body.description}"
    `
@@ -102,8 +117,8 @@ app.get("/graph", async function (req, res) {
 
   const links = linksResult.records.map((r) => {
     return {
-      source: r.get("source").toNumber(),
-      target: r.get("target").toNumber(),
+      source: r.get("source"),
+      target: r.get("target"),
     };
   });
 
@@ -113,6 +128,7 @@ app.get("/graph", async function (req, res) {
   };
 
   res.json(graphData);
+  console.log(graphData);
 });
 
 // connection

@@ -20,7 +20,7 @@ export default function EditLinks({
   const [targetInput, setTargetInput] = useState("");
   const [connectSelectionMode, setConnectSelectionMode] = useState(false);
 
-  // //TODO connect nodes with connectSelectionMode
+  //connect nodes with connectSelectionMode
   useEffect(() => {
     // check if connectSelectionMode is on
     if (connectSelectionMode === true) {
