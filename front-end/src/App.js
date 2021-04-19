@@ -8,6 +8,9 @@ import SideBar from "./components/SideBar";
 import Create from "./components/Create";
 import StartSession from "./components/StartSession";
 
+// importing hooks
+import useWidth from "./hooks/useWidth";
+
 function App() {
   // initialising the graph
   const [graph, setGraph] = useState({
@@ -26,6 +29,13 @@ function App() {
 
   // initialising selection
   const [selection, setSelection] = useState([]);
+
+  // use our useWidth hook
+  const width = useWidth();
+
+  useEffect(() => {
+    console.log(width);
+  }, [width])
 
   // fetching the graph everytime the app reloads
   useEffect(() => {
@@ -233,6 +243,7 @@ function App() {
   return (
     <>
       <ForceGraph3D
+        width={width}
         graphData={graph}
         onNodeClick={handleNodeClick}
         enableNodeDrag={enableNodeDrag}
