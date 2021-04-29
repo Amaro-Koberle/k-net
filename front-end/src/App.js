@@ -25,6 +25,12 @@ function App() {
     description: "",
     inLinks: [],
     outLinks: [],
+    color: "white",
+    author: "",
+    creationDate: "",
+
+    // add more attributes to nodes
+    //color: "",
   });
 
   // initialising selection
@@ -35,7 +41,7 @@ function App() {
 
   useEffect(() => {
     console.log(width);
-  }, [width])
+  }, [width]);
 
   // fetching the graph everytime the app reloads
   useEffect(() => {
@@ -44,12 +50,14 @@ function App() {
       try {
         const result = await axios("http://localhost:8000/graph");
         const newGraph = result.data;
-        setGraph(newGraph);
+        console.log("fetching graph");
         console.log(newGraph);
+        setGraph(newGraph);
       } catch (error) {
         console.error(error);
       }
     };
+
     fetchGraph();
   }, []);
 
@@ -112,6 +120,9 @@ function App() {
       description: node.description,
       inLinks: node.inLinks,
       outLinks: node.outLinks,
+      author: node.author,
+      creationDate: node.creationDate,
+      color: node.color,
     });
     const newSelection = [...selection];
     newSelection.unshift(node);
@@ -129,8 +140,10 @@ function App() {
       description: "",
       inLinks: [],
       outLinks: [],
+      color: "#E4E4E4",
+      author: "",
+      creationDate: "",
     };
-
     // sending the post request to the back-end
     try {
       const result = await axios.post(
@@ -168,16 +181,39 @@ function App() {
     }
   };
 
+  const curvature = 1;
+
   // creating a link
   const createLink = async (sourceNode, targetNode) => {
+    console.log(sourceNode);
+    console.log(targetNode);
     if (targetNode === undefined) {
       console.log("target node is not valid");
       return;
     }
 
-    targetNode.inLinks.push(sourceNode.id);
+    // calculate the link curvature
+    const curvature = 1;
+
+    // calculate the link rotation
+    const rotation = Math.random();
+
+    // updating inLinks and outLinks in source and target nodes
     sourceNode.outLinks.push(targetNode.id);
-    const newLink = { source: sourceNode, target: targetNode };
+    targetNode.inLinks.push(sourceNode.id);
+
+    // creating the link object
+    const newLink = {
+      source: sourceNode,
+      target: targetNode,
+      curvature: curvature,
+      rotation: rotation,
+      title: "",
+      description: "",
+      author: "",
+      color: "#E4E4E4",
+      creationDate: "",
+    };
 
     // sending the post request to the back-end
     try {
@@ -225,18 +261,16 @@ function App() {
 
   //===GRAPH STYLING===//
   // nodes
-  const nodeColor = "blue";
   const nodeOpacity = 1;
   const nodeLabel = "title";
   const enableNodeDrag = false;
   // links
-  const linkColor = "#f4f4f4";
   const linkWidth = 1;
   const linkOpacity = 1;
   const inkDirectionalArrowLength = 7;
   const linkDirectionalParticles = 2;
   const linkDirectionalParticleWidth = 2;
-  const linkCurvature = 0.5;
+
   // canvas
   const backgroundColor = "#383838";
 
@@ -247,16 +281,17 @@ function App() {
         graphData={graph}
         onNodeClick={handleNodeClick}
         enableNodeDrag={enableNodeDrag}
-        nodeColor={nodeColor}
+        nodeColor="color"
         nodeOpacity={nodeOpacity}
         nodeLabel={nodeLabel}
-        linkColor={linkColor}
+        linkColor="color"
         linkWidth={linkWidth}
         linkOpacity={linkOpacity}
         linkDirectionalArrowLength={inkDirectionalArrowLength}
         linkDirectionalParticles={linkDirectionalParticles}
         linkDirectionalParticleWidth={linkDirectionalParticleWidth}
-        linkCurvature={linkCurvature}
+        linkCurvature="curvature"
+        linkCurveRotation="rotation"
         backgroundColor={backgroundColor}
       />
       <StartSession />

@@ -16,7 +16,7 @@ export default function SideBar({
   removeLink,
   selection,
 }) {
-  if (currNode.identity === "") {
+  if (currNode.id === "") {
     return (
       <div className="fixed top-0 left-0 h-screen p-3 w-80 text-gray-lightest">
         <Search></Search>

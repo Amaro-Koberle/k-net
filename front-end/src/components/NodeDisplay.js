@@ -3,7 +3,6 @@ import { MdEdit } from "react-icons/md";
 
 export default function NodeDisplay({ currNode, setEditing }) {
   if (currNode.id === "") {
-    console.log("No node is currently selected");
     return null;
   }
 

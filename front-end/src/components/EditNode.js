@@ -23,6 +23,11 @@ export default function EditNode({
 }) {
   const [nodeSelectionMode, setNodeSelectionMode] = useState(false);
 
+  // update the graph with every change of currNode (after some ellapsed time)
+  // useEffect(() => {
+  //   setTimeout(updateGraph, 3000);
+  // }, [currNode]);
+
   return (
     <div className="mt-4">
       <div className="flex items-center space-x-2 text-lg">
@@ -35,7 +40,7 @@ export default function EditNode({
           <h3>Edit Node</h3>
         </>
         <>
-          <button type="button" onClick={() => deleteNode(currNode.identity)}>
+          <button type="button" onClick={() => deleteNode(currNode.id)}>
             <MdDelete></MdDelete>
           </button>
         </>

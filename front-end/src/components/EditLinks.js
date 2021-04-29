@@ -34,6 +34,7 @@ export default function EditLinks({
     }
   }, [selection]);
 
+  console.log(currNode);
   return (
     <>
       {isIncoming ? (
@@ -60,7 +61,7 @@ export default function EditLinks({
                   type="button"
                   onClick={() =>
                     createLink(
-                      graph.nodes.find((node) => targetInput === node.identity),
+                      graph.nodes.find((node) => targetInput === node.id),
                       currNode
                     )
                   }
@@ -82,7 +83,7 @@ export default function EditLinks({
             {currNode.inLinks.map((link, idx) => {
               // getting the node title
               // const connectedNode = () => {
-              //   graph.nodes.find((node) => link === node.identity);
+              //   graph.nodes.find((node) => link === node.id);
               //   console.log(node.title);
               //   return node.title;
               // };
@@ -92,7 +93,7 @@ export default function EditLinks({
                     <span>{link}</span>
                     <button
                       type="button"
-                      onClick={() => removeLink(link, currNode.identity)}
+                      onClick={() => removeLink(link, currNode.id)}
                     >
                       <MdDelete></MdDelete>
                     </button>
@@ -128,7 +129,7 @@ export default function EditLinks({
                   onClick={() =>
                     createLink(
                       currNode,
-                      graph.nodes.find((node) => targetInput === node.identity)
+                      graph.nodes.find((node) => targetInput === node.id)
                     )
                   }
                 >
@@ -154,7 +155,7 @@ export default function EditLinks({
                     <button
                       className="text-sm"
                       type="button"
-                      onClick={() => removeLink(currNode.identity, link)}
+                      onClick={() => removeLink(currNode.id, link)}
                     >
                       <MdDelete></MdDelete>
                     </button>
