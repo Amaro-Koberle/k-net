@@ -4,42 +4,78 @@ import { v4 } from "uuid";
 import axios from "axios";
 
 // importing components
-import SideBar from "./components/SideBar";
+import Pane from "./components/Pane";
 import Create from "./components/Create";
 import StartSession from "./components/StartSession";
 
 // importing hooks
 import useWidth from "./hooks/useWidth";
+import { AuthProvider } from "./contexts/AuthContext";
 
 function App() {
+  //===/ GRAPH STYLING /===//
+  // colors
+  const defaultNodeColor = "#949494";
+  const selectedNodeColor = "white";
+  const focusedNodeColor = "white";
+  const defaultLinkColor = "#949494";
+  const backgroundColor = "#383838";
+
+  // nodes
+  const nodeOpacity = 1;
+  const enableNodeDrag = false;
+
+  // links
+  const linkWidth = 1;
+  const linkOpacity = 1;
+  const inkDirectionalArrowLength = 7;
+  const linkDirectionalParticles = 2;
+  const linkDirectionalParticleWidth = 2;
+
+  //===/ APP LOGIC /===//
   // initialising the graph
   const [graph, setGraph] = useState({
     nodes: [],
     links: [],
   });
 
-  // initialising the currently selected node
+  // initialising the currently focused node
   const [currNode, setCurrNode] = useState({
     id: "",
     title: "",
     description: "",
     inLinks: [],
     outLinks: [],
-    color: "white",
+    color: defaultNodeColor,
     author: "",
     creationDate: "",
-
-    // add more attributes to nodes
-    //color: "",
   });
 
   // initialising selection
   const [selection, setSelection] = useState([]);
 
-  // use our useWidth hook
+  // using the useWidth hook
   const width = useWidth();
 
+  const [breakpoint, setBreakpoint] = useState("");
+
   useEffect(() => {
+    const breakpoints = ["sm", "md", "lg", "xl", "2xl"];
+    // set current breakpoint
+    if (width >= 1536) {
+      setBreakpoint(breakpoints[4]);
+    } else if (width >= 1280) {
+      setBreakpoint(breakpoints[3]);
+    } else if (width >= 1024) {
+      setBreakpoint(breakpoints[2]);
+    } else if (width >= 768) {
+      setBreakpoint(breakpoints[1]);
+    } else if (width >= 640) {
+      setBreakpoint(breakpoints[0]);
+    } else {
+      setBreakpoint("");
+    }
+    console.log(breakpoint);
     console.log(width);
   }, [width]);
 
@@ -114,6 +150,12 @@ function App() {
 
   // handling node clicks
   const handleNodeClick = (node) => {
+    //changing color back to gray
+    const newNode = { ...currNode };
+    newNode.color = "#949494";
+    setCurrNode(newNode);
+
+    // updating currNode
     setCurrNode({
       id: node.id,
       title: node.title,
@@ -122,8 +164,10 @@ function App() {
       outLinks: node.outLinks,
       author: node.author,
       creationDate: node.creationDate,
-      color: node.color,
+      color: "white",
     });
+
+    // changing selection
     const newSelection = [...selection];
     newSelection.unshift(node);
     setSelection(newSelection);
@@ -140,7 +184,7 @@ function App() {
       description: "",
       inLinks: [],
       outLinks: [],
-      color: "#E4E4E4",
+      color: defaultNodeColor,
       author: "",
       creationDate: "",
     };
@@ -153,6 +197,7 @@ function App() {
       const newGraph = { ...graph };
       newGraph.nodes.push(emptyNode);
       setGraph(newGraph);
+      setCurrNode(emptyNode);
     } catch (error) {
       console.error(error);
     }
@@ -180,8 +225,6 @@ function App() {
       }
     }
   };
-
-  const curvature = 1;
 
   // creating a link
   const createLink = async (sourceNode, targetNode) => {
@@ -211,7 +254,7 @@ function App() {
       title: "",
       description: "",
       author: "",
-      color: "#E4E4E4",
+      color: defaultLinkColor,
       creationDate: "",
     };
 
@@ -259,21 +302,6 @@ function App() {
     setGraph(newGraph);
   };
 
-  //===GRAPH STYLING===//
-  // nodes
-  const nodeOpacity = 1;
-  const nodeLabel = "title";
-  const enableNodeDrag = false;
-  // links
-  const linkWidth = 1;
-  const linkOpacity = 1;
-  const inkDirectionalArrowLength = 7;
-  const linkDirectionalParticles = 2;
-  const linkDirectionalParticleWidth = 2;
-
-  // canvas
-  const backgroundColor = "#383838";
-
   return (
     <>
       <ForceGraph3D
@@ -283,7 +311,7 @@ function App() {
         enableNodeDrag={enableNodeDrag}
         nodeColor="color"
         nodeOpacity={nodeOpacity}
-        nodeLabel={nodeLabel}
+        nodeLabel="title"
         linkColor="color"
         linkWidth={linkWidth}
         linkOpacity={linkOpacity}
@@ -294,9 +322,11 @@ function App() {
         linkCurveRotation="rotation"
         backgroundColor={backgroundColor}
       />
-      <StartSession />
+      <AuthProvider>
+        <StartSession />
+      </AuthProvider>
       <Create newNode={newNode} />
-      <SideBar
+      <Pane
         handleNodeClick={handleNodeClick}
         graph={graph}
         currNode={currNode}

@@ -1,7 +1,10 @@
 import React from "react";
 import { MdEdit } from "react-icons/md";
 
-export default function NodeDisplay({ currNode, setEditing }) {
+//importing components
+import NodeWidget from "./NodeWidget";
+
+export default function NodeDisplay({ currNode, setEditing, graph }) {
   if (currNode.id === "") {
     return null;
   }
@@ -11,7 +14,7 @@ export default function NodeDisplay({ currNode, setEditing }) {
       <div className="flex items-center space-x-2 text-lg">
         <h3>{currNode.title}</h3>
         <button className="edit-button" onClick={() => setEditing(true)}>
-          <MdEdit></MdEdit>
+          <MdEdit />
         </button>
       </div>
       <div className="mt-4">
@@ -32,6 +35,8 @@ export default function NodeDisplay({ currNode, setEditing }) {
             ))}
           </ul>
         </div>
+        <NodeWidget NodeID={currNode.inLinks[0]} graph={graph} />
+        <NodeWidget NodeID={currNode.inLinks[1]} graph={graph} />
       </div>
     </div>
   );

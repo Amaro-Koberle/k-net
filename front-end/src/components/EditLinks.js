@@ -2,6 +2,9 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 
+//importing react components
+import NodeWidget from "./NodeWidget";
+
 //importing icons
 import { MdLocationSearching } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
@@ -73,7 +76,7 @@ export default function EditLinks({
                   type="button"
                   onClick={() => setConnectSelectionMode(!connectSelectionMode)}
                 >
-                  <MdLocationSearching></MdLocationSearching>
+                  <MdLocationSearching />
                 </button>
               </>
             </div>
@@ -95,7 +98,7 @@ export default function EditLinks({
                       type="button"
                       onClick={() => removeLink(link, currNode.id)}
                     >
-                      <MdDelete></MdDelete>
+                      <MdDelete />
                     </button>
                   </div>
                 </li>
@@ -149,7 +152,7 @@ export default function EditLinks({
           <ul>
             {currNode.outLinks.map((link, idx) => {
               return (
-                <div className="p-1 mt-2 text-sm rounded-lg text-gray-dark bg-gray-lightest">
+                <div className="px-2 py-1 mt-2 text-sm rounded-lg text-gray-dark bg-gray-lightest">
                   <li key={idx}>
                     <span className="text-sm">{link}</span>
                     <button
@@ -157,7 +160,7 @@ export default function EditLinks({
                       type="button"
                       onClick={() => removeLink(currNode.id, link)}
                     >
-                      <MdDelete></MdDelete>
+                      <MdDelete />
                     </button>
                   </li>
                 </div>

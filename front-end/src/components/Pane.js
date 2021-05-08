@@ -4,7 +4,7 @@ import NodeDisplay from "./NodeDisplay";
 import Search from "./Search";
 import { MdChevronLeft } from "react-icons/md";
 
-export default function SideBar({
+export default function Pane({
   currNode,
   setCurrNode,
   setEditing,
@@ -18,14 +18,14 @@ export default function SideBar({
 }) {
   if (currNode.id === "") {
     return (
-      <div className="fixed top-0 left-0 h-screen p-3 w-80 text-gray-lightest">
+      <div className="fixed top-0 left-0 p-3 w-80 text-gray-lightest">
         <Search></Search>
       </div>
     );
   }
   return (
     <>
-      <div className="fixed top-0 left-0 z-10 h-screen p-3 bg-opacity-75 shadow-lg ring-1 bg-gray-dark text-gray-lightest w-80 ring-gray">
+      <div className="fixed top-0 left-0 z-10 p-3 bg-opacity-75 shadow-lg ring-1 bg-gray-dark text-gray-lightest w-80 ring-gray">
         <Search></Search>
         {editing ? (
           <EditNode
@@ -40,7 +40,11 @@ export default function SideBar({
             selection={selection}
           />
         ) : (
-          <NodeDisplay currNode={currNode} setEditing={setEditing} />
+          <NodeDisplay
+            currNode={currNode}
+            setEditing={setEditing}
+            graph={graph}
+          />
         )}
       </div>
 
