@@ -1,12 +1,16 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { MdExpandMore } from "react-icons/md";
 
 export default function NodeWidget({ NodeID, graph }) {
-  const node = graph.nodes.find((node) => NodeID === node.id);
-  //console.log(node.title);
+  const [node, setNode] = useState({ title: "Node Title" });
+
+  useEffect(() => {
+    setNode(graph.nodes.find((node) => NodeID === node.id));
+  }, []);
+
   return (
-    <div className="flex px-2 py-1 mt-2 space-x-4 text-sm rounded-lg text-gray-dark bg-gray-lightest">
-      <span>Node Title</span>
+    <div className="flex items-center justify-between px-2 py-1 mt-2 text-sm rounded-lg text-gray-dark bg-gray-lightest">
+      <span>{node.title}</span>
       <MdExpandMore />
     </div>
   );

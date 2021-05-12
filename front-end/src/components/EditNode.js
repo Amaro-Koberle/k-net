@@ -5,7 +5,7 @@ import { useState } from "react";
 import EditLinks from "./EditLinks";
 
 //importing icons
-import { MdClose } from "react-icons/md";
+import { MdArrowBack } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { MdLocationSearching } from "react-icons/md";
 
@@ -30,20 +30,15 @@ export default function EditNode({
 
   return (
     <div className="mt-4">
-      <div className="flex items-center space-x-2 text-lg">
-        <>
-          <button onClick={() => setEditing(false)}>
-            <MdClose></MdClose>
-          </button>
-        </>
-        <>
-          <h3>Edit Node</h3>
-        </>
-        <>
-          <button type="button" onClick={() => deleteNode(currNode.id)}>
-            <MdDelete></MdDelete>
-          </button>
-        </>
+      <div className="flex items-center space-x-2 text-lg jsutify-between">
+        <button onClick={() => setEditing(false)}>
+          <MdArrowBack />
+        </button>
+        <h3>Edit Node</h3>
+
+        <button type="button" onClick={() => deleteNode(currNode.id)}>
+          <MdDelete />
+        </button>
       </div>
       <form className="mt-4">
         {/* edit title and description */}

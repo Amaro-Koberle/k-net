@@ -4,13 +4,12 @@ import { v4 } from "uuid";
 import axios from "axios";
 
 // importing components
-import Pane from "./components/Pane";
+import Panel from "./components/Panel";
 import Create from "./components/Create";
-import StartSession from "./components/StartSession";
+import Menu from "./components/Menu";
 
 // importing hooks
 import useWidth from "./hooks/useWidth";
-import { AuthProvider } from "./contexts/AuthContext";
 
 function App() {
   //===/ GRAPH STYLING /===//
@@ -19,7 +18,7 @@ function App() {
   const selectedNodeColor = "white";
   const focusedNodeColor = "white";
   const defaultLinkColor = "#949494";
-  const backgroundColor = "#383838";
+  const backgroundColor = "#212121";
 
   // nodes
   const nodeOpacity = 1;
@@ -57,26 +56,24 @@ function App() {
   // using the useWidth hook
   const width = useWidth();
 
-  const [breakpoint, setBreakpoint] = useState("");
+  // initialising breakpoints
+  const [breakpoint, setBreakpoint] = useState(0);
 
   useEffect(() => {
-    const breakpoints = ["sm", "md", "lg", "xl", "2xl"];
     // set current breakpoint
     if (width >= 1536) {
-      setBreakpoint(breakpoints[4]);
+      setBreakpoint(5); // 2xl
     } else if (width >= 1280) {
-      setBreakpoint(breakpoints[3]);
+      setBreakpoint(4); // xl
     } else if (width >= 1024) {
-      setBreakpoint(breakpoints[2]);
+      setBreakpoint(3); // lg
     } else if (width >= 768) {
-      setBreakpoint(breakpoints[1]);
+      setBreakpoint(2); // md
     } else if (width >= 640) {
-      setBreakpoint(breakpoints[0]);
+      setBreakpoint(1); // sm
     } else {
-      setBreakpoint("");
+      setBreakpoint(0);
     }
-    console.log(breakpoint);
-    console.log(width);
   }, [width]);
 
   // fetching the graph everytime the app reloads
@@ -96,6 +93,11 @@ function App() {
 
     fetchGraph();
   }, []);
+
+  // update the graph with every change of currNode
+  useEffect(() => {
+    updateGraph();
+  }, [currNode]);
 
   // updating the graph
   const updateGraph = () => {
@@ -121,38 +123,25 @@ function App() {
     setGraph(newGraph);
   };
 
-  // update the graph with every change of currNode
-  useEffect(() => {
-    updateGraph();
-  }, [currNode]);
-
-  // upload graph to the database
-  const putGraph = () => {
-    updateNode();
-  };
-
-  // update node
-  const updateNode = async () => {
-    try {
-      const result = await axios.put(
-        "http://localhost:8000/update-node",
-        currNode
-      );
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   // update the database with every change of the graph
   useEffect(() => {
-    putGraph();
+    const updateNode = async () => {
+      try {
+        const result = await axios.put(
+          "http://localhost:8000/update-node",
+          currNode
+        );
+      } catch (error) {
+        console.error(error);
+      }
+    };
   }, [graph]);
 
   // handling node clicks
   const handleNodeClick = (node) => {
-    //changing color back to gray
+    //reset node color back to default (unselected) color
     const newNode = { ...currNode };
-    newNode.color = "#949494";
+    newNode.color = defaultNodeColor;
     setCurrNode(newNode);
 
     // updating currNode
@@ -164,7 +153,7 @@ function App() {
       outLinks: node.outLinks,
       author: node.author,
       creationDate: node.creationDate,
-      color: "white",
+      color: selectedNodeColor,
     });
 
     // changing selection
@@ -173,8 +162,14 @@ function App() {
     setSelection(newSelection);
   };
 
-  // is the user editing a node?
+  // is the main menu currently being displayed?
+  const [displayMenu, setDisplayMenu] = useState(false);
+
+  // is the user currently editing a node?
   const [editing, setEditing] = useState(false);
+
+  // is the user currently editing their user settings?
+  const [editingSettings, setEditingSettings] = useState(false);
 
   // creating a node
   const newNode = async () => {
@@ -322,11 +317,16 @@ function App() {
         linkCurveRotation="rotation"
         backgroundColor={backgroundColor}
       />
-      <AuthProvider>
-        <StartSession />
-      </AuthProvider>
+      <Menu
+        setDisplayMenu={setDisplayMenu}
+        displayMenu={displayMenu}
+        setEditingSettings={setEditingSettings}
+      />
       <Create newNode={newNode} />
-      <Pane
+      <Panel
+        breakpoint={breakpoint}
+        editingSettings={editingSettings}
+        setDisplayMenu={setDisplayMenu}
         handleNodeClick={handleNodeClick}
         graph={graph}
         currNode={currNode}

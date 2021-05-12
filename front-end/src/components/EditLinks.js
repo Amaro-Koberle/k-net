@@ -36,14 +36,14 @@ export default function EditLinks({
       setConnectSelectionMode(false);
     }
   }, [selection]);
-
-  console.log(currNode);
   return (
     <>
       {isIncoming ? (
         //===INCOMING LINKS===//
         <div className="mt-4">
-          <h4>Incoming Links</h4>
+          <span className="flex justify-center mt-4 text-sm text-gray-light">
+            Incoming links
+          </span>
 
           <>
             <label className="label" htmlFor="createInLink">
@@ -82,34 +82,28 @@ export default function EditLinks({
             </div>
           </>
           {/* list of nodes connected through incoming links */}
-          <ul>
+          {/* <ul>
             {currNode.inLinks.map((link, idx) => {
-              // getting the node title
-              // const connectedNode = () => {
-              //   graph.nodes.find((node) => link === node.id);
-              //   console.log(node.title);
-              //   return node.title;
-              // };
               return (
                 <li key={idx}>
-                  <div className="p-1 mt-2 text-sm rounded-lg text-gray-dark bg-gray-lightest">
-                    <span>{link}</span>
-                    <button
-                      type="button"
-                      onClick={() => removeLink(link, currNode.id)}
-                    >
-                      <MdDelete />
-                    </button>
-                  </div>
+                  <NodeWidget NodeID={link} graph={graph} />
+                  <button
+                    type="button"
+                    onClick={() => removeLink(link, currNode.id)}
+                  >
+                    <MdDelete />
+                  </button>
                 </li>
               );
             })}
-          </ul>
+          </ul> */}
         </div>
       ) : (
         //===OUTGOING LINKS===//
         <div className="mt-4">
-          <h4>Outgoing Links</h4>
+          <span className="flex justify-center mt-4 text-sm text-gray-light">
+            Outgoing links
+          </span>
           <>
             <label className="label" htmlFor="createOutLink">
               Target node
@@ -149,24 +143,22 @@ export default function EditLinks({
             </div>
           </>
           {/* list of nodes connected through outgoing links */}
-          <ul>
+          {/* <ul>
             {currNode.outLinks.map((link, idx) => {
               return (
-                <div className="px-2 py-1 mt-2 text-sm rounded-lg text-gray-dark bg-gray-lightest">
-                  <li key={idx}>
-                    <span className="text-sm">{link}</span>
-                    <button
-                      className="text-sm"
-                      type="button"
-                      onClick={() => removeLink(currNode.id, link)}
-                    >
-                      <MdDelete />
-                    </button>
-                  </li>
-                </div>
+                <li key={idx}>
+                  <NodeWidget NodeID={link} graph={graph} />
+                  <button
+                    className="text-sm"
+                    type="button"
+                    onClick={() => removeLink(currNode.id, link)}
+                  >
+                    <MdDelete />
+                  </button>
+                </li>
               );
             })}
-          </ul>
+          </ul> */}
         </div>
       )}
     </>
