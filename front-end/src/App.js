@@ -7,18 +7,32 @@ import axios from "axios";
 import Panel from "./components/Panel";
 import Create from "./components/Create";
 import Menu from "./components/Menu";
+import DiscardNodePopUp from "./components/DiscardNodePopUp";
+import DiscardNodeChangesPopUp from "./components/DiscardNodePopUp";
+import DeleteNodePopUp from "./components/DiscardNodePopUp";
 
 // importing hooks
 import useWidth from "./hooks/useWidth";
 
-function App() {
-  //===/ GRAPH STYLING /===//
-  // colors
-  const defaultNodeColor = "#949494";
-  const selectedNodeColor = "white";
-  const focusedNodeColor = "white";
-  const defaultLinkColor = "#949494";
-  const backgroundColor = "#212121";
+export default function App() {
+  //==================================================================================
+  // STYLING
+  //==================================================================================
+
+  // color palette
+  const grayDarkest = "#1a1a1a";
+  const grayDarker = "#2a2a2a";
+  const grayDark = "#3b3b3b";
+  const gray = "#4f4f4f";
+  const grayLight = "#777777";
+  const grayLighter = "#a7a7a7";
+  const grayLightest = "#e6e6e6";
+
+  // graph colors
+  const defaultNodeColor = grayLight;
+  const focusedNodeColor = grayLightest;
+  const defaultLinkColor = grayLight;
+  const backgroundColor = grayDarkest;
 
   // nodes
   const nodeOpacity = 1;
@@ -31,33 +45,8 @@ function App() {
   const linkDirectionalParticles = 2;
   const linkDirectionalParticleWidth = 2;
 
-  //===/ APP LOGIC /===//
-  // initialising the graph
-  const [graph, setGraph] = useState({
-    nodes: [],
-    links: [],
-  });
-
-  // initialising the currently focused node
-  const [currNode, setCurrNode] = useState({
-    id: "",
-    title: "",
-    description: "",
-    inLinks: [],
-    outLinks: [],
-    color: defaultNodeColor,
-    author: "",
-    creationDate: "",
-  });
-
-  // initialising selection
-  const [selection, setSelection] = useState([]);
-
   // using the useWidth hook
   const width = useWidth();
-
-  // initialising breakpoints
-  const [breakpoint, setBreakpoint] = useState(0);
 
   useEffect(() => {
     // set current breakpoint
@@ -76,9 +65,141 @@ function App() {
     }
   }, [width]);
 
-  // fetching the graph everytime the app reloads
+  //==================================================================================
+  // INITIALISING STATE
+  //==================================================================================
+
+  // at what breakpoint (width) is the app currently being rendered?
+  const [breakpoint, setBreakpoint] = useState(0);
+
+  // what nodes and links are currently in the graph?
+  const [graph, setGraph] = useState({
+    nodes: [],
+    links: [],
+  });
+
+  // what's in the currently focused node?
+  const [focusedNode, setfocusedNode] = useState({
+    id: "",
+    title: "",
+    description: "",
+    inLinks: [],
+    outLinks: [],
+    color: defaultNodeColor,
+    author: "",
+    creationDate: "",
+  });
+
+  // what nodes are currently selected?
+  const [selection, setSelection] = useState([]);
+
+  // is the main menu currently being displayed?
+  const [displayMenu, setDisplayMenu] = useState(false);
+
+  // is the user currently editing a node?
+  const [editingNode, setEditingNode] = useState(false);
+
+  // is the user currently editing their user settings?
+  const [editingSettings, setEditingSettings] = useState(false);
+
+  // is the discard node pop-up currently being displayed?
+  const [displayDiscardNodePopUp, setDisplayDiscardNodePopUp] = useState(false);
+
+  // is the delete node pop-up currently being displayed?
+  const [displayDeleteNodePopUp, setDisplayDeleteNodePopUp] = useState(false);
+
+  // is the discard node changes pop-up currently being displayed?
+  const [displayDiscardNodeChangesPopUp, setDisplayDiscardNodeChangesPopUp] =
+    useState(false);
+
+  //==================================================================================
+  // APP LOGIC
+  //==================================================================================
+
+  // updating the graph
+  const updateGraph = () => {
+    let newGraph = { ...graph };
+    // updating the nodes
+    for (let i = 0; i < graph["nodes"].length; i++) {
+      const node = graph["nodes"][i];
+      if (node.id === focusedNode.id) {
+        newGraph["nodes"][i] = focusedNode;
+      }
+    }
+    // updating the links
+    for (let i = 0; i < graph["links"].length; i++) {
+      const link = graph["links"][i];
+      if (link["source"].id === focusedNode.id) {
+        newGraph["links"][i]["source"] = focusedNode;
+      }
+      if (link["target"].id === focusedNode.id) {
+        newGraph["links"][i]["target"] = focusedNode;
+      }
+    }
+
+    setGraph(newGraph);
+  };
+
+  // handling node clicks
+  const handleNodeClick = (node) => {
+    //reset node color back to default (unfocused) color
+    const newNode = { ...focusedNode };
+    newNode.color = defaultNodeColor;
+    setfocusedNode(newNode);
+
+    // updating focusedNode
+    setfocusedNode({
+      id: node.id,
+      title: node.title,
+      description: node.description,
+      inLinks: node.inLinks,
+      outLinks: node.outLinks,
+      author: node.author,
+      creationDate: node.creationDate,
+      color: focusedNodeColor,
+    });
+
+    // changing selection
+    const newSelection = [...selection];
+    newSelection.unshift(node);
+    setSelection(newSelection);
+  };
+
+  // removing a link
+  const removeLink = (source, target) => {
+    const newGraph = { ...graph };
+    // remove the outLink from the source
+    for (let i = 0; i < graph["nodes"].length; i++) {
+      const node = graph["nodes"][i];
+      if (node.id === source) {
+        const outLinkIdx = node.outLinks.indexOf(target);
+        node.outLinks.splice(outLinkIdx, 1);
+      }
+    }
+    // remove the inLink from the target
+    for (let i = 0; i < graph["nodes"].length; i++) {
+      const node = graph["nodes"][i];
+      if (node.id === target) {
+        const inLinkIdx = node.inLinks.indexOf(source);
+        node.inLinks.splice(inLinkIdx, 1);
+      }
+    }
+    // remove the edge where inLink and outLink match
+    for (let i = 0; i < newGraph["links"].length; i++) {
+      const link = newGraph["links"][i];
+      if (link.source.id === source && link.target.id === target) {
+        newGraph.links.splice(i, 1);
+      }
+    }
+    setGraph(newGraph);
+  };
+
+  //==================================================================================
+  // API CALLS
+  //==================================================================================
+
+  // fetching the graph from the database everytime the app reloads
   useEffect(() => {
-    // fetching the graph from the database
     const fetchGraph = async () => {
       try {
         const result = await axios("http://localhost:8000/graph");
@@ -94,85 +215,24 @@ function App() {
     fetchGraph();
   }, []);
 
-  // update the graph with every change of currNode
+  // updating the database with every change of the graph
   useEffect(() => {
-    updateGraph();
-  }, [currNode]);
-
-  // updating the graph
-  const updateGraph = () => {
-    let newGraph = { ...graph };
-    // updating the nodes
-    for (let i = 0; i < graph["nodes"].length; i++) {
-      const node = graph["nodes"][i];
-      if (node.id === currNode.id) {
-        newGraph["nodes"][i] = currNode;
-      }
-    }
-    // updating the links
-    for (let i = 0; i < graph["links"].length; i++) {
-      const link = graph["links"][i];
-      if (link["source"].id === currNode.id) {
-        newGraph["links"][i]["source"] = currNode;
-      }
-      if (link["target"].id === currNode.id) {
-        newGraph["links"][i]["target"] = currNode;
-      }
-    }
-
-    setGraph(newGraph);
-  };
-
-  // update the database with every change of the graph
-  useEffect(() => {
-    const updateNode = async () => {
+    const updateDataBase = async () => {
       try {
         const result = await axios.put(
           "http://localhost:8000/update-node",
-          currNode
+          focusedNode
         );
       } catch (error) {
         console.error(error);
       }
     };
+
+    updateDataBase();
   }, [graph]);
 
-  // handling node clicks
-  const handleNodeClick = (node) => {
-    //reset node color back to default (unselected) color
-    const newNode = { ...currNode };
-    newNode.color = defaultNodeColor;
-    setCurrNode(newNode);
-
-    // updating currNode
-    setCurrNode({
-      id: node.id,
-      title: node.title,
-      description: node.description,
-      inLinks: node.inLinks,
-      outLinks: node.outLinks,
-      author: node.author,
-      creationDate: node.creationDate,
-      color: selectedNodeColor,
-    });
-
-    // changing selection
-    const newSelection = [...selection];
-    newSelection.unshift(node);
-    setSelection(newSelection);
-  };
-
-  // is the main menu currently being displayed?
-  const [displayMenu, setDisplayMenu] = useState(false);
-
-  // is the user currently editing a node?
-  const [editing, setEditing] = useState(false);
-
-  // is the user currently editing their user settings?
-  const [editingSettings, setEditingSettings] = useState(false);
-
   // creating a node
-  const newNode = async () => {
+  const createNode = async () => {
     const emptyNode = {
       id: v4(),
       title: "Untitled",
@@ -192,7 +252,9 @@ function App() {
       const newGraph = { ...graph };
       newGraph.nodes.push(emptyNode);
       setGraph(newGraph);
-      setCurrNode(emptyNode);
+      setfocusedNode(emptyNode);
+      setEditingNode(true);
+      console.log("here");
     } catch (error) {
       console.error(error);
     }
@@ -210,10 +272,11 @@ function App() {
           const result = await axios.delete(
             "http://localhost:8000/delete-node",
             {
-              data: { id: currNode.id },
+              data: { id: focusedNode.id },
             }
           );
           setGraph(newGraph);
+          editingNode(false);
         } catch (error) {
           console.error(error);
         }
@@ -268,79 +331,114 @@ function App() {
     }
   };
 
-  // removing a link
-  const removeLink = (source, target) => {
-    const newGraph = { ...graph };
-    // remove the outLink from the source
-    for (let i = 0; i < graph["nodes"].length; i++) {
-      const node = graph["nodes"][i];
-      if (node.id === source) {
-        const outLinkIdx = node.outLinks.indexOf(target);
-        node.outLinks.splice(outLinkIdx, 1);
-      }
-    }
-    // remove the inLink from the target
-    for (let i = 0; i < graph["nodes"].length; i++) {
-      const node = graph["nodes"][i];
-      if (node.id === target) {
-        const inLinkIdx = node.inLinks.indexOf(source);
-        node.inLinks.splice(inLinkIdx, 1);
-      }
-    }
-    // remove the edge where inLink and outLink match
-    for (let i = 0; i < newGraph["links"].length; i++) {
-      const link = newGraph["links"][i];
-      if (link.source.id === source && link.target.id === target) {
-        newGraph.links.splice(i, 1);
-      }
-    }
-    setGraph(newGraph);
-  };
+  //==================================================================================
+  // RENDERING
+  //==================================================================================
 
   return (
-    <>
-      <ForceGraph3D
-        width={width}
-        graphData={graph}
-        onNodeClick={handleNodeClick}
-        enableNodeDrag={enableNodeDrag}
-        nodeColor="color"
-        nodeOpacity={nodeOpacity}
-        nodeLabel="title"
-        linkColor="color"
-        linkWidth={linkWidth}
-        linkOpacity={linkOpacity}
-        linkDirectionalArrowLength={inkDirectionalArrowLength}
-        linkDirectionalParticles={linkDirectionalParticles}
-        linkDirectionalParticleWidth={linkDirectionalParticleWidth}
-        linkCurvature="curvature"
-        linkCurveRotation="rotation"
-        backgroundColor={backgroundColor}
-      />
-      <Menu
-        setDisplayMenu={setDisplayMenu}
-        displayMenu={displayMenu}
-        setEditingSettings={setEditingSettings}
-      />
-      <Create newNode={newNode} />
-      <Panel
-        breakpoint={breakpoint}
-        editingSettings={editingSettings}
-        setDisplayMenu={setDisplayMenu}
-        handleNodeClick={handleNodeClick}
-        graph={graph}
-        currNode={currNode}
-        setCurrNode={setCurrNode}
-        setEditing={setEditing}
-        editing={editing}
-        updateGraph={updateGraph}
-        createLink={createLink}
-        removeLink={removeLink}
-        deleteNode={deleteNode}
-        selection={selection}
-      />
-    </>
+    <div className="text-gray-lightest">
+      {displayDiscardNodePopUp ? (
+        <>
+          <DiscardNodeChangesPopUp
+            setEditingNode={setEditingNode}
+            setDisplayDiscardNodeChangesPopUp={
+              setDisplayDiscardNodeChangesPopUp
+            }
+          />
+          <ForceGraph3D
+            showNavInfo={false}
+            width={width}
+            graphData={graph}
+            onNodeClick={handleNodeClick}
+            enableNodeDrag={enableNodeDrag}
+            nodeColor="color"
+            nodeOpacity={nodeOpacity}
+            nodeLabel="title"
+            linkColor="color"
+            linkWidth={linkWidth}
+            linkOpacity={linkOpacity}
+            linkDirectionalArrowLength={inkDirectionalArrowLength}
+            linkDirectionalParticles={linkDirectionalParticles}
+            linkDirectionalParticleWidth={linkDirectionalParticleWidth}
+            linkCurvature="curvature"
+            linkCurveRotation="rotation"
+            backgroundColor={backgroundColor}
+          />
+          <Menu
+            setDisplayMenu={setDisplayMenu}
+            displayMenu={displayMenu}
+            setEditingSettings={setEditingSettings}
+          />
+          <Create createNode={createNode} />
+          <Panel
+            setDisplayDiscardNodeChangesPopUp={
+              setDisplayDiscardNodeChangesPopUp
+            }
+            setDisplayDiscardNodePopUp={setDisplayDiscardNodePopUp}
+            updateGraph={updateGraph}
+            breakpoint={breakpoint}
+            editingSettings={editingSettings}
+            setEditingSettings={setEditingSettings}
+            setDisplayMenu={setDisplayMenu}
+            handleNodeClick={handleNodeClick}
+            graph={graph}
+            focusedNode={focusedNode}
+            setfocusedNode={setfocusedNode}
+            setEditingNode={setEditingNode}
+            editingNode={editingNode}
+            createLink={createLink}
+            removeLink={removeLink}
+            selection={selection}
+          />
+        </>
+      ) : (
+        <>
+          <ForceGraph3D
+            showNavInfo={false}
+            width={width}
+            graphData={graph}
+            onNodeClick={handleNodeClick}
+            enableNodeDrag={enableNodeDrag}
+            nodeColor="color"
+            nodeOpacity={nodeOpacity}
+            nodeLabel="title"
+            linkColor="color"
+            linkWidth={linkWidth}
+            linkOpacity={linkOpacity}
+            linkDirectionalArrowLength={inkDirectionalArrowLength}
+            linkDirectionalParticles={linkDirectionalParticles}
+            linkDirectionalParticleWidth={linkDirectionalParticleWidth}
+            linkCurvature="curvature"
+            linkCurveRotation="rotation"
+            backgroundColor={backgroundColor}
+          />
+          <Menu
+            setDisplayMenu={setDisplayMenu}
+            displayMenu={displayMenu}
+            setEditingSettings={setEditingSettings}
+          />
+          <Create createNode={createNode} />
+          <Panel
+            setDisplayDiscardNodePopUp={setDisplayDiscardNodePopUp}
+            updateGraph={updateGraph}
+            breakpoint={breakpoint}
+            editingSettings={editingSettings}
+            setEditingSettings={setEditingSettings}
+            setDisplayMenu={setDisplayMenu}
+            handleNodeClick={handleNodeClick}
+            graph={graph}
+            focusedNode={focusedNode}
+            setfocusedNode={setfocusedNode}
+            setEditingNode={setEditingNode}
+            editingNode={editingNode}
+            createLink={createLink}
+            removeLink={removeLink}
+            deleteNode={deleteNode}
+            selection={selection}
+          />
+        </>
+      )}
+      ;
+    </div>
   );
 }
-
-export default App;

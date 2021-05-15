@@ -14,7 +14,9 @@ var app = express();
 app.use(cors());
 app.use(json());
 
-// ===ENDPOINTS===
+//==================================================================================
+// ENDPOINTS
+//==================================================================================
 
 // add node
 app.post("/add-node", async function (req, res) {
@@ -37,7 +39,7 @@ app.post("/add-node", async function (req, res) {
     );
 
     await session.close();
-    res.end(JSON.stringify(result));
+    res.end(JSON.stborderify(result));
   } catch (error) {
     console.error(error);
   }
@@ -71,7 +73,7 @@ app.post("/add-link", async function (req, res) {
     );
 
     await session.close();
-    res.end(JSON.stringify(result));
+    res.end(JSON.stborderify(result));
   } catch (error) {
     console.error(error);
   }
@@ -96,7 +98,7 @@ app.put("/update-node", async function (req, res) {
     );
 
     await session.close();
-    res.end(JSON.stringify(result));
+    res.end(JSON.stborderify(result));
   } catch (error) {
     console.error(error);
   }
@@ -113,7 +115,7 @@ app.delete("/delete-node", async function (req, res) {
    `
     );
     await session.close();
-    res.end(JSON.stringify(result));
+    res.end(JSON.stborderify(result));
   } catch (error) {
     console.error(error);
   }
@@ -194,7 +196,10 @@ app.get("/graph", async function (req, res) {
   }
 });
 
-// connection
+//==================================================================================
+// CONNECTION
+//==================================================================================
+
 var server = app.listen(8000, function () {
   var host = "localhost";
   var port = server.address().port;

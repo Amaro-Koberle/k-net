@@ -6,16 +6,13 @@ module.exports = {
       transparent: "transparent",
       current: "currentColor",
       gray: {
-        darkest: "#141414",
-        dark: "#383838",
-        DEFAULT: "#474747",
+        darkest: "#1a1a1a",
+        darker: "#2a2a2a",
+        dark: "#3b3b3b",
+        DEFAULT: "#4f4f4f",
         light: "#777777",
-        lightest: "#f4f4f4",
-      },
-    },
-    extend: {
-      zIndex: {
-        "-1": "-1",
+        lighter: "#a7a7a7",
+        lightest: "#e6e6e6",
       },
     },
   },

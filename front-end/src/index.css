@@ -4,12 +4,19 @@
 
 @layer components {
   .input {
-    @apply text-sm border-0 rounded bg-gray placeholder-gray-light;
+    @apply text-sm border-0 rounded bg-gray-darker placeholder-gray-light;
   }
   .label {
     @apply text-xs text-gray-light;
   }
   .btn {
-    @apply px-4 py-2 text-sm border rounded border-gray bg-gray-dark hover:bg-gray;
+    @apply px-4 py-2 text-sm border rounded border-gray-darker hover:bg-gray-darker;
+  }
+  .container {
+    @apply w-full p-3 mt-4 border rounded-lg shadow-lg border-gray-darker;
+  }
+
+  .select {
+    @apply px-6 py-2 text-sm border rounded border-gray-darkest bg-gray-darker hover:bg-gray-darker;
   }
 }

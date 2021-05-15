@@ -30,10 +30,7 @@ export default function LogIn({ setHasAccount, setIsLoggedIn }) {
   return (
     <>
       {/* log in form */}
-      <form
-        className="w-full p-2 mt-4 border rounded-lg shadow-lg border-gray"
-        onSubmit={handleSubmit}
-      >
+      <form className="container" onSubmit={handleSubmit}>
         {/* error message */}
         {error && (
           <div className="inline-flex items-center w-full p-2 space-x-4 text-sm border rounded-lg text-gray-light bg-gray border-gray-light">
