@@ -18,9 +18,6 @@ export default function Menu({
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [hasAccount, setHasAccount] = useState(false);
 
-  // temporary solution
-  let displayMenuTemp = false;
-
   if (displayMenu === true) {
     return (
       <>
