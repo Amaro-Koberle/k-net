@@ -39,7 +39,7 @@ app.post("/add-node", async function (req, res) {
     );
 
     await session.close();
-    res.end(JSON.stborderify(result));
+    res.end(JSON.stringify(result));
   } catch (error) {
     console.error(error);
   }
@@ -73,7 +73,7 @@ app.post("/add-link", async function (req, res) {
     );
 
     await session.close();
-    res.end(JSON.stborderify(result));
+    res.end(JSON.stringify(result));
   } catch (error) {
     console.error(error);
   }
@@ -98,7 +98,7 @@ app.put("/update-node", async function (req, res) {
     );
 
     await session.close();
-    res.end(JSON.stborderify(result));
+    res.end(JSON.stringify(result));
   } catch (error) {
     console.error(error);
   }
@@ -115,7 +115,7 @@ app.delete("/delete-node", async function (req, res) {
    `
     );
     await session.close();
-    res.end(JSON.stborderify(result));
+    res.end(JSON.stringify(result));
   } catch (error) {
     console.error(error);
   }

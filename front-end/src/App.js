@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
+import nipplejs from "nipplejs";
 import { ForceGraph3D } from "react-force-graph";
 import { v4 } from "uuid";
 import axios from "axios";
 
 // importing components
 import Panel from "./components/Panel";
-import Create from "./components/Create";
-import Menu from "./components/Menu";
-import DiscardNodePopUp from "./components/DiscardNodePopUp";
-import DiscardNodeChangesPopUp from "./components/DiscardNodePopUp";
-import DeleteNodePopUp from "./components/DiscardNodePopUp";
+import CreateNode from "./components/CreateNode";
+import Search from "./components/Search";
 
 // importing hooks
 import useWidth from "./hooks/useWidth";
@@ -79,7 +77,7 @@ export default function App() {
   });
 
   // what's in the currently focused node?
-  const [focusedNode, setfocusedNode] = useState({
+  const [focusedNode, setFocusedNode] = useState({
     id: "",
     title: "",
     description: "",
@@ -93,24 +91,8 @@ export default function App() {
   // what nodes are currently selected?
   const [selection, setSelection] = useState([]);
 
-  // is the main menu currently being displayed?
-  const [displayMenu, setDisplayMenu] = useState(false);
-
   // is the user currently editing a node?
   const [editingNode, setEditingNode] = useState(false);
-
-  // is the user currently editing their user settings?
-  const [editingSettings, setEditingSettings] = useState(false);
-
-  // is the discard node pop-up currently being displayed?
-  const [displayDiscardNodePopUp, setDisplayDiscardNodePopUp] = useState(false);
-
-  // is the delete node pop-up currently being displayed?
-  const [displayDeleteNodePopUp, setDisplayDeleteNodePopUp] = useState(false);
-
-  // is the discard node changes pop-up currently being displayed?
-  const [displayDiscardNodeChangesPopUp, setDisplayDiscardNodeChangesPopUp] =
-    useState(false);
 
   //==================================================================================
   // APP LOGIC
@@ -145,10 +127,10 @@ export default function App() {
     //reset node color back to default (unfocused) color
     const newNode = { ...focusedNode };
     newNode.color = defaultNodeColor;
-    setfocusedNode(newNode);
+    setFocusedNode(newNode);
 
     // updating focusedNode
-    setfocusedNode({
+    setFocusedNode({
       id: node.id,
       title: node.title,
       description: node.description,
@@ -204,8 +186,6 @@ export default function App() {
       try {
         const result = await axios("http://localhost:8000/graph");
         const newGraph = result.data;
-        console.log("fetching graph");
-        console.log(newGraph);
         setGraph(newGraph);
       } catch (error) {
         console.error(error);
@@ -245,16 +225,12 @@ export default function App() {
     };
     // sending the post request to the back-end
     try {
-      const result = await axios.post(
-        "http://localhost:8000/add-node",
-        emptyNode
-      );
-      const newGraph = { ...graph };
-      newGraph.nodes.push(emptyNode);
+      //const result =
+      await axios.post("http://localhost:8000/add-node", emptyNode);
+      const newGraph = { ...graph, nodes: [...graph.nodes, emptyNode] };
       setGraph(newGraph);
-      setfocusedNode(emptyNode);
+      setFocusedNode(emptyNode);
       setEditingNode(true);
-      console.log("here");
     } catch (error) {
       console.error(error);
     }
@@ -276,7 +252,6 @@ export default function App() {
             }
           );
           setGraph(newGraph);
-          editingNode(false);
         } catch (error) {
           console.error(error);
         }
@@ -286,10 +261,7 @@ export default function App() {
 
   // creating a link
   const createLink = async (sourceNode, targetNode) => {
-    console.log(sourceNode);
-    console.log(targetNode);
     if (targetNode === undefined) {
-      console.log("target node is not valid");
       return;
     }
 
@@ -322,7 +294,6 @@ export default function App() {
         "http://localhost:8000/add-link",
         newLink
       );
-      console.log(newLink);
       const newGraph = { ...graph };
       newGraph.links.push(newLink);
       setGraph(newGraph);
@@ -337,108 +308,43 @@ export default function App() {
 
   return (
     <div className="text-gray-lightest">
-      {displayDiscardNodePopUp ? (
-        <>
-          <DiscardNodeChangesPopUp
-            setEditingNode={setEditingNode}
-            setDisplayDiscardNodeChangesPopUp={
-              setDisplayDiscardNodeChangesPopUp
-            }
-          />
-          <ForceGraph3D
-            showNavInfo={false}
-            width={width}
-            graphData={graph}
-            onNodeClick={handleNodeClick}
-            enableNodeDrag={enableNodeDrag}
-            nodeColor="color"
-            nodeOpacity={nodeOpacity}
-            nodeLabel="title"
-            linkColor="color"
-            linkWidth={linkWidth}
-            linkOpacity={linkOpacity}
-            linkDirectionalArrowLength={inkDirectionalArrowLength}
-            linkDirectionalParticles={linkDirectionalParticles}
-            linkDirectionalParticleWidth={linkDirectionalParticleWidth}
-            linkCurvature="curvature"
-            linkCurveRotation="rotation"
-            backgroundColor={backgroundColor}
-          />
-          <Menu
-            setDisplayMenu={setDisplayMenu}
-            displayMenu={displayMenu}
-            setEditingSettings={setEditingSettings}
-          />
-          <Create createNode={createNode} />
-          <Panel
-            setDisplayDiscardNodeChangesPopUp={
-              setDisplayDiscardNodeChangesPopUp
-            }
-            setDisplayDiscardNodePopUp={setDisplayDiscardNodePopUp}
-            updateGraph={updateGraph}
-            breakpoint={breakpoint}
-            editingSettings={editingSettings}
-            setEditingSettings={setEditingSettings}
-            setDisplayMenu={setDisplayMenu}
-            handleNodeClick={handleNodeClick}
-            graph={graph}
-            focusedNode={focusedNode}
-            setfocusedNode={setfocusedNode}
-            setEditingNode={setEditingNode}
-            editingNode={editingNode}
-            createLink={createLink}
-            removeLink={removeLink}
-            selection={selection}
-          />
-        </>
-      ) : (
-        <>
-          <ForceGraph3D
-            showNavInfo={false}
-            width={width}
-            graphData={graph}
-            onNodeClick={handleNodeClick}
-            enableNodeDrag={enableNodeDrag}
-            nodeColor="color"
-            nodeOpacity={nodeOpacity}
-            nodeLabel="title"
-            linkColor="color"
-            linkWidth={linkWidth}
-            linkOpacity={linkOpacity}
-            linkDirectionalArrowLength={inkDirectionalArrowLength}
-            linkDirectionalParticles={linkDirectionalParticles}
-            linkDirectionalParticleWidth={linkDirectionalParticleWidth}
-            linkCurvature="curvature"
-            linkCurveRotation="rotation"
-            backgroundColor={backgroundColor}
-          />
-          <Menu
-            setDisplayMenu={setDisplayMenu}
-            displayMenu={displayMenu}
-            setEditingSettings={setEditingSettings}
-          />
-          <Create createNode={createNode} />
-          <Panel
-            setDisplayDiscardNodePopUp={setDisplayDiscardNodePopUp}
-            updateGraph={updateGraph}
-            breakpoint={breakpoint}
-            editingSettings={editingSettings}
-            setEditingSettings={setEditingSettings}
-            setDisplayMenu={setDisplayMenu}
-            handleNodeClick={handleNodeClick}
-            graph={graph}
-            focusedNode={focusedNode}
-            setfocusedNode={setfocusedNode}
-            setEditingNode={setEditingNode}
-            editingNode={editingNode}
-            createLink={createLink}
-            removeLink={removeLink}
-            deleteNode={deleteNode}
-            selection={selection}
-          />
-        </>
-      )}
-      ;
+      <>
+        <ForceGraph3D
+          showNavInfo={false}
+          width={width}
+          graphData={graph}
+          onNodeClick={handleNodeClick}
+          enableNodeDrag={enableNodeDrag}
+          nodeColor="color"
+          nodeOpacity={nodeOpacity}
+          nodeLabel="title"
+          linkColor="color"
+          linkWidth={linkWidth}
+          linkOpacity={linkOpacity}
+          linkDirectionalArrowLength={inkDirectionalArrowLength}
+          linkDirectionalParticles={linkDirectionalParticles}
+          linkDirectionalParticleWidth={linkDirectionalParticleWidth}
+          linkCurvature="curvature"
+          linkCurveRotation="rotation"
+          backgroundColor={backgroundColor}
+        />
+        <Search />
+        <CreateNode createNode={createNode} />
+        <Panel
+          editingNode={editingNode}
+          setEditingNode={setEditingNode}
+          deleteNode={deleteNode}
+          updateGraph={updateGraph}
+          breakpoint={breakpoint}
+          handleNodeClick={handleNodeClick}
+          graph={graph}
+          focusedNode={focusedNode}
+          setFocusedNode={setFocusedNode}
+          createLink={createLink}
+          removeLink={removeLink}
+          selection={selection}
+        />
+      </>
     </div>
   );
 }

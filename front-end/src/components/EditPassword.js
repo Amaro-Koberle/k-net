@@ -1,5 +1,8 @@
 import React from "react";
 
+// importing icons
+import { MdArrowBack } from "react-icons/md";
+
 export default function EditPassword({ setEditingPassword }) {
   return (
     <>
