@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 // importing icons
 import { MdLocationSearching } from "react-icons/md";
@@ -11,12 +11,15 @@ export default function CreateOutLink({
   setFocusedNode,
   createLink,
 }) {
+  // this state is used to prevent the use Effect to trigger on first loading
+  const [loading, setLoading] = useState(true);
   // creating outgoing link
   useEffect(() => {
-    createLink(selection[1], focusedNode);
-    setFocusedNode(selection[1]);
-    setCreatingOutLink(false);
-    console.log("selection changed (creating outgoing link)");
+    loading
+      ? setLoading(false)
+      : (createLink(selection[1], focusedNode),
+        setFocusedNode(selection[1]),
+        setCreatingOutLink(false));
   }, [selection]);
 
   return (

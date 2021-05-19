@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 // importing icons
 import { MdLocationSearching } from "react-icons/md";
@@ -11,12 +11,14 @@ export default function CreateInLink({
   setFocusedNode,
   createLink,
 }) {
+  const [loading, setLoading] = useState(true);
   // creating incoming link
   useEffect(() => {
-    createLink(focusedNode, selection[1]);
-    setFocusedNode(selection[1]);
-    setCreatingInLink(false);
-    console.log("selection changed (creating incoming link)");
+    loading
+      ? setLoading(false)
+      : (createLink(focusedNode, selection[1]),
+        setFocusedNode(selection[1]),
+        setCreatingInLink(false));
   }, [selection]);
 
   return (

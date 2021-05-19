@@ -11,21 +11,14 @@ import { MdDelete } from "react-icons/md";
 
 export default function EditInLinks({
   focusedNode,
-  setFocusedNode,
   graph,
   removeLink,
-  createLink,
-  selection,
-  creatingInLink,
   setCreatingInLink,
 }) {
   const [sourceInput, setSourceInput] = useState("");
 
   return (
-    <div className="container">
-      <span className="flex justify-center text-sm text-gray-light">
-        Incoming links
-      </span>
+    <>
       <>
         <div
           onClick={() => setCreatingInLink(true)}
@@ -48,22 +41,22 @@ export default function EditInLinks({
           </button>
         </div>
       </>
-      {/* list of nodes connected through incoming links */}
-      {/* <ul>
-            {focusedNode.inLinks.map((link, idx) => {
-              return (
-                <li key={idx}>
-                  <NodeWidget NodeID={link} graph={graph} />
-                  <button
-                    type="button"
-                    onClick={() => removeLink(link, focusedNode.id)}
-                  >
-                    <MdDelete />
-                  </button>
-                </li>
-              );
-            })}
-          </ul> */}
-    </div>
+      {/* list of incoming links */}
+      <ul className="mt-4">
+        {focusedNode.inLinks.map((link, idx) => {
+          return (
+            <li key={idx}>
+              <NodeWidget NodeID={link} graph={graph} />
+              <button
+                type="button"
+                onClick={() => removeLink(link, focusedNode.id)}
+              >
+                <MdDelete />
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+    </>
   );
 }

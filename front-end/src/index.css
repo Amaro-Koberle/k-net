@@ -12,6 +12,11 @@
   .btn {
     @apply px-4 py-2 text-sm border rounded border-gray-darker hover:bg-gray-darker;
   }
+
+  .btn-primary {
+    @apply px-4 py-2 text-sm rounded bg-gray-lighter text-gray-darkest hover:bg-gray-lightest;
+  }
+
   .container {
     @apply w-full p-3 mt-4 border rounded-lg shadow-lg border-gray-darker;
   }

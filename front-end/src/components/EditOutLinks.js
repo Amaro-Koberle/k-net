@@ -11,21 +11,14 @@ import { MdDelete } from "react-icons/md";
 
 export default function EditOutLinks({
   focusedNode,
-  setFocusedNode,
   graph,
   removeLink,
-  createLink,
-  selection,
-  creatingOutLink,
   setCreatingOutLink,
 }) {
   const [targetInput, setTargetInput] = useState("");
 
   return (
-    <div className="container">
-      <span className="flex justify-center text-sm text-gray-light">
-        Outgoing links
-      </span>
+    <>
       <>
         <div
           onClick={() => setCreatingOutLink(true)}
@@ -44,23 +37,23 @@ export default function EditOutLinks({
           </button>
         </div>
       </>
-      {/* list of nodes connected through outgoing links */}
-      {/* <ul>
-            {focusedNode.outLinks.map((link, idx) => {
-              return (
-                <li key={idx}>
-                  <NodeWidget NodeID={link} graph={graph} />
-                  <button
-                    className="text-sm"
-                    type="button"
-                    onClick={() => removeLink(focusedNode.id, link)}
-                  >
-                    <MdDelete />
-                  </button>
-                </li>
-              );
-            })}
-          </ul> */}
-    </div>
+      {/* list of outgoing links */}
+      <ul className="mt-4">
+        {focusedNode.outLinks.map((link, idx) => {
+          return (
+            <li key={idx}>
+              <NodeWidget NodeID={link} graph={graph} />
+              <button
+                className="text-sm"
+                type="button"
+                onClick={() => removeLink(focusedNode.id, link)}
+              >
+                <MdDelete />
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+    </>
   );
 }

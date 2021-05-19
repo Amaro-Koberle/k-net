@@ -6,6 +6,7 @@ import SignUp from "./SignUp";
 import LogIn from "./LogIn";
 import UserMenu from "./UserMenu";
 import Settings from "./Settings";
+import ResetPassword from "./ResetPassword";
 
 // importing icons
 import { MdClose } from "react-icons/md";
@@ -13,6 +14,8 @@ import { MdClose } from "react-icons/md";
 export default function Menu({ setDisplayMenu, displayMenu }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [hasAccount, setHasAccount] = useState(false);
+  // is the user currently reseting their password?
+  const [resettingPassword, setResettingPassword] = useState(false);
 
   return (
     <>
@@ -29,9 +32,14 @@ export default function Menu({ setDisplayMenu, displayMenu }) {
               <AuthProvider>
                 <UserMenu setDisplayMenu={setDisplayMenu} />
               </AuthProvider>
+            ) : resettingPassword ? (
+              <AuthProvider>
+                <ResetPassword setResettingPassword={setResettingPassword} />
+              </AuthProvider>
             ) : hasAccount ? (
               <AuthProvider>
                 <LogIn
+                  setResettingPassword={setResettingPassword}
                   setHasAccount={setHasAccount}
                   setIsLoggedIn={setIsLoggedIn}
                 />

@@ -2,7 +2,7 @@ import React from "react";
 
 //importing icons
 import { MdDelete } from "react-icons/md";
-import { MdCheck } from "react-icons/md";
+import { MdCheckCircle } from "react-icons/md";
 
 export default function DiscardNodePopUp({
   deleteNode,
@@ -21,14 +21,14 @@ export default function DiscardNodePopUp({
           onClick={() => deleteNode()}
           className="flex items-center p-2 mt-2 space-x-4 rounded-md hover:bg-gray"
         >
-          <MdDelete />
+          <MdDelete className="text-xl" />
           <span>Discard node</span>
         </div>
         <div
           onClick={() => setDisplayDiscardNodePopUp(false)}
           className="flex items-center p-2 mt-2 space-x-4 rounded-md hover:bg-gray"
         >
-          <MdCheck />
+          <MdCheckCircle className="text-xl" />
           <span>Continue editing</span>
         </div>
       </div>

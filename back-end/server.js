@@ -33,7 +33,11 @@ app.post("/add-node", async function (req, res) {
       description: "${req.body.description}",
       author:"${req.body.author}",
       color:"${req.body.color}",
-      creationDate:"${req.body.creationDate}"
+      visibility:"${req.body.visibility}",
+      createdOn:"${req.body.createdOn}",
+      lastEditedOn:"${req.body.lastEditedOn}",
+      prizeAmount:"${req.body.prizeAmount}",
+      prizeCondition:"${req.body.prizeCondition}"
     })
    `
     );
@@ -67,7 +71,8 @@ app.post("/add-link", async function (req, res) {
       rotation:"${req.body.rotation}",
       author:"${req.body.author}",
       color:"${req.body.color}",
-      creationDate:"${req.body.creationDate}"
+      createdOn:"${req.body.createdOn}",
+      lastEditedOn:"${req.body.lastEditedOn}"
     }]->(b)
    `
     );
@@ -93,7 +98,11 @@ app.put("/update-node", async function (req, res) {
     n.description = "${req.body.description}",
     n.color = "${req.body.color}",
     n.author = "${req.body.author}",
-    n.creationDate = "${req.body.creationDate}"
+    n.visibility = "${req.body.visibility}",
+    n.createdOn = "${req.body.createdOn}",
+    n.lastEditedOn = "${req.body.lastEditedOn}",
+    n.prizeAmount = "${req.body.prizeAmount}",
+    n.prizeCondition = "${req.body.prizeCondition}"
    `
     );
 
@@ -138,7 +147,11 @@ app.get("/graph", async function (req, res) {
     o.description AS description,
     o.color AS color,
     o.author AS author,
-    o.creationDate AS creationDate
+    o.createdOn AS createdOn,
+    o.lastEditedOn AS lastEditedOn,
+    o.prizeAmount AS prizeAmount,
+    o.prizeCondition AS prizeCondition,
+    o.visibility AS visibility
     `
     );
 
@@ -154,7 +167,9 @@ app.get("/graph", async function (req, res) {
     r.rotation AS rotation,
     r.color AS color,
     r.author AS author,
-    r.creationDate AS creationDate
+    r.createdOn AS createdOn,
+    r.lastEditedOn AS lastEditedOn,
+    r.visibility AS visibility
     `
     );
 
@@ -167,7 +182,11 @@ app.get("/graph", async function (req, res) {
         description: r.get("description"),
         color: r.get("color"),
         author: r.get("author"),
-        creationDate: r.get("creationDate"),
+        createdOn: r.get("createdOn"),
+        lastEditedOn: r.get("lastEditedOn"),
+        prizeAmount: r.get("prizeAmount"),
+        prizeCondition: r.get("prizeCondition"),
+        visibility: r.get("visibility"),
       };
     });
 
@@ -179,7 +198,9 @@ app.get("/graph", async function (req, res) {
         rotation: r.get("rotation"),
         color: r.get("color"),
         author: r.get("author"),
-        creationDate: r.get("creationDate"),
+        createdOn: r.get("createdOn"),
+        lastEditedOn: r.get("lastEditedOn"),
+        visibility: r.get("visibility"),
       };
     });
 

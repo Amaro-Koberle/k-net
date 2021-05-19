@@ -3,6 +3,8 @@ import React, { useState } from "react";
 // importing components
 import EditPassword from "./EditPassword";
 import EditEmail from "./EditEmail";
+import DeleteAccount from "./DeleteAccount";
+import EditUsername from "./EditUsername";
 
 // importing icons
 import { MdNavigateNext } from "react-icons/md";
@@ -17,6 +19,10 @@ export default function Settings({ setEditingSettings }) {
   const [editingPassword, setEditingPassword] = useState(false);
   // is the user currently editing their email?
   const [editingEmail, setEditingEmail] = useState(false);
+  // is the user currently deleting their account?
+  const [deletingAccount, setDeletingAccount] = useState(false);
+  // is the user currently editing their username?
+  const [editingUsername, setEditingUsername] = useState(false);
 
   return (
     <>
@@ -24,6 +30,10 @@ export default function Settings({ setEditingSettings }) {
         <EditEmail setEditingEmail={setEditingEmail} />
       ) : editingPassword ? (
         <EditPassword setEditingPassword={setEditingPassword} />
+      ) : deletingAccount ? (
+        <DeleteAccount setDeletingAccount={setDeletingAccount} />
+      ) : editingUsername ? (
+        <EditUsername setEditingUsername={setEditingUsername} />
       ) : (
         <div className="fixed top-0 left-0 z-40 w-screen h-screen p-3 bg-opacity-75 bg-gray-darkest border-gray-darker">
           {/* header */}
@@ -56,7 +66,10 @@ export default function Settings({ setEditingSettings }) {
               <span className="text-gray-light">••••••••</span>
               <MdNavigateNext />
             </div>
-            <div className="flex items-center mt-4 space-x-2 jsutify-between">
+            <div
+              onClick={() => setDeletingAccount(true)}
+              className="flex items-center mt-4 space-x-2 jsutify-between"
+            >
               <span>Delete account</span>
               <span className="text-gray-light"></span>
               <MdNavigateNext />
@@ -69,8 +82,11 @@ export default function Settings({ setEditingSettings }) {
               <span className="text-gray-light">Profile</span>
               <MdArrowDropUp className="text-lg" />
             </div>
-            <div className="flex items-center mt-4 space-x-2 jsutify-between">
-              <span>Name</span>
+            <div
+              onClick={() => setEditingUsername(true)}
+              className="flex items-center mt-4 space-x-2 jsutify-between"
+            >
+              <span>Username</span>
               <span className="text-gray-light">@username</span>
               <MdNavigateNext />
             </div>

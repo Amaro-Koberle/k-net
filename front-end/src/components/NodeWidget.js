@@ -9,7 +9,7 @@ export default function NodeWidget({ NodeID, graph }) {
   }, []);
 
   return (
-    <div className="flex items-center justify-between px-2 py-1 mt-2 text-sm rounded-lg text-gray-dark bg-gray-lightest">
+    <div className="flex items-center justify-between px-2 py-1 mt-2 text-sm rounded-lg text-gray-darkest bg-gray-lighter">
       <span>{node.title}</span>
       <MdExpandMore />
     </div>

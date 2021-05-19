@@ -34,7 +34,6 @@ export default function App() {
 
   // nodes
   const nodeOpacity = 1;
-  const enableNodeDrag = false;
 
   // links
   const linkWidth = 1;
@@ -85,7 +84,11 @@ export default function App() {
     outLinks: [],
     color: defaultNodeColor,
     author: "",
-    creationDate: "",
+    visibility: "",
+    prizeAmount: "",
+    prizeCondition: "",
+    createdOn: "",
+    lastEditedOn: "",
   });
 
   // what nodes are currently selected?
@@ -97,6 +100,9 @@ export default function App() {
   //==================================================================================
   // APP LOGIC
   //==================================================================================
+
+  // TODO get the CSS2DRenderer
+  // const extraRenderers = //[new THREE.CSS2DRenderer()];
 
   // updating the graph
   const updateGraph = () => {
@@ -137,8 +143,12 @@ export default function App() {
       inLinks: node.inLinks,
       outLinks: node.outLinks,
       author: node.author,
-      creationDate: node.creationDate,
       color: focusedNodeColor,
+      visibility: node.visibility,
+      prizeAmount: node.prizeAmount,
+      prizeCondition: node.prizeCondition,
+      createdOn: node.createdOn,
+      lastEditedOn: node.lastEditedOn,
     });
 
     // changing selection
@@ -180,11 +190,16 @@ export default function App() {
   // API CALLS
   //==================================================================================
 
+  // flip to true in order to direct all API calls to the AWS server
+  const directingCallsToAWS = false;
+
   // fetching the graph from the database everytime the app reloads
   useEffect(() => {
     const fetchGraph = async () => {
       try {
-        const result = await axios("http://localhost:8000/graph");
+        const result = directingCallsToAWS
+          ? await axios("https://api.amarovega.net/graph")
+          : await axios("http://localhost:8000/graph");
         const newGraph = result.data;
         setGraph(newGraph);
       } catch (error) {
@@ -199,10 +214,12 @@ export default function App() {
   useEffect(() => {
     const updateDataBase = async () => {
       try {
-        const result = await axios.put(
-          "http://localhost:8000/update-node",
-          focusedNode
-        );
+        const result = directingCallsToAWS
+          ? await axios.put(
+              "https://api.amarovega.net/update-node",
+              focusedNode
+            )
+          : await axios.put("http://localhost:8000/update-node", focusedNode);
       } catch (error) {
         console.error(error);
       }
@@ -221,12 +238,17 @@ export default function App() {
       outLinks: [],
       color: defaultNodeColor,
       author: "",
-      creationDate: "",
+      visibility: "",
+      prizeAmount: "",
+      prizeCondition: "",
+      createdOn: "",
+      lastEditedOn: "",
     };
     // sending the post request to the back-end
     try {
-      //const result =
-      await axios.post("http://localhost:8000/add-node", emptyNode);
+      const result = directingCallsToAWS
+        ? await axios.put("https://api.amarovega.net/add-node", emptyNode)
+        : await axios.post("http://localhost:8000/add-node", emptyNode);
       const newGraph = { ...graph, nodes: [...graph.nodes, emptyNode] };
       setGraph(newGraph);
       setFocusedNode(emptyNode);
@@ -245,12 +267,13 @@ export default function App() {
         newGraph["nodes"].splice(i, 1);
         // sending the delete request to the back-end
         try {
-          const result = await axios.delete(
-            "http://localhost:8000/delete-node",
-            {
-              data: { id: focusedNode.id },
-            }
-          );
+          const result = directingCallsToAWS
+            ? await axios.delete("https://api.amarovega.net/delete-node", {
+                data: { id: focusedNode.id },
+              })
+            : await axios.delete("http://localhost:8000/delete-node", {
+                data: { id: focusedNode.id },
+              });
           setGraph(newGraph);
         } catch (error) {
           console.error(error);
@@ -285,15 +308,16 @@ export default function App() {
       description: "",
       author: "",
       color: defaultLinkColor,
-      creationDate: "",
+      createdOn: "",
+      lastEditedOn: "",
+      visibility: "",
     };
 
     // sending the post request to the back-end
     try {
-      const result = await axios.post(
-        "http://localhost:8000/add-link",
-        newLink
-      );
+      const result = directingCallsToAWS
+        ? await axios.post("https://api.amarovega.net/add-link", newLink)
+        : await axios.post("http://localhost:8000/add-link", newLink);
       const newGraph = { ...graph };
       newGraph.links.push(newLink);
       setGraph(newGraph);
@@ -310,11 +334,19 @@ export default function App() {
     <div className="text-gray-lightest">
       <>
         <ForceGraph3D
+          // extraRenderers={extraRenderers}
+          // nodeThreeObjectExtend={true}
+          // nodeThreeObject={(node) => {
+          //   const nodeElement = document.createElement("div");
+          //   nodeElement.textContent = node.id;
+          //   nodeElement.className = "node-label";
+          //   return new THREE.CSS2DObject(nodeElement);
+          // }}
           showNavInfo={false}
           width={width}
           graphData={graph}
           onNodeClick={handleNodeClick}
-          enableNodeDrag={enableNodeDrag}
+          enableNodeDrag={false}
           nodeColor="color"
           nodeOpacity={nodeOpacity}
           nodeLabel="title"

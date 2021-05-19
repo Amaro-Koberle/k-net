@@ -39,7 +39,6 @@ export default function Panel({
           {focusedNode.id !== "" ? (
             <>
               {/* panel */}
-
               {editingNode ? (
                 <EditNode
                   updateGraph={updateGraph}
@@ -55,7 +54,9 @@ export default function Panel({
               ) : (
                 <div className="fixed bottom-0 left-0 z-10 w-screen p-3 bg-opacity-75 shadow-lg rounded-t-2xl ring-1 bg-gray-darkest ring-gray-darker">
                   {/* small divider */}
-                  <div className="flex items-center w-12 border-2 rounded-full border-gray-darker"></div>
+                  <div className="grid w-full justify-items-center">
+                    <div className="w-10 border-2 rounded-full border-gray-dark"></div>
+                  </div>
                   <NodeDisplay
                     focusedNode={focusedNode}
                     setEditingNode={setEditingNode}
