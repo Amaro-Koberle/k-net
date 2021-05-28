@@ -33,67 +33,77 @@ export default function LogIn({
 
   return (
     <>
-      <div className="container">
+      <div className="container bg-gray-darker">
         {/* header */}
-        <span className="flex justify-center w-full">Log In</span>
+        <span className="flex justify-center w-full text-lg">Log In</span>
         {/* log in form */}
-        <form onSubmit={handleSubmit}>
+        <form className="space-y-7" onSubmit={handleSubmit}>
           {/* error message */}
           {error && (
-            <div className="inline-flex items-center w-full p-2 space-x-4 text-sm border rounded-lg text-gray-light bg-gray border-gray-light">
+            <div className="inline-flex items-center w-full p-2 space-x-4 text-sm border rounded-lg text-primary-light bg-primary border-primary-light">
               <MdWarning />
               <span>{error}</span>
             </div>
           )}
-          <>
-            <label className="label" htmlFor="email">
-              email
-            </label>
-
+          <div className="form-field">
             <input
-              className="w-full input"
+              className="input"
               type="email"
               id="email"
+              placeholder=" "
               ref={emailRef}
               required
-            ></input>
-          </>
-          <>
+            />
+            <label className="label" htmlFor="email">
+              Email
+            </label>
+          </div>
+          <div className="form-field">
+            <input
+              className="input"
+              type="password"
+              id="password"
+              placeholder=" "
+              ref={passwordRef}
+              required
+            />
             <label className="label" htmlFor="password">
               Password
             </label>
-
-            <input
-              className="w-full input"
-              type="password"
-              id="password"
-              ref={passwordRef}
-              required
-            ></input>
-          </>
-          <button
-            className="flex justify-end w-full mt-1 text-sm lex text-gray-lighter"
-            onClick={() => setResettingPassword(true)}
-            type="button"
-          >
-            Forgot password?
-          </button>
+          </div>
+          <div className="flex justify-start">
+            <input type="checkbox" id="rememberme" />
+            <label className="text-primary-light" htmlFor="rememberme">
+              Remember me
+            </label>
+          </div>
+          <div className="flex justify-end w-full">
+            <button
+              className="text-sm link"
+              onClick={() => setResettingPassword(true)}
+              type="button"
+            >
+              Forgot password?
+            </button>
+          </div>
           <button
             disabled={loading}
-            className="w-full mt-4 btn-primary"
+            className="w-full mt-4 btn-light"
             type="submit"
           >
             Log in
           </button>
         </form>
       </div>
-      <button
-        className="flex justify-center w-full mt-4 text-sm text-gray-lighter"
-        type="button"
-        onClick={() => setHasAccount(false)}
-      >
-        Create account
-      </button>
+      <div className="flex justify-center w-full mt-4">
+        <button
+          className="link"
+          type="button"
+          onClick={() => setHasAccount(false)}
+        >
+          Create account
+        </button>
+      </div>
     </>
   );
 }

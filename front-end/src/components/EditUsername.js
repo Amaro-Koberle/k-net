@@ -1,23 +1,23 @@
 import React from "react";
 
-// importing icons
-import { MdArrowBack } from "react-icons/md";
-
-export default function EditUsername({ setEditingUsername }) {
+export default function EditUsername() {
   return (
-    <>
-      {/* header */}
-      <div className="flex items-center space-x-2 text-lg jsutify-between">
-        <button onClick={() => setEditingUsername(false)}>
-          <MdArrowBack />
-        </button>
-        <h3>Edit Username</h3>
-      </div>
+    <form className="container pt-5 space-y-7 bg-gray-darker">
       {/* username */}
-      <label className="label" htmlFor="username">
-        New username
-      </label>
-      <input className="w-full input" type="text" id="username"></input>
-    </>
+      <div className="form-field">
+        <input
+          className="w-full input"
+          type="text"
+          id="newUsername"
+          placeholder=" "
+        />
+        <label className="label" htmlFor="newUsername">
+          New username
+        </label>
+      </div>
+      <button type="button" className="btn-light">
+        Save
+      </button>
+    </form>
   );
 }

@@ -36,41 +36,40 @@ export default function UserMenu({ setDisplayMenu }) {
   return (
     <>
       {editingSettings ? (
-        <div className="fixed top-0 left-0 z-40 w-screen h-screen p-3 bg-opacity-75 bg-gray-darkest border-gray-darker">
-          <Settings setEditingSettings={setEditingSettings} />
-        </div>
+        <Settings setEditingSettings={setEditingSettings} />
       ) : (
         <>
+          {/* user */}
           <div className="container grid items-center grid-cols-4 grid-rows-2 gap-2">
             <img
-              className="row-span-2 border rounded-full w-14 h-14 border-gray-darker"
+              className="row-span-2 border rounded-full w-14 h-14 border-primary-darker"
               src={profilePicture}
               alt={userName}
             />
-            <span className="col-span-3">{userName}</span>
-            <span
-              className="col-span-3 text-sm underline text-gray-light"
-              onClick={() => goToHomeNode()}
-            >
-              Go to your home node
-            </span>
+            <span className="col-span-3 text-lg">{userName}</span>
+            <div className="col-span-3">
+              <span className="link" onClick={() => goToHomeNode()}>
+                Go to your home node
+              </span>
+            </div>
           </div>
           <>
-            <div
-              className="flex items-center p-2 mt-2 space-x-4 rounded-md hover:bg-gray"
+            <button
+              className="py-2 btn-menu"
+              type="button"
               onClick={() => setEditingSettings(true)}
             >
-              <MdSettings className="text-lg" />
-              <span>Settings</span>
-            </div>
-            <div className="flex items-center p-2 mt-2 space-x-4 rounded-md hover:bg-gray">
-              <MdAttachMoney className="text-lg" />
-              <span>Credits</span>
-            </div>
+              <MdSettings className="mr-4 text-lg" />
+              Settings
+            </button>
+            <button type="button" className="py-2 btn-menu">
+              <MdAttachMoney className="mr-4 text-lg" />
+              Credits
+            </button>
           </>
           {/* error message */}
           {error && (
-            <div className="inline-flex items-center w-full p-2 space-x-4 text-sm border rounded-lg text-gray-light bg-gray border-gray-light">
+            <div className="inline-flex items-center w-full p-2 space-x-4 text-sm border rounded-lg text-primary-light bg-primary border-primary-light">
               <MdWarning />
               <span>{error}</span>
             </div>

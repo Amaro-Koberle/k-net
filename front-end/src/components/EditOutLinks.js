@@ -22,7 +22,7 @@ export default function EditOutLinks({
       <>
         <div
           onClick={() => setCreatingOutLink(true)}
-          className="inline-flex items-center justify-between w-full p-2 px-5 mt-2 rounded-full bg-gray-darker"
+          className="inline-flex items-center justify-between w-full p-2 px-5 mt-2 rounded-full bg-primary-darker"
         >
           <input
             className="input"
@@ -31,7 +31,7 @@ export default function EditOutLinks({
             placeholder="Create outgoing link"
             value={targetInput}
             onInput={(e) => setTargetInput(e.target.value)}
-          ></input>
+          />
           <button className="text-lg" type="button">
             <MdLocationSearching></MdLocationSearching>
           </button>

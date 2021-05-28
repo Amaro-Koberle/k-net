@@ -1,32 +1,35 @@
 import React from "react";
 
-// importing icons
-import { MdArrowBack } from "react-icons/md";
-
-export default function EditPassword({ setEditingPassword }) {
+export default function EditPassword() {
   return (
-    <>
-      {/* header */}
-      <div className="flex items-center space-x-2 text-lg jsutify-between">
-        <button onClick={() => setEditingPassword(false)}>
-          <MdArrowBack />
-        </button>
-        <h3>Edit Password</h3>
+    <form className="container pt-5 bg-gray-darker space-y-7">
+      {/* new password */}
+      <div className="form-field">
+        <input
+          className="w-full input"
+          type="password"
+          id="title"
+          placeholder=" "
+        />
+        <label className="label" htmlFor="title">
+          New password
+        </label>
       </div>
-      {/* password */}
-      <label className="label" htmlFor="title">
-        New password
-      </label>
-      <input className="w-full input" type="password" id="title"></input>
       {/* confirm password */}
-      <label className="label" htmlFor="newPassword">
-        Repeat new password
-      </label>
-      <input
-        className="w-full input"
-        type="password"
-        id="ConfirmNewPassword"
-      ></input>
-    </>
+      <div className="form-field">
+        <input
+          className="w-full input"
+          type="password"
+          id="ConfirmNewPassword"
+          placeholder=" "
+        />
+        <label className="label" htmlFor="newPassword">
+          Repeat new password
+        </label>
+      </div>
+      <button type="button" className="btn-light">
+        Save
+      </button>
+    </form>
   );
 }

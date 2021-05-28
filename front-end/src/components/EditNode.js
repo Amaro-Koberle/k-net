@@ -51,6 +51,9 @@ export default function EditNode({
   // has the user changed the content of the node?
   const [nodeContentWasChanged, setNodeContentWasChanged] = useState(false);
 
+  // is the post/save button currently disabled?
+  const [postingDisabled, setPostingDisabled] = useState(true);
+
   // TODO are the outgoing links being displayed?
   const [displayOutgoingLinks, setDisplayOutgoingLinks] = useState(false);
 
@@ -127,7 +130,7 @@ export default function EditNode({
             createLink={createLink}
           />
         ) : (
-          <div className="fixed top-0 left-0 z-40 w-screen h-screen p-3 bg-opacity-75 bg-gray-darkest border-gray-darker">
+          <>
             {/* header */}
             <div className="grid items-center grid-cols-3 px-2 text-lg jsutify-between">
               <button
@@ -136,8 +139,7 @@ export default function EditNode({
               >
                 <MdArrowBack />
               </button>
-              <h3 className="justify-self-center">Edit Node</h3>
-
+              <h1 className="justify-self-center">Edit Node</h1>
               <div className="space-x-2 justify-self-end">
                 <button
                   type="button"
@@ -147,24 +149,25 @@ export default function EditNode({
                 </button>
                 <button
                   onClick={() => postingNode()}
-                  className="font-bold"
+                  className="font-bold link"
                   type="button"
+                  disabled={postingDisabled}
                 >
                   Post
                 </button>
               </div>
             </div>
-            <form>
-              <div className="container bg-gray-darker">
+            <>
+              <div className="container bg-primary-darker">
                 {/* author */}
                 <div className="flex items-center justify-between text-sm">
                   <div className="flex items-center space-x-2">
                     <img
-                      className="w-8 h-8 border rounded-full border-gray"
+                      className="border rounded-full w-9 h-9 border-secondary-light"
                       src={profilePicture}
                       alt={userName}
                     />
-                    <span>{userName}</span>
+                    <span className="link">{userName}</span>
                   </div>
                   {/* visibility */}
                   <select className="select" id="visibility">
@@ -173,45 +176,13 @@ export default function EditNode({
                   </select>
                 </div>
                 {/* title and description */}
-                <>
-                  <label className="label" htmlFor="title">
-                    Title
-                  </label>
-                  <input
-                    className="w-full input"
-                    type="text"
-                    id="title"
-                    value={focusedNode.title}
-                    onInput={(e) =>
-                      setFocusedNode({ ...focusedNode, title: e.target.value })
-                    }
-                  ></input>
-                  <label className="label" htmlFor="description">
-                    Description
-                  </label>
-                  <textarea
-                    className="w-full input"
-                    rows="5"
-                    id="description"
-                    value={focusedNode.description}
-                    onInput={(e) =>
-                      setFocusedNode({
-                        ...focusedNode,
-                        description: e.target.value,
-                      })
-                    }
-                  ></textarea>
-                </>
-                {/* prize */}
-                {prizeWasAdded ? (
-                  <>
-                    <label className="label" htmlFor="amount">
-                      Amount
-                    </label>
+                <form className="mt-4 space-y-7">
+                  <div className="form-field">
                     <input
-                      className="w-full input"
-                      type="number"
-                      id="amount"
+                      className="input"
+                      type="text"
+                      id="title"
+                      placeholder=" "
                       value={focusedNode.title}
                       onInput={(e) =>
                         setFocusedNode({
@@ -219,14 +190,17 @@ export default function EditNode({
                           title: e.target.value,
                         })
                       }
-                    ></input>
-                    <label className="label" htmlFor="conditions">
-                      Prize conditions
+                    />
+                    <label className="label" htmlFor="title">
+                      Title
                     </label>
+                  </div>
+                  <div className="form-field">
                     <textarea
-                      className="w-full input"
+                      className="input"
                       rows="5"
-                      id="conditions"
+                      id="description"
+                      placeholder=" "
                       value={focusedNode.description}
                       onInput={(e) =>
                         setFocusedNode({
@@ -235,73 +209,117 @@ export default function EditNode({
                         })
                       }
                     ></textarea>
-                  </>
-                ) : (
-                  <div className="flex justify-end">
-                    <button
-                      onClick={() => setEditingPrize(true)}
-                      className="btn-primary"
-                      type="button"
-                    >
-                      Add prize
-                    </button>
+                    <label className="label" htmlFor="description">
+                      Description
+                    </label>
                   </div>
-                )}
+                </form>
               </div>
-              {/* link tabs */}
-              <div className="container">
-                {displayOutgoingLinks ? (
-                  <>
-                    {/* outgoing links tab */}
-                    <div className="grid grid-cols-2 justify-items-center">
-                      <div onClick={() => setDisplayOutgoingLinks(false)}>
-                        <span className="mt-4 text-sm text-gray-light">
-                          Incoming links
-                        </span>
-                      </div>
-                      <div>
-                        <span className="mt-4 text-sm font-bold text-gray-lightest">
-                          Outgoing links
-                        </span>
-                        <div className="flex items-center w-full border-2 rounded-full border-gray-lightest"></div>
-                      </div>
-                    </div>
-                    {/* outgoing links */}
-                    <EditOutLinks
-                      setCreatingOutLink={setCreatingOutLink}
-                      focusedNode={focusedNode}
-                      removeLink={removeLink}
-                      graph={graph}
+              {/* prize */}
+              {prizeWasAdded ? (
+                <div className="conatiner">
+                  <div className="form-field">
+                    <input
+                      className="input"
+                      type="number"
+                      id="amount"
+                      placeholder=" "
+                      value={focusedNode.title}
+                      onInput={(e) =>
+                        setFocusedNode({
+                          ...focusedNode,
+                          title: e.target.value,
+                        })
+                      }
                     />
-                  </>
-                ) : (
-                  <>
-                    {/* incoming links tab */}
-                    <div className="grid grid-cols-2 justify-items-center">
-                      <div>
-                        <span className="mt-4 text-sm font-bold text-gray-lightest">
-                          Incoming links
-                        </span>
-                        <div className="flex items-center w-full border-2 rounded-full border-gray-lightest"></div>
-                      </div>
-                      <div onClick={() => setDisplayOutgoingLinks(true)}>
-                        <span className="mt-4 text-sm text-gray-light">
-                          Outgoing links
-                        </span>
-                      </div>
+                    <label className="label" htmlFor="amount">
+                      Amount
+                    </label>
+                  </div>
+                  <div>
+                    <textarea
+                      className="input"
+                      rows="5"
+                      id="conditions"
+                      placeholder=" "
+                      value={focusedNode.description}
+                      onInput={(e) =>
+                        setFocusedNode({
+                          ...focusedNode,
+                          description: e.target.value,
+                        })
+                      }
+                    ></textarea>
+                    <label className="label" htmlFor="conditions">
+                      Prize conditions
+                    </label>
+                  </div>
+                </div>
+              ) : (
+                <div className="container">
+                  <button
+                    onClick={() => setEditingPrize(true)}
+                    className="btn-light"
+                    type="button"
+                  >
+                    Add prize
+                  </button>
+                </div>
+              )}
+            </>
+            {/* link tabs */}
+            <div className="container">
+              {displayOutgoingLinks ? (
+                <>
+                  {/* outgoing links tab */}
+                  <div className="grid grid-cols-2 justify-items-center">
+                    <div onClick={() => setDisplayOutgoingLinks(false)}>
+                      <span className="mt-4 text-sm text-primary-light">
+                        Incoming links
+                      </span>
                     </div>
-                    {/* incoming links */}
-                    <EditInLinks
-                      setCreatingInLink={setCreatingInLink}
-                      focusedNode={focusedNode}
-                      removeLink={removeLink}
-                      graph={graph}
-                    />
-                  </>
-                )}
-              </div>
-            </form>
-          </div>
+                    <div>
+                      <span className="mt-4 text-sm font-bold text-primary-lightest">
+                        Outgoing links
+                      </span>
+                      <div className="flex items-center w-full border-2 rounded-full border-primary-lightest"></div>
+                    </div>
+                  </div>
+                  {/* outgoing links */}
+                  <EditOutLinks
+                    setCreatingOutLink={setCreatingOutLink}
+                    focusedNode={focusedNode}
+                    removeLink={removeLink}
+                    graph={graph}
+                  />
+                </>
+              ) : (
+                <>
+                  {/* incoming links tab */}
+                  <div className="grid grid-cols-2 justify-items-center">
+                    <div>
+                      <span className="mt-4 text-sm font-bold text-primary-lightest">
+                        Incoming links
+                      </span>
+                      <div className="flex items-center w-full border-2 rounded-full border-primary-lightest"></div>
+                    </div>
+                    <div onClick={() => setDisplayOutgoingLinks(true)}>
+                      <span className="mt-4 text-sm text-primary-light">
+                        Outgoing links
+                      </span>
+                    </div>
+                  </div>
+                  {/* incoming links */}
+                  <EditInLinks
+                    setCreatingInLink={setCreatingInLink}
+                    focusedNode={focusedNode}
+                    removeLink={removeLink}
+                    graph={graph}
+                  />
+                </>
+              )}
+            </div>
+          </>
         )
       }
     </>

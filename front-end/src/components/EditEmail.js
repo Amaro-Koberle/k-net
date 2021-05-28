@@ -3,21 +3,35 @@ import React from "react";
 // importing icons
 import { MdArrowBack } from "react-icons/md";
 
-export default function EditEmail({ setEditingEmail }) {
+export default function EditEmail() {
   return (
-    <>
-      {/* header */}
-      <div className="flex items-center space-x-2 text-lg jsutify-between">
-        <button onClick={() => setEditingEmail(false)}>
-          <MdArrowBack />
-        </button>
-        <h3>Edit Email</h3>
-      </div>
+    <form className="container pt-5 bg-gray-darker space-y-7">
       {/* email */}
-      <label className="label" htmlFor="title">
-        New email
-      </label>
-      <input className="w-full input" type="password" id="title"></input>
-    </>
+      <div className="form-field">
+        <input
+          className="w-full input"
+          type="password"
+          placeholder=" "
+          id="title"
+        />
+        <label className="label" htmlFor="currentPassword">
+          Current password
+        </label>
+      </div>
+      <div className="form-field">
+        <input
+          className="w-full input"
+          type="email"
+          placeholder=" "
+          id="title"
+        />
+        <label className="label" htmlFor="newEmail">
+          New email
+        </label>
+      </div>
+      <button type="button" className="btn-light">
+        Save
+      </button>
+    </form>
   );
 }

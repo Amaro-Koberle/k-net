@@ -3,25 +3,52 @@
 @tailwind utilities;
 
 @layer components {
-  .input {
-    @apply text-sm border-0 rounded bg-gray-darker placeholder-gray-light;
-  }
-  .label {
-    @apply text-xs text-gray-light;
-  }
-  .btn {
-    @apply px-4 py-2 text-sm border rounded border-gray-darker hover:bg-gray-darker;
+  .form-field {
+    @apply relative border-b focus-within:border-b-2 border-primary focus-within:border-secondary-light;
   }
 
-  .btn-primary {
-    @apply px-4 py-2 text-sm rounded bg-gray-lighter text-gray-darkest hover:bg-gray-lightest;
+  .input {
+    @apply block w-full bg-transparent border-0 active:ring-0 focus:ring-0;
+  }
+
+  input:focus-within ~ label,
+  input:not(:placeholder-shown) ~ label {
+    @apply transform scale-75 -translate-y-6;
+  }
+
+  input:focus-within ~ label {
+    @apply text-secondary-light;
+  }
+
+  .label {
+    @apply absolute duration-300 top-2 text-primary-light origin-0;
+  }
+
+  .btn {
+    @apply w-full px-4 py-2 border rounded shadow-lg active:text-secondary-light focus:outline-none ring-offset-primary-darkest ring-offset-2 focus:ring-2 ring-secondary-light border-primary-darker hover:bg-primary-darker;
+  }
+
+  .btn-light {
+    @apply w-full px-4 py-2 rounded shadow-lg active:text-secondary-light ring-offset-primary-darker focus:outline-none ring-offset-2 focus:ring-2 ring-secondary-light bg-primary-lighter text-primary-darkest hover:bg-primary-lightest;
+  }
+
+  .btn-secondary {
+    @apply w-full px-4 py-2 rounded shadow-lg active:text-secondary-light ring-offset-primary-darkest focus:outline-none ring-offset-2 focus:ring-2 ring-secondary-light bg-secondary-light text-primary-darkest hover:bg-secondary-lighter;
+  }
+
+  .btn-menu {
+    @apply flex items-center w-full p-1 px-4 mt-2 space-x-4 rounded active:text-secondary-light hover:shadow-lg hover:text-primary-lightest text-primary-lighter hover:bg-primary-dark ring-offset-primary-darkest focus:outline-none ring-offset-2 focus:ring-2 ring-secondary-light;
+  }
+
+  .link {
+    @apply text-secondary-light hover:text-secondary-lighter disabled:text-primary focus:outline-none focus:border-b-2 border-secondary-light active:ring-0 focus:ring-0;
   }
 
   .container {
-    @apply w-full p-3 mt-4 border rounded-lg shadow-lg border-gray-darker;
+    @apply w-full p-3 mt-4 border rounded-lg shadow-lg border-primary-darker;
   }
 
   .select {
-    @apply px-6 py-2 text-sm border rounded border-gray-darkest bg-gray-darker hover:bg-gray-darker;
+    @apply px-6 py-2 text-sm border rounded border-primary-darkest bg-primary-darker hover:bg-primary-darker;
   }
 }

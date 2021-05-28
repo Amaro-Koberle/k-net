@@ -10,11 +10,13 @@
     "@testing-library/user-event": "^12.7.1",
     "axios": "^0.21.1",
     "firebase": "^8.4.1",
+    "npm-force-resolutions": "^0.0.10",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "react-force-graph": "^1.37.6",
+    "react-force-graph": "^1.41.3",
     "react-icons": "^4.2.0",
     "react-scripts": "4.0.2",
+    "three-css2drender": "^1.0.0",
     "uuid": "^8.3.2",
     "web-vitals": "^1.1.0"
   },
@@ -22,7 +24,8 @@
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "preinstall": "npx npm-force-resolutions"
   },
   "eslintConfig": {
     "extends": [
@@ -41,6 +44,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "resolutions": {
+    "bezier-js": "4.0.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss7-compat": "^2.0.3",

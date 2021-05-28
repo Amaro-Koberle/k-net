@@ -23,7 +23,7 @@ export default function CreateInLink({
 
   return (
     <div className="fixed top-0 left-0 w-screen p-3">
-      <div className="inline-flex items-center w-full p-2 px-5 space-x-2 rounded-full shadow-lg bg-gray-darker">
+      <div className="inline-flex items-center w-full p-2 px-5 space-x-2 rounded-full shadow-lg bg-primary-darker">
         <button type="button" onClick={() => setCreatingInLink(false)}>
           <MdArrowBack className="text-lg" />
         </button>
@@ -32,7 +32,7 @@ export default function CreateInLink({
           type="text"
           id="Search"
           placeholder="Search or tap node to link as source"
-        ></input>
+        />
         <button type="button">
           <MdLocationSearching className="text-lg" />
         </button>

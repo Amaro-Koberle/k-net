@@ -12,7 +12,7 @@ export default function DeleteAccount({ setDeletingAccount }) {
         <button onClick={() => setDeletingAccount(false)}>
           <MdArrowBack />
         </button>
-        <h3>Delete account</h3>
+        <h1>Delete account</h1>
       </div>
       {/* delete Account */}
       <div className="container">
@@ -22,7 +22,7 @@ export default function DeleteAccount({ setDeletingAccount }) {
         </div>
         <p className="mt-2 text-sm">Warning text placeholder.</p>
         <button
-          className="w-full mt-2 btn bg-gray-light text-gray-darkest"
+          className="w-full mt-2 btn bg-primary-light text-primary-darkest"
           type="button"
           id="deleteAccount"
         >

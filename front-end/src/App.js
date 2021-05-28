@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
-import nipplejs from "nipplejs";
 import { ForceGraph3D } from "react-force-graph";
 import { v4 } from "uuid";
 import axios from "axios";
+
+import { CSS2DRenderer, CSS2DObject } from "three-css2drender";
 
 // importing components
 import Panel from "./components/Panel";
 import CreateNode from "./components/CreateNode";
 import Search from "./components/Search";
+import StartSession from "./components/StartSession";
+import Menu from "./components/Menu";
 
 // importing hooks
 import useWidth from "./hooks/useWidth";
@@ -26,11 +29,35 @@ export default function App() {
   const grayLighter = "#a7a7a7";
   const grayLightest = "#e6e6e6";
 
+  const primaryDarkest = "#1d1a1b";
+  const primaryDarker = "#2e2929";
+  const primaryDark = "#3f3c3b";
+  const primary = "#53514f";
+  const primaryLight = "#7b807d";
+  const primaryLighter = "#b0b6b4";
+  const primaryLightest = "#e3eae9";
+
+  const secondaryDarkest = "#2b1629";
+  const secondaryDarker = "#4c2439";
+  const secondaryDark = "#80314f";
+  const secondary = "#bd466d";
+  const secondaryLight = "#ff637d";
+  const secondaryLighter = "#ff9d90";
+  const secondaryLightest = "#feddbf";
+
+  const tertiaryDarkest = "#142b34";
+  const tertiaryDarker = "#143b3e";
+  const tertiaryDark = "#0f5855";
+  const tertiary = "#2a7f76";
+  const tertiaryLight = "#41c0a7";
+  const tertiaryLighter = "#76e9af";
+  const tertiaryLightest = "#dbffc1";
+
   // graph colors
-  const defaultNodeColor = grayLight;
-  const focusedNodeColor = grayLightest;
-  const defaultLinkColor = grayLight;
-  const backgroundColor = grayDarkest;
+  const defaultNodeColor = primaryLight;
+  const focusedNodeColor = primaryLightest;
+  const defaultLinkColor = primaryLight;
+  const backgroundColor = primaryDarkest;
 
   // nodes
   const nodeOpacity = 1;
@@ -87,8 +114,8 @@ export default function App() {
     visibility: "",
     prizeAmount: "",
     prizeCondition: "",
-    createdOn: "",
-    lastEditedOn: "",
+    createdOn: 0,
+    lastEditedOn: 0,
   });
 
   // what nodes are currently selected?
@@ -97,14 +124,26 @@ export default function App() {
   // is the user currently editing a node?
   const [editingNode, setEditingNode] = useState(false);
 
+  // is the user currently logged in?
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+
+  // is the user trying to log in rather than signing up?
+  const [hasAccount, setHasAccount] = useState(false);
+
+  // is the main menu currently being displayed?
+  const [displayMenu, setDisplayMenu] = useState(false);
+
+  // is the panel currently hidden?
+  const [panelHidden, setPanelHidden] = useState(false);
+
   //==================================================================================
   // APP LOGIC
   //==================================================================================
 
-  // TODO get the CSS2DRenderer
-  // const extraRenderers = //[new THREE.CSS2DRenderer()];
+  // TODO get the CSS2DRenderer to work
+  const extraRenderers = new CSS2DRenderer();
 
-  // updating the graph
+  // updating the graph after submitting node edits
   const updateGraph = () => {
     let newGraph = { ...graph };
     // updating the nodes
@@ -126,13 +165,12 @@ export default function App() {
     }
 
     setGraph(newGraph);
+    updateDataBase();
   };
 
   // handling node clicks
   const handleNodeClick = (node) => {
-    //reset node color back to default (unfocused) color
     const newNode = { ...focusedNode };
-    newNode.color = defaultNodeColor;
     setFocusedNode(newNode);
 
     // updating focusedNode
@@ -143,7 +181,7 @@ export default function App() {
       inLinks: node.inLinks,
       outLinks: node.outLinks,
       author: node.author,
-      color: focusedNodeColor,
+      color: node.color,
       visibility: node.visibility,
       prizeAmount: node.prizeAmount,
       prizeCondition: node.prizeCondition,
@@ -184,6 +222,7 @@ export default function App() {
       }
     }
     setGraph(newGraph);
+    updateDataBase();
   };
 
   //==================================================================================
@@ -210,40 +249,35 @@ export default function App() {
     fetchGraph();
   }, []);
 
-  // updating the database with every change of the graph
-  useEffect(() => {
-    const updateDataBase = async () => {
-      try {
-        const result = directingCallsToAWS
-          ? await axios.put(
-              "https://api.amarovega.net/update-node",
-              focusedNode
-            )
-          : await axios.put("http://localhost:8000/update-node", focusedNode);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    updateDataBase();
-  }, [graph]);
+  // updating the focused node on the database
+  const updateDataBase = async () => {
+    try {
+      const result = directingCallsToAWS
+        ? await axios.put("https://api.amarovega.net/update-node", focusedNode)
+        : await axios.put("http://localhost:8000/update-node", focusedNode);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   // creating a node
   const createNode = async () => {
     const emptyNode = {
       id: v4(),
-      title: "Untitled",
+      title: "",
       description: "",
       inLinks: [],
       outLinks: [],
       color: defaultNodeColor,
       author: "",
       visibility: "",
+      // TODO track prize amount
       prizeAmount: "",
       prizeCondition: "",
-      createdOn: "",
-      lastEditedOn: "",
+      createdOn: Date.now(),
+      lastEditedOn: 0,
     };
+
     // sending the post request to the back-end
     try {
       const result = directingCallsToAWS
@@ -308,8 +342,8 @@ export default function App() {
       description: "",
       author: "",
       color: defaultLinkColor,
-      createdOn: "",
-      lastEditedOn: "",
+      createdOn: 0,
+      lastEditedOn: 0,
       visibility: "",
     };
 
@@ -331,7 +365,8 @@ export default function App() {
   //==================================================================================
 
   return (
-    <div className="text-gray-lightest">
+    <div className="text-primary-lightest">
+      <div className="fixed z-0 w-full h-screen bg-primary-darkest"></div>
       <>
         <ForceGraph3D
           // extraRenderers={extraRenderers}
@@ -360,8 +395,29 @@ export default function App() {
           linkCurveRotation="rotation"
           backgroundColor={backgroundColor}
         />
-        <Search />
-        <CreateNode createNode={createNode} />
+        {displayMenu ? (
+          <Menu
+            setDisplayMenu={setDisplayMenu}
+            isLoggedIn={isLoggedIn}
+            setIsLoggedIn={setIsLoggedIn}
+            hasAccount={hasAccount}
+            setHasAccount={setHasAccount}
+            breakpoint={breakpoint}
+          />
+        ) : null}
+        <Search
+          setDisplayMenu={setDisplayMenu}
+          panelHidden={panelHidden}
+          setPanelHidden={setPanelHidden}
+        />
+        {isLoggedIn ? (
+          <CreateNode createNode={createNode} />
+        ) : (
+          <StartSession
+            setDisplayMenu={setDisplayMenu}
+            setHasAccount={setHasAccount}
+          />
+        )}
         <Panel
           editingNode={editingNode}
           setEditingNode={setEditingNode}
@@ -375,6 +431,8 @@ export default function App() {
           createLink={createLink}
           removeLink={removeLink}
           selection={selection}
+          panelHidden={panelHidden}
+          setPanelHidden={setPanelHidden}
         />
       </>
     </div>

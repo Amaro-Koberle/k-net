@@ -37,13 +37,13 @@ export default function ResetPassword({ setResettingPassword }) {
         <form onSubmit={handleSubmit}>
           {/* error message */}
           {error && (
-            <div className="inline-flex items-center w-full p-2 space-x-4 text-sm border rounded-lg text-gray-light bg-gray border-gray-light">
+            <div className="inline-flex items-center w-full p-2 space-x-4 text-sm border rounded-lg text-primary-light bg-primary border-primary-light">
               <MdWarning />
               <span>{error}</span>
             </div>
           )}
           {message && (
-            <div className="inline-flex items-center w-full p-2 space-x-4 text-sm border rounded-lg text-gray-light bg-gray border-gray-light">
+            <div className="inline-flex items-center w-full p-2 space-x-4 text-sm border rounded-lg text-primary-light bg-primary border-primary-light">
               <MdCheckCircle />
               <span>{message}</span>
             </div>
@@ -59,11 +59,11 @@ export default function ResetPassword({ setResettingPassword }) {
               id="email"
               ref={emailRef}
               required
-            ></input>
+            />
           </>
           <button
             disabled={loading}
-            className="w-full mt-4 btn-primary"
+            className="w-full mt-4 btn-light"
             type="submit"
           >
             Reset Password

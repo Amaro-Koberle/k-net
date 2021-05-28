@@ -13,13 +13,13 @@ export default function EditPrize({ setEditingPrize }) {
         <button onClick={() => setEditingPrize(false)}>
           <MdArrowBack />
         </button>
-        <h3>Edit Prize</h3>
+        <h1>Edit Prize</h1>
       </div>
       {/* prize */}
       <label className="label" htmlFor="amount">
         Amount
       </label>
-      <input className="w-full input" type="number" id="amount"></input>
+      <input className="w-full input" type="number" id="amount" />
     </>
   );
 }
