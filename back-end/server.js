@@ -182,8 +182,8 @@ app.get("/graph", async function (req, res) {
         description: r.get("description"),
         color: r.get("color"),
         author: r.get("author"),
-        createdOn: r.get(createdOn),
-        lastEditedOn: r.get(lastEditedOn),
+        createdOn: r.get("createdOn"),
+        lastEditedOn: r.get("lastEditedOn"),
         prizeAmount: r.get("prizeAmount"),
         prizeCondition: r.get("prizeCondition"),
         visibility: r.get("visibility"),
@@ -198,8 +198,8 @@ app.get("/graph", async function (req, res) {
         rotation: r.get("rotation"),
         color: r.get("color"),
         author: r.get("author"),
-        createdOn: r.get(createdOn),
-        lastEditedOn: r.get(lastEditedOn),
+        createdOn: r.get("createdOn"),
+        lastEditedOn: r.get("lastEditedOn"),
         visibility: r.get("visibility"),
       };
     });
