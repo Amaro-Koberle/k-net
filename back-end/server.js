@@ -34,8 +34,8 @@ app.post("/add-node", async function (req, res) {
       author:"${req.body.author}",
       color:"${req.body.color}",
       visibility:"${req.body.visibility}",
-      createdOn:"${req.body.createdOn}",
-      lastEditedOn:"${req.body.lastEditedOn}",
+      createdOn:${req.body.createdOn},
+      lastEditedOn:${req.body.lastEditedOn},
       prizeAmount:"${req.body.prizeAmount}",
       prizeCondition:"${req.body.prizeCondition}"
     })
@@ -71,8 +71,8 @@ app.post("/add-link", async function (req, res) {
       rotation:"${req.body.rotation}",
       author:"${req.body.author}",
       color:"${req.body.color}",
-      createdOn:"${req.body.createdOn}",
-      lastEditedOn:"${req.body.lastEditedOn}"
+      createdOn:${req.body.createdOn},
+      lastEditedOn:${req.body.lastEditedOn}
     }]->(b)
    `
     );
@@ -99,8 +99,8 @@ app.put("/update-node", async function (req, res) {
     n.color = "${req.body.color}",
     n.author = "${req.body.author}",
     n.visibility = "${req.body.visibility}",
-    n.createdOn = "${req.body.createdOn}",
-    n.lastEditedOn = "${req.body.lastEditedOn}",
+    n.createdOn = ${req.body.createdOn},
+    n.lastEditedOn = ${req.body.lastEditedOn},
     n.prizeAmount = "${req.body.prizeAmount}",
     n.prizeCondition = "${req.body.prizeCondition}"
    `
