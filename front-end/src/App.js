@@ -7,13 +7,14 @@ import { CSS2DRenderer, CSS2DObject } from "three-css2drender";
 
 // importing components
 import Panel from "./components/Panel";
-import CreateNode from "./components/CreateNode";
 import Search from "./components/Search";
-import StartSession from "./components/StartSession";
 import Menu from "./components/Menu";
+import BottomButtons from "./components/BottomButtons";
 
 // importing hooks
 import useWidth from "./hooks/useWidth";
+
+import { useAuth } from "./contexts/AuthContext";
 
 export default function App() {
   //==================================================================================
@@ -124,9 +125,6 @@ export default function App() {
   // is the user currently editing a node?
   const [editingNode, setEditingNode] = useState(false);
 
-  // is the user currently logged in?
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   // is the user trying to log in rather than signing up?
   const [hasAccount, setHasAccount] = useState(false);
 
@@ -135,6 +133,8 @@ export default function App() {
 
   // is the panel currently hidden?
   const [panelHidden, setPanelHidden] = useState(false);
+
+  const { currentUser } = useAuth();
 
   //==================================================================================
   // APP LOGIC
@@ -398,8 +398,6 @@ export default function App() {
         {displayMenu ? (
           <Menu
             setDisplayMenu={setDisplayMenu}
-            isLoggedIn={isLoggedIn}
-            setIsLoggedIn={setIsLoggedIn}
             hasAccount={hasAccount}
             setHasAccount={setHasAccount}
             breakpoint={breakpoint}
@@ -410,14 +408,7 @@ export default function App() {
           panelHidden={panelHidden}
           setPanelHidden={setPanelHidden}
         />
-        {isLoggedIn ? (
-          <CreateNode createNode={createNode} />
-        ) : (
-          <StartSession
-            setDisplayMenu={setDisplayMenu}
-            setHasAccount={setHasAccount}
-          />
-        )}
+        <BottomButtons createNode={createNode} setDisplayMenu={setDisplayMenu} setHasAccount={setHasAccount} />
         <Panel
           editingNode={editingNode}
           setEditingNode={setEditingNode}
