@@ -71,20 +71,29 @@ export default function LogIn({
               Password
             </label>
           </div>
-          <div className="flex justify-start">
-            <input type="checkbox" id="rememberme" />
-            <label className="text-primary-light" htmlFor="rememberme">
-              Remember me
-            </label>
-          </div>
-          <div className="flex justify-end w-full">
-            <button
-              className="text-sm link"
-              onClick={() => setResettingPassword(true)}
-              type="button"
-            >
-              Forgot password?
-            </button>
+          <div className="flex items-center">
+            <div className="flex items-center justify-start space-x-2">
+              <input
+                type="checkbox"
+                id="rememberme"
+                className="border-none rounded-sm hover:bg-gray-lightest bg-gray-lighter text-secondary-light"
+              />
+              <span
+                className="text-sm text-primary-light active:text-secondary-light whitespace-nowrap"
+                htmlFor="rememberme"
+              >
+                Remember me
+              </span>
+            </div>
+            <div className="flex justify-end w-full">
+              <button
+                className="text-sm link"
+                onClick={() => setResettingPassword(true)}
+                type="button"
+              >
+                Forgot password?
+              </button>
+            </div>
           </div>
           <button
             disabled={loading}

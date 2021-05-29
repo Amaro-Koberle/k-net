@@ -125,7 +125,7 @@ export default function App() {
   const [editingNode, setEditingNode] = useState(false);
 
   // is the user currently logged in?
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // is the user trying to log in rather than signing up?
   const [hasAccount, setHasAccount] = useState(false);

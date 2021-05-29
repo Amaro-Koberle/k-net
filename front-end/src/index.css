@@ -51,4 +51,9 @@
   .select {
     @apply px-6 py-2 text-sm border rounded border-primary-darkest bg-primary-darker hover:bg-primary-darker;
   }
+
+  /* When this class is applied to an element, the style doesn't take effect for some reason */
+  .ckeckbox {
+    @apply border-none rounded-sm hover:bg-gray-lightest bg-gray-lighter text-secondary-light;
+  }
 }
