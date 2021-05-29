@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { AuthProvider } from "../contexts/AuthContext";
+import { AuthProvider, useAuth } from "../contexts/AuthContext";
 
 // importing components
 import SignUp from "./SignUp";
@@ -12,13 +12,13 @@ import { MdClose } from "react-icons/md";
 
 export default function Menu({
   setDisplayMenu,
-  isLoggedIn,
-  setIsLoggedIn,
   setHasAccount,
   hasAccount,
 }) {
   // is the user currently reseting their password?
   const [resettingPassword, setResettingPassword] = useState(false);
+
+  const { currentUser } = useAuth();
 
   const exit = () => {
     setHasAccount(false);
@@ -37,7 +37,7 @@ export default function Menu({
             <MdClose className="text-2xl text-primary" />
           </button>
         </div>
-        {isLoggedIn ? (
+        {currentUser ? (
           <AuthProvider>
             <UserMenu setDisplayMenu={setDisplayMenu} />
           </AuthProvider>
@@ -50,7 +50,6 @@ export default function Menu({
             <LogIn
               setResettingPassword={setResettingPassword}
               setHasAccount={setHasAccount}
-              setIsLoggedIn={setIsLoggedIn}
             />
           </AuthProvider>
         ) : (

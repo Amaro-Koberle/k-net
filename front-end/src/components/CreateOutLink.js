@@ -15,11 +15,14 @@ export default function CreateOutLink({
   const [loading, setLoading] = useState(true);
   // creating outgoing link
   useEffect(() => {
-    loading
-      ? setLoading(false)
-      : (createLink(selection[1], focusedNode),
-        setFocusedNode(selection[1]),
-        setCreatingOutLink(false));
+    if (loading) {
+        setLoading(false);
+        return;
+    }
+
+    createLink(selection[1], focusedNode);
+    setFocusedNode(selection[1]);
+    setCreatingOutLink(false);
   }, [selection]);
 
   return (

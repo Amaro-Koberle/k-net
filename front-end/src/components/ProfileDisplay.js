@@ -5,6 +5,7 @@ import { MdEdit } from "react-icons/md";
 
 // this is just a placeholder
 const userName = "Karl Popper";
+const profilePicture = "temp";
 
 export default function ProfileDisplay({ setEditingProfile }) {
   return (

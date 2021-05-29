@@ -14,11 +14,14 @@ export default function CreateInLink({
   const [loading, setLoading] = useState(true);
   // creating incoming link
   useEffect(() => {
-    loading
-      ? setLoading(false)
-      : (createLink(focusedNode, selection[1]),
-        setFocusedNode(selection[1]),
-        setCreatingInLink(false));
+    if (loading) {
+        setLoading(false);
+        return;
+    }
+
+    createLink(focusedNode, selection[1]);
+    setFocusedNode(selection[1]);
+    setCreatingInLink(false);
   }, [selection]);
 
   return (

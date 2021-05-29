@@ -6,7 +6,6 @@ import { MdWarning } from "react-icons/md";
 
 export default function LogIn({
   setHasAccount,
-  setIsLoggedIn,
   setResettingPassword,
 }) {
   const emailRef = useRef();
@@ -24,7 +23,6 @@ export default function LogIn({
       setLoading(true);
       await login(emailRef.current.value, passwordRef.current.value);
       // TODO log in user and redirect them
-      setIsLoggedIn(true);
     } catch {
       setError("Failed to log in");
     }
