@@ -309,6 +309,7 @@ export default function App() {
                 data: { id: focusedNode.id },
               });
           setGraph(newGraph);
+          updateDataBase();
         } catch (error) {
           console.error(error);
         }
@@ -355,6 +356,7 @@ export default function App() {
       const newGraph = { ...graph };
       newGraph.links.push(newLink);
       setGraph(newGraph);
+      updateDataBase();
     } catch (error) {
       console.error(error);
     }
@@ -408,7 +410,11 @@ export default function App() {
           panelHidden={panelHidden}
           setPanelHidden={setPanelHidden}
         />
-        <BottomButtons createNode={createNode} setDisplayMenu={setDisplayMenu} setHasAccount={setHasAccount} />
+        <BottomButtons
+          createNode={createNode}
+          setDisplayMenu={setDisplayMenu}
+          setHasAccount={setHasAccount}
+        />
         <Panel
           editingNode={editingNode}
           setEditingNode={setEditingNode}

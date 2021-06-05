@@ -8,9 +8,9 @@ K-net (working title) is a social media web app that puts the relationship betwe
 
 I have barely gotten started with this project, so don't expect much at this point.
 
-You can find a hosted version of the prototype linked below - expect bugs and crashes
+<!-- You can find a hosted version of the prototype linked below - expect bugs and crashes
 
-### [Live Demo](https://quizzical-edison-523c55.netlify.app/)
+### [Live Demo](https://quizzical-edison-523c55.netlify.app/) -->
 
 ## Technologies
 
@@ -27,12 +27,20 @@ This repo is split up into a front-end and a back-end, each is its own npm packa
 
   For the UI
 
+- ### React Icons
+
+  For Icons within the UI
+
 - ### Tailwind CSS
 
   For styling the UI
 
 - ### Axios
+
   Promise based HTTP client for the browser and node.js
+
+- ### Firebase
+  For user authentication
 
 ### `Back-End`
 
@@ -55,41 +63,15 @@ If you would like to help me solve some of [the issues that I put here on GitHub
 
 Clone the "develop" branch of this repository.
 If you don't already have it, download and install [Node.js](https://nodejs.org/en/).
-You will want to navigate to the "front-end" directory within the repository and run this command:
+You will want to run the following command to install all the dependencies on both the front-end and the back-end:
 
 ```
 npm install
 ```
 
-Run the same command a second time, but this time from the "back-end" directory. This should install all the dependencies for both the front-end and the back-end.
-
 In order to test your code changes locally, you will have to install [Neo4j desktop](https://neo4j.com/download/) as well.
 
 In Neo4j desktop, create a new database.
-
-You will probably want some placeholder data to play around with. Currently, it isn't possible to write to the databse from the front-end (working on it), so you can't build a graph from the front-end that will survive if you reload the page. To be honest, even if you could write from the front-end to the database, you would probably have a hard time building the graph using only the front-end interface since creating links between nodes is still quite buggy (also working on it).
-
-In order to create some dummy data in the Neo4j database, just run the following query (or something similar):
-
-```
-// CreateSampleDataset
-CREATE (a:Post {inLinks: [2], outLinks: [1,3], title: 'Apple', description: 'Apples can be red.'})
-CREATE (b:Post {inLinks: [0], outLinks: [2], title: 'Orange', description: 'Oranges are obviously orange.'})
-CREATE (c:Post {inLinks: [1], outLinks: [0], title: 'Banana', description: 'Bananas are yellow.'})
-CREATE (d:Post {inLinks: [0], outLinks: [4,4], title: 'Pear', description: 'Pears are usually green'})
-CREATE (e:Post {inLinks: [3,3], outLinks: [5], title: 'Blueberry', description: "Blueberries aren’t really blue, but they’re about as blue as any fruit can get, so they’ll have to do."})
-CREATE (f:Post {inLinks: [4,5], outLinks: [5], title: 'Plum', description: 'Plums are somewhat purple.'})
-CREATE (g:Post {inLinks: [], outLinks: [], title: 'Penis', description: 'I ran out of colors for fruits.'})
-CREATE
-(a)-[:POST_LINK]->(b),
-(b)-[:POST_LINK]->(c),
-(c)-[:POST_LINK]->(a),
-(a)-[:POST_LINK]->(d),
-(d)-[:POST_LINK]->(e),
-(d)-[:POST_LINK]->(e),
-(e)-[:POST_LINK]->(f),
-(f)-[:POST_LINK]->(f)
-```
 
 Finally, you will need to create an .env file. The back-end pulls the login data for the database from an .env file which is included in the .gitignore so that people don't get access to the login credentials of my database by cloning the repo.
 Navigate to the back-end directory and create a file called ".env", then enter the following content in that file:
@@ -100,7 +82,22 @@ PASSWORD = neo4j
 URL = bolt://localhost:7687
 ```
 
-The values above are the default ones, so you can copy them as is if you haven't customized the login credentials of your database. If you did custimize them, just adjust the .env file accordingly.
+The values above are the default ones. If you changes the login credentials, just adjust the .env file accordingly.
+
+In order for authentication to work, you'll need a [Firebase](https://firebase.google.com/) project. Create an account if you don't already have one, create a new project, navigate to "Authentication", then to "Sign-in method" and enable the "Email/Password" provider.
+
+You will need to create a second .env file, this time in the front-end.
+
+```
+REACT_APP_FIREBASE_API_KEY=
+REACT_APP_FIREBASE_AUTH_DOMAIN=
+REACT_APP_FIREBASE_PROJECT_ID=
+REACT_APP_FIREBASE_STORAGE_BUCKET=
+REACT_APP_FIREBASE_MESSAGING_SENDER_ID=
+REACT_APP_FIREBASE_APP_ID=
+```
+
+Populate the .env file with the corresponding configuration values of your firebase project. You can find by navigating to "Project settings" and scrolling down to "SDK setup and configuration" under the "General" tab.
 
 ### Starting Up
 
@@ -116,6 +113,6 @@ Finally, navigate to the front-end directory and execute this command to start t
 npm start
 ```
 
-Your browser should automatically open a new tab with the URL "http://localhost:3000/" and you should see the app displaying the graph that you created with Neo4j.
+Your browser should automatically open a new tab with the URL "http://localhost:3000/" and you should see the app. If everything is working as it should, you should be able to create an account, log in and start creating nodes.
 
 If you get stuck anywhere along the way, hit me up!

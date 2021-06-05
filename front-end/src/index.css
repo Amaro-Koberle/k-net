@@ -41,7 +41,7 @@
   }
 
   .link {
-    @apply text-secondary-light hover:text-secondary-lighter disabled:text-primary focus:outline-none focus:border-b-2 border-secondary-light active:ring-0 focus:ring-0;
+    @apply text-secondary-light hover:text-secondary-lighter disabled:text-primary focus:outline-none active:ring-0 focus:ring-0;
   }
 
   .container {
