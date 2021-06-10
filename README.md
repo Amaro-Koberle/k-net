@@ -1,6 +1,6 @@
 # The Knowledge Network
 
-![Prototype Screenshot](/readme-images/screenshot.png)
+![Prototype Screenshot](/readme-images/screenshot.jpg)
 
 K-net (working title) is a social media web app that puts the relationship between different pieces of content front and center. All posts are rendered in a 3D graph-visualisation, each node and link in the graph represents a post.
 
