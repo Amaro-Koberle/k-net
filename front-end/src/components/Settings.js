@@ -1,10 +1,11 @@
 import React, { useState } from "react";
+import { AuthProvider } from "../contexts/AuthContext";
 
 // importing components
 import EditPassword from "./EditPassword";
 import EditEmail from "./EditEmail";
 import DeleteAccount from "./DeleteAccount";
-import EditUsername from "./EditUsername";
+import EditName from "./EditName";
 
 // importing icons
 import { MdNavigateNext } from "react-icons/md";
@@ -21,32 +22,32 @@ export default function Settings({ setEditingSettings, breakpoint }) {
   // is the user currently deleting their account?
   const [deletingAccount, setDeletingAccount] = useState(false);
   // is the user currently editing their username?
-  const [editingUsername, setEditingUsername] = useState(false);
+  const [editingName, setEditingName] = useState(false);
 
   const changeToEditingEmail = () => {
     setEditingPassword(false);
     setDeletingAccount(false);
-    setEditingUsername(false);
+    setEditingName(false);
     setEditingEmail(true);
   };
 
-  const changeToEditingUsername = () => {
+  const changeToEditingName = () => {
     setEditingPassword(false);
     setDeletingAccount(false);
     setEditingEmail(false);
-    setEditingUsername(true);
+    setEditingName(true);
   };
 
   const changeToEditingPassword = () => {
     setDeletingAccount(false);
-    setEditingUsername(false);
+    setEditingName(false);
     setEditingEmail(false);
     setEditingPassword(true);
   };
 
   const changeToDeletingAccount = () => {
     setEditingPassword(false);
-    setEditingUsername(false);
+    setEditingName(false);
     setEditingEmail(false);
     setDeletingAccount(true);
   };
@@ -80,16 +81,16 @@ export default function Settings({ setEditingSettings, breakpoint }) {
         <>
           <DeleteAccount />
         </>
-      ) : editingUsername ? (
+      ) : editingName ? (
         <>
           {/* header */}
           <div className="flex items-center space-x-2 text-lg jsutify-between">
-            <button onClick={() => setEditingUsername(false)}>
+            <button onClick={() => setEditingName(false)}>
               <MdArrowBack />
             </button>
-            <h1>Edit Username</h1>
+            <h1>Edit Name</h1>
           </div>
-          <EditUsername setEditingUsername={setEditingUsername} />
+          <EditName setEditingName={setEditingName} />
         </>
       ) : (
         <div className="fixed top-0 left-0 z-40 w-screen h-screen p-3 bg-primary-darkest border-primary-darker">
@@ -138,10 +139,10 @@ export default function Settings({ setEditingSettings, breakpoint }) {
               <span>PROFILE</span>
             </div>
             <div
-              onClick={() => setEditingUsername(true)}
+              onClick={() => setEditingName(true)}
               className="flex items-center mt-4 space-x-2 jsutify-between"
             >
-              <span>Username</span>
+              <span>Name</span>
               <span className="text-primary-light">@username</span>
               <MdNavigateNext />
             </div>
@@ -241,19 +242,19 @@ export default function Settings({ setEditingSettings, breakpoint }) {
               <MdAccountCircle />
               <span>PROFILE</span>
             </div>
-            {editingUsername ? (
+            {editingName ? (
               <button
-                onClick={() => changeToEditingUsername()}
+                onClick={() => changeToEditingName()}
                 className="btn-menu text-secondary-light"
               >
-                Username
+                Name
               </button>
             ) : (
               <button
-                onClick={() => changeToEditingUsername()}
+                onClick={() => changeToEditingName()}
                 className="btn-menu"
               >
-                Username
+                Name
               </button>
             )}
 
@@ -276,25 +277,33 @@ export default function Settings({ setEditingSettings, breakpoint }) {
           <>
             {/* header */}
             <h1 className="text-lg">Edit Email</h1>
-            <EditEmail />
+            <AuthProvider>
+              <EditEmail />
+            </AuthProvider>
           </>
         ) : editingPassword ? (
           <>
             {/* header */}
             <h1 className="text-lg">Edit Password</h1>
-            <EditPassword />
+            <AuthProvider>
+              <EditPassword />
+            </AuthProvider>
           </>
         ) : deletingAccount ? (
           <>
             {/* header */}
             <h1 className="text-lg">Delete Account</h1>
-            <DeleteAccount />
+            <AuthProvider>
+              <DeleteAccount />
+            </AuthProvider>
           </>
-        ) : editingUsername ? (
+        ) : editingName ? (
           <>
             {/* header */}
-            <h1 className="text-lg">Edit Username</h1>
-            <EditUsername />
+            <h1 className="text-lg">Edit Name</h1>
+            <AuthProvider>
+              <EditName />
+            </AuthProvider>
           </>
         ) : (
           <span>placeholder</span>

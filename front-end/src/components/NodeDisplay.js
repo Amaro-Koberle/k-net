@@ -9,7 +9,12 @@ import { MdEdit } from "react-icons/md";
 // importing components
 import NodeWidget from "./NodeWidget";
 
-export default function NodeDisplay({ focusedNode, setEditingNode, graph }) {
+export default function NodeDisplay({
+  focusedNode,
+  setEditingNode,
+  graph,
+  setDisplayingProfile,
+}) {
   // TODO don't display the incoming link/ outgoing link tabs if the node isn't linked to any other node accordingly
   const [noInLinks, setNoInLinks] = useState(false);
   const [noOutLinks, setNoOutLinks] = useState(false);
@@ -67,18 +72,26 @@ export default function NodeDisplay({ focusedNode, setEditingNode, graph }) {
       </div>
       {/* author and date*/}
       <div className="flex items-center mt-2 space-x-2 text-sm">
-        <img
-          className="border rounded-full h-9 w-9 border-secondary-light"
-          src={profilePicture}
-          alt={userName}
-        />
-        <span className="link">{userName}</span>
+        <button type="button" onClick={() => setDisplayingProfile(true)}>
+          <img
+            className="rounded-full h-9 w-9"
+            src={profilePicture}
+            alt={userName}
+          />
+        </button>
+        <button
+          type="button"
+          className="link"
+          onClick={() => setDisplayingProfile(true)}
+        >
+          {userName}
+        </button>
         <span className="text-primary-light">•</span>
         <span className="text-primary-light">{dateString}</span>
       </div>
       {/* prize */}
-      <div className="container border-0 bg-tertiary-lighter text-tertiary-darker">
-        <div className="flex items-baseline space-x-1 text-tertiary">
+      <div className="container border-0 bg-tertiary-lighter text-tertiary">
+        <div className="flex items-baseline space-x-1 ">
           <span className="text-xl font-bold">$ 150,00</span>
           <span>Prize</span>
         </div>
@@ -95,7 +108,7 @@ export default function NodeDisplay({ focusedNode, setEditingNode, graph }) {
         <div className="mt-4">
           <div className="grid grid-cols-2 justify-items-center">
             <div onClick={() => setDisplayOutgoingLinks(false)}>
-              <span className="mt-4 text-sm text-primary-light">
+              <span className="mt-4 text-sm font-bold text-primary-light">
                 Incoming links
               </span>
             </div>
@@ -126,7 +139,7 @@ export default function NodeDisplay({ focusedNode, setEditingNode, graph }) {
               <div className="flex items-center w-full border-2 rounded-full border-primary-lightest"></div>
             </div>
             <div onClick={() => setDisplayOutgoingLinks(true)}>
-              <span className="mt-4 text-sm text-primary-light">
+              <span className="mt-4 text-sm font-bold text-primary-light">
                 Outgoing links
               </span>
             </div>

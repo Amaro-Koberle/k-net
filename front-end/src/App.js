@@ -13,7 +13,6 @@ import BottomButtons from "./components/BottomButtons";
 
 // importing hooks
 import useWidth from "./hooks/useWidth";
-
 import { useAuth } from "./contexts/AuthContext";
 
 export default function App() {
@@ -93,6 +92,9 @@ export default function App() {
   //==================================================================================
   // INITIALISING STATE
   //==================================================================================
+
+  // what user is currently logged in?
+  const { currentUser } = useAuth();
 
   // at what breakpoint (width) is the app currently being rendered?
   const [breakpoint, setBreakpoint] = useState(0);
@@ -269,7 +271,7 @@ export default function App() {
       inLinks: [],
       outLinks: [],
       color: defaultNodeColor,
-      author: "",
+      author: currentUser.uid,
       visibility: "",
       // TODO track prize amount
       prizeAmount: "",

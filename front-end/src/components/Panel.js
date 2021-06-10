@@ -4,10 +4,12 @@ import React, { useState } from "react";
 import EditNode from "./EditNode";
 import NodeDisplay from "./NodeDisplay";
 import ProfileDisplay from "./ProfileDisplay";
+import EditProfile from "./EditProfile";
 
 // importing icons
 import { MdChevronLeft } from "react-icons/md";
 import { MdChevronRight } from "react-icons/md";
+import { AuthProvider } from "../contexts/AuthContext";
 
 export default function Panel({
   updateGraph,
@@ -32,7 +34,12 @@ export default function Panel({
       {breakpoint === 0 ? (
         // mobile breakpoint
         <>
-          {focusedNode.id !== "" ? (
+          {displayingProfile ? (
+            <ProfileDisplay
+              setDisplayingProfile={setDisplayingProfile}
+              setEditingProfile={setEditingProfile}
+            />
+          ) : focusedNode.id !== "" ? (
             // panel
             <>
               {editingNode ? (
@@ -49,11 +56,6 @@ export default function Panel({
                     selection={selection}
                   />
                 </div>
-              ) : displayingProfile ? (
-                <ProfileDisplay
-                  setDisplayingProfile={setDisplayingProfile}
-                  setEditingProfile={setEditingProfile}
-                />
               ) : (
                 <div className="fixed bottom-0 left-0 z-10 w-screen p-3 shadow-lg rounded-t-2xl ring-1 bg-primary-darkest ring-primary-darker">
                   {/* small divider */}
@@ -61,6 +63,7 @@ export default function Panel({
                     <div className="w-10 border-2 rounded-full border-primary-dark"></div>
                   </div>
                   <NodeDisplay
+                    setDisplayingProfile={setDisplayingProfile}
                     focusedNode={focusedNode}
                     setEditingNode={setEditingNode}
                     graph={graph}
@@ -73,14 +76,26 @@ export default function Panel({
       ) : (
         // larger than mobile breakpoint
         <>
-          {focusedNode.id !== "" ? (
+          {focusedNode.id == "" && !displayingProfile ? null : (
             // panel
             <>
               {panelHidden ? (
+                // panel hidden
                 <>
                   <div className="fixed top-0 z-10 h-screen p-3 shadow-lg -left-96 ring-1 bg-primary-darkest w-96 ring-primary-darker">
                     <div className="relative top-20">
-                      {editingNode ? (
+                      {editingProfile ? (
+                        <AuthProvider>
+                          <EditProfile setEditingProfile={setEditingProfile} />
+                        </AuthProvider>
+                      ) : displayingProfile ? (
+                        <AuthProvider>
+                          <ProfileDisplay
+                            setDisplayingProfile={setDisplayingProfile}
+                            setEditingProfile={setEditingProfile}
+                          />
+                        </AuthProvider>
+                      ) : editingNode ? (
                         <EditNode
                           updateGraph={updateGraph}
                           focusedNode={focusedNode}
@@ -94,6 +109,7 @@ export default function Panel({
                         />
                       ) : (
                         <NodeDisplay
+                          setDisplayingProfile={setDisplayingProfile}
                           focusedNode={focusedNode}
                           setEditingNode={setEditingNode}
                           graph={graph}
@@ -110,10 +126,22 @@ export default function Panel({
                   </button>
                 </>
               ) : (
+                // panel shown
                 <>
                   <div className="fixed top-0 left-0 z-10 h-screen p-3 overflow-y-auto shadow-lg ring-1 bg-primary-darkest w-96 ring-primary-darker">
                     <div className="relative top-20">
-                      {editingNode ? (
+                      {editingProfile ? (
+                        <AuthProvider>
+                          <EditProfile setEditingProfile={setEditingProfile} />
+                        </AuthProvider>
+                      ) : displayingProfile ? (
+                        <AuthProvider>
+                          <ProfileDisplay
+                            setDisplayingProfile={setDisplayingProfile}
+                            setEditingProfile={setEditingProfile}
+                          />
+                        </AuthProvider>
+                      ) : editingNode ? (
                         <EditNode
                           updateGraph={updateGraph}
                           focusedNode={focusedNode}
@@ -127,6 +155,7 @@ export default function Panel({
                         />
                       ) : (
                         <NodeDisplay
+                          setDisplayingProfile={setDisplayingProfile}
                           focusedNode={focusedNode}
                           setEditingNode={setEditingNode}
                           graph={graph}
@@ -144,7 +173,7 @@ export default function Panel({
                 </>
               )}
             </>
-          ) : null}
+          )}
         </>
       )}
     </>

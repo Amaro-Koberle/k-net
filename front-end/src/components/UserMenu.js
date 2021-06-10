@@ -4,7 +4,7 @@ import { useAuth } from "../contexts/AuthContext";
 // importing components
 import Settings from "./Settings";
 
-// importing profile picture
+// importing profile picture placeholder
 import profilePicture from "../KarlPopper.jpg";
 
 // importing icons
@@ -17,8 +17,7 @@ export default function UserMenu({ setDisplayMenu }) {
   const [error, setError] = useState("");
   const [editingSettings, setEditingSettings] = useState(false);
 
-  // this is just a placeholder
-  const userName = "Karl Popper";
+  const Name = currentUser.displayName;
 
   async function handleLogout() {
     setError("");
@@ -44,9 +43,9 @@ export default function UserMenu({ setDisplayMenu }) {
             <img
               className="row-span-2 border rounded-full w-14 h-14 border-primary-darker"
               src={profilePicture}
-              alt={userName}
+              alt={Name}
             />
-            <span className="col-span-3 text-lg">{userName}</span>
+            <span className="col-span-3 text-lg">{Name}</span>
             <div className="col-span-3">
               <span className="link" onClick={() => goToHomeNode()}>
                 Go to your home node

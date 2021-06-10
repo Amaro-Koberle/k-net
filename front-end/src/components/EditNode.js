@@ -8,7 +8,7 @@ import DiscardNodeChangesPopUp from "./DiscardNodeChangesPopUp";
 import DeleteNodePopUp from "./DeleteNodePopUp";
 import CreateInLink from "./CreateInLink";
 import CreateOutLink from "./CreateOutLink";
-import EditPrize from "./EditPrize";
+import AddPrize from "./AddPrize";
 
 //importing icons
 import { MdArrowBack } from "react-icons/md";
@@ -111,7 +111,7 @@ export default function EditNode({
           />
         ) : // edit prize
         editingPrize ? (
-          <EditPrize setEditingPrize={setEditingPrize} />
+          <AddPrize setEditingPrize={setEditingPrize} />
         ) : // create links
         creatingInLink ? (
           <CreateInLink
@@ -160,14 +160,14 @@ export default function EditNode({
             <>
               <div className="container bg-primary-darker">
                 {/* author */}
-                <div className="flex items-center justify-between text-sm">
+                <div className="flex items-center justify-between text-sm text-primary-lighter">
                   <div className="flex items-center space-x-2">
                     <img
-                      className="border rounded-full w-9 h-9 border-secondary-light"
+                      className="rounded-full w-9 h-9"
                       src={profilePicture}
                       alt={userName}
                     />
-                    <span className="link">{userName}</span>
+                    <span>{userName}</span>
                   </div>
                   {/* visibility */}
                   <select className="select" id="visibility">
@@ -272,14 +272,14 @@ export default function EditNode({
               {displayOutgoingLinks ? (
                 <>
                   {/* outgoing links tab */}
-                  <div className="grid grid-cols-2 justify-items-center">
+                  <div className="grid grid-cols-2 font-bold justify-items-center ">
                     <div onClick={() => setDisplayOutgoingLinks(false)}>
                       <span className="mt-4 text-sm text-primary-light">
                         Incoming links
                       </span>
                     </div>
                     <div>
-                      <span className="mt-4 text-sm font-bold text-primary-lightest">
+                      <span className="mt-4 text-sm text-primary-lightest">
                         Outgoing links
                       </span>
                       <div className="flex items-center w-full border-2 rounded-full border-primary-lightest"></div>
@@ -296,9 +296,9 @@ export default function EditNode({
               ) : (
                 <>
                   {/* incoming links tab */}
-                  <div className="grid grid-cols-2 justify-items-center">
+                  <div className="grid grid-cols-2 font-bold justify-items-center ">
                     <div>
-                      <span className="mt-4 text-sm font-bold text-primary-lightest">
+                      <span className="mt-4 text-sm text-primary-lightest">
                         Incoming links
                       </span>
                       <div className="flex items-center w-full border-2 rounded-full border-primary-lightest"></div>
