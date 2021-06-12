@@ -57,3 +57,24 @@
     @apply border-none rounded-sm hover:bg-gray-lightest bg-gray-lighter text-secondary-light;
   }
 }
+.loader{
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  border-left: 5px solid #fff;
+  border-top: 5px solid #fff;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  animation: 0.3s Loader infinite linear;
+}
+button:disabled{
+  cursor: not-allowed !important;
+}
+@keyframes Loader {
+  0%{
+    transform: rotate(0deg);
+  }
+  100%{
+    transform: rotate(360deg);
+  }
+}

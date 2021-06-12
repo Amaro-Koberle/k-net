@@ -38,6 +38,7 @@ export function AuthProvider({ children }) {
         // user.lastName = userDetails.lastName;
         // user.phoneNumber = userDetails.pho
         user.bio = userDetails.bio;
+        console.log(userDetails);
         setCurrentUser(user);
         setLoading(false);
       })
@@ -71,6 +72,17 @@ export function AuthProvider({ children }) {
     });
   }
 
+  function updateDisplayAndBio(displayName, bio) {
+    return currentUser.updateProfile({ displayName })
+      .then(_ => db.doc(`users/${currentUser.uid}`).set({ displayName, bio }, { merge: true }))
+      .then(_ => {
+        currentUser.bio = bio;
+        setCurrentUser(null);
+        setCurrentUser(currentUser);
+        return currentUser
+      })
+  }
+  
   useEffect(() => {
     const unsubscriibe = auth.onAuthStateChanged((user) => {
       if (user) createUserProfileDocument(user);
@@ -88,6 +100,7 @@ export function AuthProvider({ children }) {
     updateEmail,
     updatePassword,
     updateDisplayName,
+    updateDisplayAndBio
   };
 
   return (

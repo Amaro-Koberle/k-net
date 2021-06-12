@@ -9,14 +9,30 @@ import { MdArrowBack } from "react-icons/md";
 import { MdEdit } from "react-icons/md";
 
 export default function EditProfile({ setEditingProfile }) {
-  const { currentUser } = useAuth();
-
+  const { currentUser, updateDisplayAndBio } = useAuth();
+  const [displayName, setDisplayName] = useState(currentUser ? currentUser.displayName : '');
+  const [bio, setBio] = useState(currentUser ? currentUser.bio : '');
+  console.log(currentUser);
+  
+  const isValid = displayName.length > 2 && bio.length > 2;
+  
   // is the save button currently disabled?
-  const [postingDisabled, setPostingDisabled] = useState(true);
-
+  const [status, setStatus] = useState({})
+  
+  if(!currentUser) return null;
   // placeholder
   const Name = "Karl Popper";
+  const onSubmit = e => {
+    setStatus({ isLoading: true });
+    updateDisplayAndBio(displayName, bio)
+      .then(currentUser => {
+        alert('User has been updated!')
+        setStatus({})
+      })
+      .catch(err => setStatus({ error: err.message }))
 
+  }
+  const { isLoading, error } = status;
   return (
     <div className="m-2">
       {/* header */}
@@ -25,13 +41,16 @@ export default function EditProfile({ setEditingProfile }) {
           <MdArrowBack className="text-2xl" />
         </button>
         <h1>Edit Profile</h1>
-        <button
+        {isLoading ? (
+          <span className='loader'></span>
+        ) : <button
           className="font-bold link"
           type="button"
-          disabled={postingDisabled}
+          onClick={onSubmit}
+          disabled={!isValid}
         >
           Save
-        </button>
+        </button>}
       </div>
       <div className="container bg-primary-darker">
         {/* profile picture */}
@@ -46,14 +65,16 @@ export default function EditProfile({ setEditingProfile }) {
           />
         </div>
         {/* name and bio */}
-        <form className="mt-4 space-y-7">
+        <form className="mt-4 space-y-7" onSubmit={onSubmit}>
           <div className="form-field">
             <input
               className="input"
               type="text"
               id="name"
               placeholder=" "
-              value={currentUser.displayName}
+              value={displayName}
+              name='displayName'
+              onChange={e => setDisplayName(e.target.value)}
             />
             <label className="label" htmlFor="name">
               Name
@@ -64,12 +85,16 @@ export default function EditProfile({ setEditingProfile }) {
               className="input"
               rows="5"
               id="bio"
+              name='bio'
               placeholder=" "
+              value={bio}
+              onChange={e => setBio(e.target.value)}
             ></textarea>
             <label className="label" htmlFor="description">
               Bio
             </label>
           </div>
+          {error && <p className='text-danger' style={{ color: 'red' }}>{error}</p>}
         </form>
       </div>
     </div>
