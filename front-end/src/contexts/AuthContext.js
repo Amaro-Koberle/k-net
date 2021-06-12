@@ -11,8 +11,16 @@ export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
   const [loading, setLoading] = useState(true);
 
-  function signup(email, password) {
-    return auth.createUserWithEmailAndPassword(email, password);
+  function signup(email, password, displayName) {
+    return auth
+      .createUserWithEmailAndPassword(email, password)
+      .then((res) => res.user.updateProfile({ displayName }))
+      .then((res) => {
+        console.log(auth.currentUser, "updated displayName");
+        setCurrentUser(null);
+        setCurrentUser(auth.currentUser);
+        return auth.currentUser;
+      });
   }
 
   function login(email, password) {

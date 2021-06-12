@@ -13,6 +13,7 @@ import { MdClose } from "react-icons/md";
 export default function Menu({
   setDisplayMenu,
   setHasAccount,
+  setDisplayingProfile,
   hasAccount,
 }) {
   // is the user currently reseting their password?
@@ -39,7 +40,10 @@ export default function Menu({
         </div>
         {currentUser ? (
           <AuthProvider>
-            <UserMenu setDisplayMenu={setDisplayMenu} />
+            <UserMenu
+              setDisplayingProfile={setDisplayingProfile}
+              setDisplayMenu={setDisplayMenu}
+            />
           </AuthProvider>
         ) : resettingPassword ? (
           <AuthProvider>

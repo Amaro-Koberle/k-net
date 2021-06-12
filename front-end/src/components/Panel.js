@@ -25,8 +25,9 @@ export default function Panel({
   editingNode,
   panelHidden,
   setPanelHidden,
+  displayingProfile,
+  setDisplayingProfile,
 }) {
-  const [displayingProfile, setDisplayingProfile] = useState(false);
   const [editingProfile, setEditingProfile] = useState(false);
 
   return (

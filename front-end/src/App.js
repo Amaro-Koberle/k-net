@@ -93,9 +93,6 @@ export default function App() {
   // INITIALISING STATE
   //==================================================================================
 
-  // what user is currently logged in?
-  const { currentUser } = useAuth();
-
   // at what breakpoint (width) is the app currently being rendered?
   const [breakpoint, setBreakpoint] = useState(0);
 
@@ -127,6 +124,9 @@ export default function App() {
   // is the user currently editing a node?
   const [editingNode, setEditingNode] = useState(false);
 
+  // is a user profile currently being displayed?
+  const [displayingProfile, setDisplayingProfile] = useState(false);
+
   // is the user trying to log in rather than signing up?
   const [hasAccount, setHasAccount] = useState(false);
 
@@ -136,6 +136,7 @@ export default function App() {
   // is the panel currently hidden?
   const [panelHidden, setPanelHidden] = useState(false);
 
+  // what user is currently logged in?
   const { currentUser } = useAuth();
 
   //==================================================================================
@@ -401,6 +402,7 @@ export default function App() {
         />
         {displayMenu ? (
           <Menu
+            setDisplayingProfile={setDisplayingProfile}
             setDisplayMenu={setDisplayMenu}
             hasAccount={hasAccount}
             setHasAccount={setHasAccount}
@@ -418,6 +420,8 @@ export default function App() {
           setHasAccount={setHasAccount}
         />
         <Panel
+          displayingProfile={displayingProfile}
+          setDisplayingProfile={setDisplayingProfile}
           editingNode={editingNode}
           setEditingNode={setEditingNode}
           deleteNode={deleteNode}

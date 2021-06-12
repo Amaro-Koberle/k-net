@@ -12,10 +12,11 @@ import { MdSettings } from "react-icons/md";
 import { MdAttachMoney } from "react-icons/md";
 import { MdWarning } from "react-icons/md";
 
-export default function UserMenu({ setDisplayMenu }) {
+export default function UserMenu({ setDisplayingProfile, setDisplayMenu }) {
   const { currentUser, logout } = useAuth();
   const [error, setError] = useState("");
   const [editingSettings, setEditingSettings] = useState(false);
+  if (!currentUser) return null;
 
   const Name = currentUser.displayName;
 
@@ -30,7 +31,10 @@ export default function UserMenu({ setDisplayMenu }) {
     }
   }
 
-  const goToHomeNode = () => {};
+  const goToProfile = () => {
+    setDisplayingProfile(true);
+    setDisplayMenu(false);
+  };
 
   return (
     <>
@@ -47,9 +51,13 @@ export default function UserMenu({ setDisplayMenu }) {
             />
             <span className="col-span-3 text-lg">{Name}</span>
             <div className="col-span-3">
-              <span className="link" onClick={() => goToHomeNode()}>
-                Go to your home node
-              </span>
+              <button
+                type="button"
+                className="link"
+                onClick={() => goToProfile()}
+              >
+                Go to your profile
+              </button>
             </div>
           </div>
           <>
