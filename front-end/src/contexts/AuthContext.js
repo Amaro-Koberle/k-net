@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
 
 const AuthContext = React.createContext();
 
@@ -16,11 +16,32 @@ export function AuthProvider({ children }) {
       .createUserWithEmailAndPassword(email, password)
       .then((res) => res.user.updateProfile({ displayName }))
       .then((res) => {
-        console.log(auth.currentUser, "updated displayName");
         setCurrentUser(null);
-        setCurrentUser(auth.currentUser);
+        createUserProfileDocument(auth.currentUser);
         return auth.currentUser;
       });
+  }
+
+  function createUserProfileDocument(user) {
+    let { email, displayName } = user;
+    if (!displayName) return
+    const dbRef = db.doc(`users/${user.uid}`)
+    let userDetails;
+    dbRef.get()
+      .then(doc => {
+        userDetails = doc.data();
+        if (doc.exists) return;
+        return dbRef.set({ displayName: displayName, email: email })
+      })
+      .then(() => {
+        // This then indicates everything is stored
+        // user.lastName = userDetails.lastName;
+        // user.phoneNumber = userDetails.pho
+        user.bio = userDetails.bio;
+        setCurrentUser(user);
+        setLoading(false);
+      })
+      .catch(err => console.log(err))
   }
 
   function login(email, password) {
@@ -52,8 +73,7 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const unsubscriibe = auth.onAuthStateChanged((user) => {
-      setCurrentUser(user);
-      setLoading(false);
+      if (user) createUserProfileDocument(user);
     });
 
     return unsubscriibe;
