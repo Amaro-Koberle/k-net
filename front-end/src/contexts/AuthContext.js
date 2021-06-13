@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { auth, db } from "../firebase";
+import { auth, db, storageRef } from "../firebase";
 
 const AuthContext = React.createContext();
 
@@ -72,9 +72,17 @@ export function AuthProvider({ children }) {
     });
   }
 
-  function updateDisplayAndBio(displayName, bio) {
-    return currentUser.updateProfile({ displayName })
-      .then(_ => db.doc(`users/${currentUser.uid}`).set({ displayName, bio }, { merge: true }))
+  function uploadImage(image) {
+    const url = `${currentUser.uid}/${new Date().getTime()} - ${image.name}`
+    return storageRef.child(url).put(image)
+      .then(snapshot => storageRef.child(url).getDownloadURL())
+  }
+
+  function updateDisplayAndBio(displayName, bio, photoURL) {
+    const user = {displayName}
+    if(photoURL) user.photoURL = photoURL;
+    return currentUser.updateProfile(user)
+      .then(_ => db.doc(`users/${currentUser.uid}`).set({ displayName, bio, photoURL }, { merge: true }))
       .then(_ => {
         currentUser.bio = bio;
         setCurrentUser(null);
@@ -82,7 +90,12 @@ export function AuthProvider({ children }) {
         return currentUser
       })
   }
-  
+
+  function updateUser(displayName, bio, image) {
+    if (image) return uploadImage(image).then(photoURL => updateDisplayAndBio(displayName, bio, photoURL))
+    return updateDisplayAndBio(displayName, bio);
+  }
+
   useEffect(() => {
     const unsubscriibe = auth.onAuthStateChanged((user) => {
       if (user) createUserProfileDocument(user);
@@ -100,7 +113,7 @@ export function AuthProvider({ children }) {
     updateEmail,
     updatePassword,
     updateDisplayName,
-    updateDisplayAndBio
+    updateUser
   };
 
   return (

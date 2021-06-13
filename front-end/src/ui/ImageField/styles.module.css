@@ -1,0 +1,33 @@
+.root{
+    width: 6rem;
+    height: 6rem;
+    border-radius: 50%;
+    border: 1px solid;
+    display: flex;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+img{
+    width: 100%;
+    height: 100%;
+    /* display: none; */
+}
+
+.root input{
+    display: none;
+}
+.editiconWrapper{
+    position: absolute;
+    z-index: 2;
+    bottom: 1rem;
+    right: -1rem;
+    background: #fff;
+    color: #000;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

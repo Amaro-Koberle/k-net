@@ -7,12 +7,13 @@ import profilePicture from "../KarlPopper.jpg";
 // importing icons
 import { MdArrowBack } from "react-icons/md";
 import { MdEdit } from "react-icons/md";
+import ImageField from "../ui/ImageField";
 
 export default function EditProfile({ setEditingProfile }) {
-  const { currentUser, updateDisplayAndBio } = useAuth();
+  const { currentUser, updateUser } = useAuth();
   const [displayName, setDisplayName] = useState(currentUser ? currentUser.displayName : '');
   const [bio, setBio] = useState(currentUser ? currentUser.bio : '');
-  console.log(currentUser);
+  const [image, setImage] = useState(null);
   
   const isValid = displayName.length > 2 && bio.length > 2;
   
@@ -24,7 +25,7 @@ export default function EditProfile({ setEditingProfile }) {
   const Name = "Karl Popper";
   const onSubmit = e => {
     setStatus({ isLoading: true });
-    updateDisplayAndBio(displayName, bio)
+    updateUser(displayName, bio, image)
       .then(currentUser => {
         alert('User has been updated!')
         setStatus({})
@@ -32,6 +33,7 @@ export default function EditProfile({ setEditingProfile }) {
       .catch(err => setStatus({ error: err.message }))
 
   }
+
   const { isLoading, error } = status;
   return (
     <div className="m-2">
@@ -55,14 +57,7 @@ export default function EditProfile({ setEditingProfile }) {
       <div className="container bg-primary-darker">
         {/* profile picture */}
         <div className="flex justify-center">
-          <button className="absolute flex items-center justify-center w-6 h-6 transform translate-x-8 translate-y-20 rounded-full ring ring-gray-darker bg-primary-lighter text-primary-darker">
-            <MdEdit />
-          </button>
-          <img
-            className="w-20 h-20 m-4 rounded-full"
-            src={profilePicture}
-            alt={Name}
-          />
+          <ImageField onChange={e => setImage(e.target.files[0])} url={currentUser.photoURL} />
         </div>
         {/* name and bio */}
         <form className="mt-4 space-y-7" onSubmit={onSubmit}>
